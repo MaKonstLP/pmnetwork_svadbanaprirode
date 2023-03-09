@@ -81,5 +81,20 @@ window.$ = $;
 			$('.header_wrap_back').addClass('hidden');
 		});
 
+		//КНОПКПА "ПОМОЧЬ С ВЫБОРОМ" на листинге
+		if ($(window).width()<= 767) {
+			window.addEventListener('scroll', () => {
+				if ($(window).scrollTop() > 100) {
+					$('.scroll_top_btn').show();
+				} else {
+					$('.scroll_top_btn').hide();
+				}
+			});
+
+			$('.scroll_top_btn').click(function () {
+				$('html, body').animate({scrollTop: 0}, 600); 
+				return false;
+			});
+		}
 	});
 })($);
