@@ -6,6 +6,7 @@ use yii\base\InvalidArgumentException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use frontend\modules\svadbanaprirode\models\ElasticItems;
+use frontend\components\ParamsFromQuery;
 use common\widgets\FilterWidget;
 use common\models\elastic\ItemsWidgetElastic;
 use common\models\elastic\ItemsFilterElastic;
@@ -61,6 +62,10 @@ class SiteController extends Controller
             'widgets' => $apiMain['widgets'],
             'count' => $apiMain['total'],
             'seo' => $seo->seo,
+            'city_dec' => Yii::$app->params['subdomen_dec'],
+            'city_rod' => Yii::$app->params['subdomen_rod'],
+            'city' => Yii::$app->params['subdomen_name'],
+//            'rests_properties' => $rests_properties,
         ]);
     }
 
@@ -87,7 +92,35 @@ class SiteController extends Controller
             'widgets' => $apiMain['widgets'],
             'count' => $apiMain['total'],
             'seo' => $seo->seo,
+            'subdomen' => Yii::$app->params['subdomen']
         ]);
+    }
+
+    private function parseGetQuery($getQuery, $filter_model, $slices_model)
+    {
+        $return = [];
+        if(isset($getQuery['page'])){
+            $return['page'] = $getQuery['page'];
+        }
+        else{
+            $return['page'] = 1;
+        }
+
+        $temp_params = new ParamsFromQuery($getQuery, $filter_model, $slices_model);
+        $slice = Slices::findOne(['alias'=>str_replace('/','',$temp_params->listing_url)]);
+        if (empty($slice)){
+            unset($getQuery['msk']);
+            $temp_params = new ParamsFromQuery($getQuery, $filter_model, $slices_model);
+//            echo $temp_params->listing_url;
+//            die();
+        }
+
+        $return['params_api'] = $temp_params->params_api;
+        $return['params_filter'] = $temp_params->params_filter;
+        $return['listing_url'] = $temp_params->listing_url;
+        $return['canonical'] = $temp_params->canonical;
+
+        return $return;
     }
 
     private function setSeo($seo){

@@ -3,6 +3,7 @@ import $ from 'jquery';
 import Listing from './components/listing';
 import Item from './components/item';
 import Main from './components/main';
+import Favorites from './components/favorites';
 import Index from './components/index';
 import Widget from './components/widget';
 import Form from './components/form';
@@ -15,7 +16,7 @@ window.$ = $;
 (function($) {
   	$(function() {
 
-  		if ($('[data-page-type="listing"]').length > 0) {
+		if ($('[data-page-type="listing"]').length > 0) {
 	    	var listing = new Listing($('[data-page-type="listing"]'));
 	    }
 
@@ -44,7 +45,10 @@ window.$ = $;
 	    if ($('[data-page-type="post"]').length > 0) {
 	    	var post = new Post();
 	    }
-	    
+
+	    if ($('[data-page-type="favorites"]').length > 0) {
+			var favorites = new Favorites();
+	    }
 
 	    var main = new Main();
 	    var form = [];
@@ -81,20 +85,21 @@ window.$ = $;
 			$('.header_wrap_back').addClass('hidden');
 		});
 
-		//КНОПКПА "ПОМОЧЬ С ВЫБОРОМ" на листинге
+		//КНОПКПА "ПОМОЧЬ С ВЫБОРОМ" НА ЛИСТИНГЕ
 		if ($(window).width()<= 767) {
 			window.addEventListener('scroll', () => {
 				if ($(window).scrollTop() > 100) {
-					$('.scroll_top_btn').show();
+					$('.help_with_choose').show();
 				} else {
-					$('.scroll_top_btn').hide();
+					$('.help_with_choose').hide();
 				}
 			});
 
-			$('.scroll_top_btn').click(function () {
-				$('html, body').animate({scrollTop: 0}, 600); 
-				return false;
-			});
+			// $('.help_with_choose').click(function () {
+			// 	$('.popup_wrap').addClass('_active');
+			// 	ym(64598434, 'reachGoal', 'header_button');
+			// 	gtag('event', 'header_button');
+			// });
 		}
 	});
 })($);

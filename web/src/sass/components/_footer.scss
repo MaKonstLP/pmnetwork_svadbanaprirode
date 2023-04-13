@@ -58,6 +58,7 @@ footer{
                         height: 57px;
                         background-image: url(/img/svadba_logo.svg);
                         background-size: contain;
+                        background-repeat: no-repeat;
                         filter: hue-rotate(0deg);
                         transition: filter 0.2s ease;
                     }

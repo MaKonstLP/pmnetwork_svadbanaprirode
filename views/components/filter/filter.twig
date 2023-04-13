@@ -2,19 +2,27 @@
 	<div class="filter_wrapper">
 
 		{% for label,filter_item in filters %}
-			{% if filter_item.type == 'select' %}
-				{{ this.render('filter_select.twig', {
-					'filter_item':filter_item,
-					'label':label,
-					'filter_active': filter_active
-				}) | raw }}
-			{% else %}
-				{{ this.render('filter_checkbox.twig', {
-					'filter_item':filter_item,
-					'label':label,
-					'filter_active': filter_active
-				}) | raw }}
-			{% endif %}
+{#				{% if label !=  'msk' %}#}
+					{% if filter_item.type == 'select' %}
+						{{ this.render('filter_select.twig', {
+							'filter_item':filter_item,
+							'label':label,
+							'filter_active': filter_active
+						}) | raw }}
+					{% elseif filter_item.type == 'checkbox' %}
+						{{ this.render('filter_checkbox.twig', {
+							'filter_item':filter_item,
+							'label':label,
+							'filter_active': filter_active
+						}) | raw }}
+					{% elseif filter_item.type == 'hidden' %}
+						{{ this.render('filter_hidden.twig', {
+							'filter_item':filter_item,
+							'label':label,
+							'filter_active': filter_active
+						}) | raw }}
+					{% endif %}
+{#				{% endif %}#}
 		{% endfor %}
 
 		<div class="filter_submit">

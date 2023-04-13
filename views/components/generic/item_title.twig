@@ -5,6 +5,20 @@
 </div>
 <div class="title item_title">
 	<h1><span>{{seo.h1}}</span> <span>{{seo.desc}}</span></h1>
+	{% if item.restaurant_rev_ya.id and item.restaurant_rev_ya.rate %}
+		<div class="item_comment_wrap">
+			<span>Рейтинг заведения: </span>
+				<div class="rate">
+					<div class="stars">
+						<div class="stars__empty"></div>
+						<div class="stars__fill" style="width:calc({{item.restaurant_rev_ya.rate}} * 20%)"></div>
+					</div>
+					<p class="rate__count">{{item.restaurant_rev_ya.rate}}</p>
+{#					<p class="rate__reviews">(<a href="/{{ app.params.subdomen }}catalog/{{item.unique_id}}/#reviews">{{item.restaurant_rev_ya.count}}</a>)</p>#}
+					<p class="rate__reviews">(<span class="feedbacks" data-navigation data-item-navigation="feedbacks">{{item.restaurant_rev_ya.count}}</span>)</p>
+				</div>
+		</div>
+	{% endif %}
 	<!--<div class="title_desc"><p>{{seo.desc}}</p></div>-->
 	<div class="title_address" data-title-address><p><span>{{seo.address}}</span></p></div>
 </div>

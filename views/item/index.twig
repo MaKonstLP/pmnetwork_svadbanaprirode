@@ -1,33 +1,12 @@
-<div data-page-type="item">
+<div data-page-type="item" data-item-id="{{ item.unique_id }}">
 
     <div class="content_block" data-listing-title>
-        {{ this.render('//components/generic/item_title.twig', {'seo':seo}) | raw }}
+        {{ this.render('//components/generic/item_title.twig', {'seo':seo, 'item': item}) | raw }}
     </div>
 
     <div class="content_block" data-page-type="item">
-        <div class="object_head">
-
-            <div class="object_meta">
-                {% if item.price %}
-                    <div class="object_meta_item">
-                        <p class="object_meta_title">Банкетное меню</p>
-                        <p class="object_meta_value">от <span class="rur">{{item.price}} <span class="norur">руб.</span></span></p>
-                    </div>
-                {% endif %}
-                <div class="object_meta_block">
-                    <div class="object_meta_item">
-                        <p class="object_meta_title">Вместимость на банкет:</p>
-                        <p class="object_meta_value">до <span>{{item.capacity}} персон</span></p>
-                    </div>
-
-                    {% if item.capacity_reception %}
-                        <div class="object_meta_item">
-                            <p class="object_meta_title">на фуршет:</p>
-                            <p class="object_meta_value">до <span>{{item.capacity_reception}} персон</span></p>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
+        <div class="object_head section section_gallery" data-item="gallery">
+            <span class="nav-label" data-nav-label="gallery"></span>
 
             <div class="object_gallery" data-gallery data-id="{{item.id}}">
                 <div class="swiper-container item_top_slider">
@@ -52,114 +31,391 @@
                 </div>
             </div>
 
-            <div class="object_book">
-                <p class="object_book_text">Узнать об актуальных акциях и забронировать можно по телефону:</p>
-                <div class="object_book_hidden">
-                    <p class="object_book_phone">
-                        <span class="object_fake_phone">+7 xxx xxx-xx-xx</span>
-                        <a href="tel:{{item.restaurant_phone}}" class="object_real_phone">{{item.restaurant_phone}}</a>
-                    </p>
-                    <div class="object_book_hidden_button" data-action="show_phone" data-commission="{{item.restaurant_commission}}">Показать номер</div>
-                </div>
-                <div class="object_book_email">
-                    <div class="object_book_email_text" data-book-open>
-                        <p class="_pseudolink">Отправить инфо о зале себе на эл. почту</p>
+            <div class="object_map object_map_desktop" data-item="location">
+                <div class="map">
+                    <div id="map" data-mapDotX="{{item.restaurant_latitude}}" data-mapDotY="{{item.restaurant_longitude}}" data-balloon="{{seo.address}}" data-hint="{{seo.h1}}">
+
                     </div>
-                    <div class="object_book_email_form">
-                        <form class="form_block" action="/ajax/sendroom/" data-type="book">
-                            <div class="form_inputs">
-                                <div class="input_wrapper">
-                                    <input type="email" name="book_email" data-book-email-id="{{item.id}}">
-                                    <input type="hidden" name="room_id" value="{{item.unique_id}}">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="main_content_wrap">
+        <nav class="navigation">
+            <p class="navigation_title">{{ seo.h1 }}</p>
+            <div class="navigation_wrap">
+                <div class="navigation_inner">
+                    <div class="navigation_item _active_nav_item" data-navigation data-item-navigation="gallery">
+                        <span class="">Фотогалерея</span>
+                    </div>
+                    <div class="navigation_item" data-navigation data-item-navigation="price">
+                        <span class="">Стоимость</span>
+                    </div>
+                    <div class="navigation_item" data-navigation data-item-navigation="parametrs">
+                        <span class="">Характеристики</span>
+                    </div>
+
+                    <div class="navigation_item location" data-navigation data-item-navigation="location">
+                        <span class="">Расположение</span>
+                    </div>
+
+                    {% if item.restaurant_rev_ya.id %}
+                        <div class="navigation_item" data-navigation data-item-navigation="feedbacks">
+                            <span class="">Отзывы</span>
+                        </div>
+                    {% endif %}
+
+                    {% if similar_rooms|length > 0 %}
+                        <div class="navigation_item" data-navigation data-item-navigation="like_rooms">
+                            <span class="">Похожие залы</span>
+                        </div>
+                    {% endif %}
+                    </div>
+            </div>
+        </nav>
+
+        <article class="info-item section section_price" data-item="price">
+            <section class="info-item__info">
+                <div class="info-top">
+                    <div class="info-item__capacity">
+                        <div class="capacity-title">
+                            <img src="/img/person.svg" alt="">
+                            <span>Вместимость</span>
+                        </div>
+{#                        {{ item.restaurant_max_capacity }}#}
+{#                        {{ item.restaurant_min_capacity }}#}
+                        <div class="capacity">
+                            <div class="capacity-banket">
+                                <p>на банкет:</p>
+
+                                {% if item.restaurant_max_capacity or item.restaurant_min_capacity %}
+                                    {% if item.restaurant_max_capacity ==  item.restaurant_min_capacity and item.restaurant_min_capacity %}
+                                        <span>{{ item.restaurant_min_capacity }} чел.</span>
+                                    {% elseif item.restaurant_min_capacity %}
+                                        <span>{{ item.restaurant_min_capacity }} - {{ item.restaurant_max_capacity }} чел.</span>
+                                    {% endif %}
+                                {% endif %}
+
+                            </div>
+                            {% if item.capacity_reception and item.capacity_reception > 0 %}
+                                <div class="capacity-buffet">
+                                    <p>на фуршет:</p>
+                                    <span>{{ item.capacity_reception }} чел.</span>
                                 </div>
-                            </div>
-                            <input type="submit" class="object_book_email_button _button" value="Отправить"/>
-                        </form>
+                            {% endif %}
+                        </div>
                     </div>
-                    <div class="object_book_email_success">
-                        <p class="object_book_email_success_text">Мы отправили информацию на почту</p>
-                        <p class="object_book_email_success_reload _pseudolink" data-book-email-reload>Отправить еще раз</p>
+                    <span class="nav-label" data-nav-label="price"></span>
+                    <div class="info-item__cost">
+                        <div class="cost-title">
+                            <img src="/img/rubble.svg" alt="">
+                            <span>Стоимость</span>
+                        </div>
+                        <div class="item_arenda">
+                            {% if item.payment_model == 0 or item.payment_model == 2 %}
+                                <div class="item_arenda_banket">
+                                    <span class="item_arenda_banket_title">Аренда с банкетом</span>
+                                    <div class="item_arenda_banket_info">
+                                        <div class="item_arenda_banket_zal">
+                                            Зал:
+                                            {% if item.rent_room_only %}
+                                                {% if item.rent_room_only == 0 %}
+                                                    <span>бесплатно</span>
+                                                {% else %}
+                                                    <span>{{ item.rent_room_only }} ₽</span>
+                                                {% endif %}
+                                            {% endif %}
+                                        </div>
+                                        {% if item.price and item.price > 0 %}
+                                            <div class="item_arenda_banket_banket">
+                                                Банкет:
+                                                <span>от {{ item.price  }} ₽/чел.</span>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% elseif item.payment_model == 1 %}
+                                <div class="item_arenda_banket">
+                                    <span class="item_arenda_banket_title">Аренда с банкетом</span>
+                                    <div class="item_arenda_banket_info">
+                                        <div class="item_arenda_banket_zal">
+                                            Зал: <span>бесплатно</span>
+                                        </div>
+                                        {% if item.banquet_price_person and item.banquet_price_person > 0 %}
+                                            <div class="item_arenda_banket_banket">
+                                                Банкет:
+                                                <span>от {{ item.banquet_price_person }} ₽/чел.</span>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% elseif item.payment_model == 2 %}
+{#                                <div class="item_arenda_banket">#}
+{#                                    <span class="item_arenda_banket_title">Аренда с банкетом</span>#}
+{#                                    <div class="item_arenda_banket_info">#}
+{#                                        <div class="item_arenda_banket_zal">#}
+{#                                            Зал:#}
+{#                                            {% if item.rent_room_only %}#}
+{#                                                {% if item.rent_room_only == 0 %}#}
+{#                                                    <span>бесплатно</span>#}
+{#                                                {% else %}#}
+{#                                                    <span>{{ item.rent_room_only }} ₽</span>#}
+{#                                                {% endif %}#}
+{#                                            {% endif %}#}
+{#                                        </div>#}
+{#                                        {% if item.price and item.price > 0 %}#}
+{#                                            <div class="item_arenda_banket_banket">#}
+{#                                                Банкет:#}
+{#                                                <span>от {{ item.price }} ₽/чел.</span>#}
+{#                                            </div>#}
+{#                                        {% endif %}#}
+{#                                    </div>#}
+{#                                </div>#}
+                            {% elseif item.payment_model == 3 %}
+                                {#                            <div class="item_arenda_banket">#}
+                                {#                                <span class="item_arenda_banket_title">Аренда с банкетом3</span>#}
+                                {#                                <div class="item_arenda_banket_info">#}
+                                {#                                    <div class="item_arenda_banket_zal">#}
+                                {#                                        Зал:#}
+                                {#                                        {% if item.rent_only == true %}#}
+                                {#                                            <span>бесплатно</span>#}
+                                {#                                        {% else %}#}
+                                {#                                            {% if item.rent_room_only and item.rent_room_only == 0 %}#}
+                                {#                                                <span>бесплатно</span>#}
+                                {#                                            {% else %}#}
+                                {#                                                <span>{{ item.rent_room_only }} ₽</span>#}
+                                {#                                            {% endif %}#}
+                                {#                                        {% endif %}#}
+                                {#                                    </div>#}
+                                {#                                </div>#}
+                                {#                            </div>#}
+                            {% endif %}
+
+                            {% if (item.rent_only and item.rent_room_only > 0) %}
+                                <div class="item_arenda_food">
+                                    <span class="item_arenda_food_title">Аренда без еды</span>
+                                    <div class="item_arenda_text">{{ item.rent_room_only }} ₽ за закрытие зала</div>
+                                </div>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
-                {% if item.restaurant_commission %}
-                    <p class="object_book_action">Забронируй {{item.name}} и получи приятный подарок!</p>
-                {% endif %}
-                <div class="object_book_button _button" data-book-button>Оставить заявку на зал</div>
-            </div>
-
-            <div class="object_parameters">
-
-                {% if item.restaurant_own_alcohol != 'Нельзя свой алкоголь' or item.restaurant_firework %}
-                    <div class="object_parameters_list _marked">
-                        <p class="object_parameters_title">Разрешены</p>
-
-                        {% if item.restaurant_own_alcohol != 'Нельзя свой алкоголь' %}
-                            <p class="object_parameters_item">{{item.restaurant_own_alcohol}}</p>
-                        {% endif %}
-
-                        {% if item.restaurant_firework %}
-                            <p class="object_parameters_item">Запуск фейерверка</p>
-                        {% endif %}
-
-                        {% if item.restaurant_payment %}
-                            <div class="object_parameters_list _mobile">
-                                <p class="object_parameters_title">Оплата</p>
-                                <p class="object_parameters_item">{{item.restaurant_payment}}</p>
-                            </div>
-                        {% endif %}
-
+                <div class="info-bottom">
+                    {% if item.banquet_price_min %}
+                        <div class="min-price">
+                            <p>Мин. стоимость банкета:</p>
+                                <span>{{ item.banquet_price_min }} ₽</span>
+                        </div>
+                    {% endif %}
+                    <div class="info-bottom__desc">
+                        * В пт–вс и праздничные дни возможно повышение минимальной суммы на банкет. Для точных условий оставьте заявку на <span data-item-book>расчет.</span>
                     </div>
-                {% endif %}
+                </div>
+            </section>
+            <section class="info-item__connection">
 
+                <div class="object_book">
+                    <p class="object_book_text">Узнать об актуальных акциях и забронировать можно по телефону:</p>
+                    <div class="object_book_hidden">
+                        <p class="object_book_phone">
+                            <span class="object_fake_phone">+7 xxx xxx-xx-xx</span>
+                            <a href="tel:{{item.restaurant_phone}}" class="object_real_phone">{{item.restaurant_phone}}</a>
+                        </p>
+                        <div class="object_book_hidden_button" data-action="show_phone" data-commission="{{item.restaurant_commission}}">Показать номер</div>
+                    </div>
+
+                    <div class="item_object_book">
+                        <div class="item_info_bottom">
+                            {#                    <a href="/{{ app.params.subdomen }}catalog/{{item.unique_id}}/#form_item" class="bottom_call">#}
+                            <button data-item-book>
+                                <svg class="item_bottom_icon book_icon" width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M16.1061 1.37078C14.6713 0.500834 12.9879 0 11.1875 0C5.94079 0 1.6875 4.25329 1.6875 9.5C1.6875 14.7467 5.94079 19 11.1875 19C16.4342 19 20.6875 14.7467 20.6875 9.5C20.6875 9.07537 20.6596 8.65724 20.6056 8.24735L18.6113 10.5732C18.0907 14.2069 14.9653 17 11.1875 17C7.04536 17 3.6875 13.6421 3.6875 9.5C3.6875 5.35786 7.04536 2 11.1875 2C12.4896 2 13.7143 2.33184 14.7815 2.91557L16.1061 1.37078Z" fill="white"/>
+                                    <path d="M19.5763 3.33301L11.6483 12.2219L7.35413 8.06825" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                                <span class="item_btn_text">Забронировать</span>
+                                <span class="span_mobile">Заказать</span>
+                            </button>
+                            {#                    </a>#}
+
+                            <a href="tel:+79252382671" class="bottom_call_mobile" data-commission="{{item.restaurant_commission}}">
+                                <button class="call_btn_mobile">
+                                    <span>Позвонить</span>
+                                </button>
+                            </a>
+
+                            <button data-room-id="{{ item.id }}" class="add_favorites add_favorites_book {{ item.id in app.params.subdomen_favorite.items ? '_active' : '' }}">
+                                <svg class="item_bottom_icon {{ item.id in app.params.subdomen_favorite.items ? '_active' : '' }}" width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M13.9935 13.6594C12.7017 14.8972 11.3004 15.9965 9.81009 16.9422C9.22744 16.5781 7.31892 15.3293 5.44946 13.4951C3.25538 11.3425 1.3125 8.57646 1.3125 5.62499C1.3125 4.6396 1.60374 3.68485 2.13708 2.89619C2.66993 2.10827 3.41405 1.53009 4.25606 1.23096C5.09701 0.932201 6.00244 0.923132 6.84806 1.20466C7.69471 1.48653 8.44836 2.04912 8.99469 2.82549L9.8125 3.98763L10.6303 2.82549C11.1766 2.04912 11.9303 1.48653 12.7769 1.20466C13.6226 0.923132 14.528 0.932201 15.3689 1.23096C16.211 1.53009 16.9551 2.10828 17.4879 2.89619C18.0213 3.68485 18.3125 4.6396 18.3125 5.62499C18.3125 8.11273 16.962 10.813 13.9935 13.6594Z" stroke="#7ABF62" stroke-width="2"/>
+                                </svg>
+                                <span class="item_btn_text add_favorite {{ item.id in app.params.subdomen_favorite.items ? 'hidden' : '' }}">В избранное</span>
+                                <span class="item_btn_text in_favorite {{ item.id in app.params.subdomen_favorite.items ? '' : 'hidden' }}">В избранном</span>
+                            </button>
+                        </div>
+
+                        {% if item.restaurant_commission %}
+                            <div class="object_book_action">
+                                <p>Забронируй {{item.name}} <span>и получи приятный подарок!</span></p>
+                            </div>
+                    </div>
+                        <div class="object_book_email">
+                            <div class="object_book_email_text" data-book-open>
+                                <p class="_pseudolink">Отправить инфо о зале себе на эл. почту</p>
+                            </div>
+                            <div class="object_book_email_form">
+                                <form class="form_block form_book" action="/ajax/sendroom/" data-type="book">
+                                    <div class="form_inputs form_book">
+                                        <div class="input_wrapper">
+                                            <input type="email" name="book_email" data-book-email-id="{{item.id}}">
+                                            <input type="hidden" name="room_id" value="{{item.unique_id}}">
+                                        </div>
+                                    </div>
+                                    <input type="submit" class="object_book_email_button _button" value="Отправить"/>
+                                </form>
+                            </div>
+                            <div class="object_book_email_success">
+                                <p class="object_book_email_success_text">Мы отправили информацию на почту</p>
+                                <p class="object_book_email_success_reload _pseudolink" data-book-email-reload>Отправить еще раз</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {#                <div class="object_book_button _button" data-book-button>Оставить заявку на зал</div>#}
+                </div>
+            </section>
+        </article>
+
+        <div class="object_parameters section section_parametrs" data-item="parametrs">
+            {% if item.restaurant_alcohol == 1 or item.restaurant_alcohol == 2 or item.restaurant_firework or item.own_fruits or item.own_ba_drinks %}
                 <div class="object_parameters_list _marked">
-                    <p class="object_parameters_title">Что на территории</p>
+                    <p class="object_parameters_title">Разрешены</p>
 
-                    {% if item.restaurant_cuisine %}
-                        <p class="object_parameters_item">{{item.restaurant_cuisine}} кухня</p>
+                    {#                {% if item.restaurant_own_alcohol != 'Нельзя свой алкоголь' %}#}
+                    {#                    <p class="object_parameters_item">{{item.restaurant_own_alcohol}}</p>#}
+                    {#                {% endif %}#}
+
+                    {% if item.restaurant_alcohol == 1 %}
+                        <p class="object_parameters_item">Свой алкоголь</p>
+                    {% elseif item.restaurant_alcohol == 2 %}
+                        <p class="object_parameters_item">Свой алкоголь за дополнительную плату (пробковый сбор)</p>
                     {% endif %}
-                    {% if item.restaurant_parking %}
-                        <p class="object_parameters_item">Выделенная парковка <span class="item_meta_text">на {{item.restaurant_parking}} машин</span></p>
+
+                    {% if item.own_fruits  %}
+                        <p class="object_parameters_item">Свои фрукты</p>
                     {% endif %}
-                    {% if item.restaurant_special %}
-                        {% for special in item.restaurant_special %}
-                            <p class="object_parameters_item">{{special}}</p>
-                        {% endfor %}
+
+                    {% if item.own_ba_drinks  %}
+                        <p class="object_parameters_item">Свои соки и б/а напитки</p>
                     {% endif %}
+
+                    {% if item.restaurant_firework %}
+                        <p class="object_parameters_item">Запуск фейерверка</p>
+                    {% endif %}
+
+                    {#                {% if item.restaurant_payment %}#}
+                    {#                    <div class="object_parameters_list _mobile">#}
+                    {#                        <p class="object_parameters_title">Оплата</p>#}
+                    {#                        <p class="object_parameters_item">{{item.restaurant_payment}}</p>#}
+                    {#                    </div>#}
+                    {#                {% endif %}#}
+
                 </div>
+            {% endif %}
 
-                {% if item.restaurant_payment %}
-                    <div class="object_parameters_list" data-mobile-hide>
-                        <p class="object_parameters_title">Оплата</p>
-                        <p class="object_parameters_item">{{item.restaurant_payment}}</p>
-                    </div>
+            <div class="object_parameters_list _marked">
+                <p class="object_parameters_title">Что на территории</p>
+
+                {% if item.restaurant_cuisine %}
+                    <p class="object_parameters_item">{{item.restaurant_cuisine}} кухня</p>
                 {% endif %}
-                
+                {% if item.restaurant_parking %}
+                    <p class="object_parameters_item">Выделенная парковка <span class="item_meta_text">({{item.restaurant_parking}} машин)</span></p>
+                {% endif %}
+
+                {% if item.restaurant_special %}
+                    {% for special in item.restaurant_special %}
+                        {% if special | trim == item.own_ba_drinks or special == 'Можно свои фрукты'%}
+                        {% else %}
+                            <p class="object_parameters_item">{{special}}</p>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
             </div>
 
+            {% if item.restaurant_payment %}
+                <div class="object_parameters_list">
+                    <p class="object_parameters_title">Оплата</p>
+                    <p class="object_parameters_item">{{item.restaurant_payment}}</p>
+                </div>
+            {% endif %}
+
+            <span class="nav-label" data-nav-label="parametrs"></span>
         </div>
-    </div>
 
-    <div class="map">
-        <div id="map" data-mapDotX="{{item.restaurant_latitude}}" data-mapDotY="{{item.restaurant_longitude}}" data-balloon="{{seo.address}}" data-hint="{{seo.h1}}">
+        <div class="content_block">
 
-        </div>
-    </div>
+            {% if item.description != '' %}
+                <div class="object_description">
+                    {{item.description}}
+                </div>
+            {% endif %}
 
-    <div class="content_block">
-
-        {% if item.description != '' %}
-            <div class="object_description">
-                {{item.description}}
+            <div class="item-book-form">
+                {{ this.render('//components/generic/form.twig', {'type' : 'item', 'venue_id': item.restaurant_gorko_id, 'room_name':item.name}) | raw }}
             </div>
-        {% endif %}
+        </div>
+    </main>
 
-        {{ this.render('//components/generic/form.twig', {'type' : 'item', 'venue_id': item.restaurant_gorko_id, 'room_name':item.name}) | raw }}
 
+    <span class="nav-label" data-nav-label="location"></span>
+    <div class="object_map_mobile" data-item="location">
     </div>
+
+
+    {% if item.restaurant_rev_ya.id %}
+        <div id="reviews" class="item__review-yandex-wrap section section_feedbacks" data-item="feedbacks">
+            <div class="item__review-yandex">
+                <p class="item__review-title">Отзывы о {{item.restaurant_name}}</p>
+                <span class="nav-label" data-nav-label="feedbacks"></span>
+                <div class="review_iframe_wrap">
+                    <iframe style="width:100%;height:100%;border:1px solid #e6e6e6;border-radius:8px;box-sizing:border-box" src="https://yandex.ru/maps-reviews-widget/{{item.restaurant_rev_ya.id}}?comments"></iframe>
+                    <a href="https://yandex.ru/maps/org/pansionat_sm_pension/{{item.restaurant_rev_ya.id}}" target="_blank" style="box-sizing:border-box;text-decoration:none;color:#b3b3b3;font-size:10px;font-family:YS Text,sans-serif;padding:0 20px;position:absolute;bottom:8px;width:100%;text-align:center;left:0;overflow:hidden;text-overflow:ellipsis;display:block;max-height:14px;white-space:nowrap;padding:0 16px;box-sizing:border-box">{{item.restaurant_name}} — Яндекс Карты</a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 
     {{ this.render('//components/generic/other_widjet.twig', {'items':other_rooms, 'restaurant_name':item.restaurant_name, 'room_name':item.name}) | raw }}
 
     {{ this.render('//components/generic/similar_rooms.twig', {'items':similar_rooms}) | raw }}
+
+    <div class="item_mobile_btns hidden">
+        <div class="item_info_bottom">
+            {#                    <a href="/{{ app.params.subdomen }}catalog/{{item.unique_id}}/#form_item" class="bottom_call">#}
+            <button data-item-book>
+                <svg class="item_bottom_icon book_icon" width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M16.1061 1.37078C14.6713 0.500834 12.9879 0 11.1875 0C5.94079 0 1.6875 4.25329 1.6875 9.5C1.6875 14.7467 5.94079 19 11.1875 19C16.4342 19 20.6875 14.7467 20.6875 9.5C20.6875 9.07537 20.6596 8.65724 20.6056 8.24735L18.6113 10.5732C18.0907 14.2069 14.9653 17 11.1875 17C7.04536 17 3.6875 13.6421 3.6875 9.5C3.6875 5.35786 7.04536 2 11.1875 2C12.4896 2 13.7143 2.33184 14.7815 2.91557L16.1061 1.37078Z" fill="white"/>
+                    <path d="M19.5763 3.33301L11.6483 12.2219L7.35413 8.06825" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span class="item_btn_text">Забронировать</span>
+                <span class="span_mobile">Заказать</span>
+            </button>
+            {#                    </a>#}
+
+            <a href="tel:+79252382671" class="bottom_call_mobile" data-commission="{{item.restaurant_commission}}">
+                <button class="call_btn_mobile">
+                    <span>Позвонить</span>
+                </button>
+            </a>
+
+            <button data-room-id="{{ item.id }}" class="add_favorites add_favorites_book {{ item.id in app.params.subdomen_favorite.items ? '_active' : '' }}">
+                <svg class="item_bottom_icon {{ item.id in app.params.subdomen_favorite.items ? '_active' : '' }}" width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13.9935 13.6594C12.7017 14.8972 11.3004 15.9965 9.81009 16.9422C9.22744 16.5781 7.31892 15.3293 5.44946 13.4951C3.25538 11.3425 1.3125 8.57646 1.3125 5.62499C1.3125 4.6396 1.60374 3.68485 2.13708 2.89619C2.66993 2.10827 3.41405 1.53009 4.25606 1.23096C5.09701 0.932201 6.00244 0.923132 6.84806 1.20466C7.69471 1.48653 8.44836 2.04912 8.99469 2.82549L9.8125 3.98763L10.6303 2.82549C11.1766 2.04912 11.9303 1.48653 12.7769 1.20466C13.6226 0.923132 14.528 0.932201 15.3689 1.23096C16.211 1.53009 16.9551 2.10828 17.4879 2.89619C18.0213 3.68485 18.3125 4.6396 18.3125 5.62499C18.3125 8.11273 16.962 10.813 13.9935 13.6594Z" stroke="#7ABF62" stroke-width="2"/>
+                </svg>
+                <span class="item_btn_text add_favorite {{ item.id in app.params.subdomen_favorite.items ? 'hidden' : '' }}">В избранное</span>
+                <span class="item_btn_text in_favorite {{ item.id in app.params.subdomen_favorite.items ? '' : 'hidden' }}">В избранном</span>
+            </button>
+        </div>
+    </div>
 
 </div>
 

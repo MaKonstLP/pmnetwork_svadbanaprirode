@@ -37,7 +37,7 @@
 	<div class="items_list_listing" data-listing-wrapper>
 		<div class="items_list" data-listing-list>
 
-			{{ this.render('//components/generic/listing.twig', {'items':items, 'img_alt':seo.img_alt}) | raw }}
+			{{ this.render('//components/generic/listing.twig', {'items':items, 'img_alt':seo.img_alt,  'rests_properties':rests_properties}) | raw }}
 
 		</div>
 	</div>
@@ -50,7 +50,8 @@
 
 	<div class="content_block">
 		
-        {{ this.render('//components/generic/form.twig') | raw }}
+{#        {{ this.render('//components/generic/form.twig') | raw }}#}
+		{{ this.render('//components/generic/form.twig', {'type' : 'listing'}) | raw }}
 
     </div>
 
@@ -65,7 +66,7 @@
  
 	<div class="content_loading"></div>
 
-	<div class="scroll_top_btn">
+	<div class="help_with_choose" data-type="help" data-help-choose="mobile" data-open-popup-form>
 		<span>Помочь с выбором?</span>
 	</div>
 </div>

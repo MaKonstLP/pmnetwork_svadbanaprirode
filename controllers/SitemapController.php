@@ -13,22 +13,27 @@ use frontend\modules\svadbanaprirode\models\ElasticItems;
 class SitemapController extends Controller
 {
 
-	public function actionIndex()
-	{
-		Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
-    	Yii::$app->response->headers->add('Content-Type', 'text/xml');
+    public function actionIndex()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+        Yii::$app->response->headers->add('Content-Type', 'text/xml');
 
-		$host = $_SERVER['REQUEST_SCHEME'] .'://'. $_SERVER['HTTP_HOST'];
+//        $host = $_SERVER['REQUEST_SCHEME'] .'://'. $_SERVER['HTTP_HOST'];
+        $host = 'https://'. $_SERVER['HTTP_HOST'];
 
-		$slices = Slices::find('alias')->all();
+        $slices = Slices::find('alias')->all();
 
-		$elastic_model = new ElasticItems;
-		$items = new ItemsFilterElastic([], 9999, 1, false, 'rooms', $elastic_model);
+        $elastic_model = new ElasticItems;
+        $items = new ItemsFilterElastic([], 9999, 1, false, 'rooms', $elastic_model);
 
-		return $this->renderPartial('sitemap.twig', [
-			'host' => $host,
-			'slices' => $slices,
-			'items' => $items->items
-		]);
-	}
+//		echo '<pre>1111';
+//		print_r(Yii::$app->params['subdomen']);die();
+
+        return $this->renderPartial('sitemap.twig', [
+            'host' => $host,
+            'slices' => $slices,
+            'items' => $items->items,
+            'subdomen' => Yii::$app->params['subdomen'],
+        ]);
+    }
 }

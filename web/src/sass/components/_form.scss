@@ -6,12 +6,47 @@
 	padding: 25px 75px 40px;
 	position: relative;
 
+	.form_main {
+		display: flex;
+		flex-direction: row;
+
+		@include for-notdesc {
+			flex-direction: column;
+		}
+	}
+
+	.flower_corner {
+		position: absolute;
+		z-index: 5;
+		pointer-events: none;
+	}
+
+	.top_left {
+		top: -15px;
+		left: -15px;
+		transform: rotate(180deg);
+	}
+	.top_right {
+		top: -15px;
+		right: -15px;
+		transform: rotate(180deg) scale(-1, 1);
+	}
+	.bottom_right {
+		bottom: -15px;
+		right: -15px;
+	}
+	.bottom_left {
+		bottom: -15px;
+		left: -15px;
+		transform: scale(-1, 1);
+	}
+
 	@include for-pad{
 		padding: 25px 20px 30px;
 	}
 
 	@include for-mobile{
-		padding: 25px 20px 30px;
+		padding: 25px 15px 30px;
 	}
 }
 
@@ -59,8 +94,9 @@
 .form_title{
 	width: 100%;
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
-	align-items: center;
+	align-items: flex-start;
 
 	.form_title_main{
 		font-weight: 600;
@@ -85,11 +121,25 @@
 			display: none;
 		}
 	}
+
+	@include for-notdesc {
+		align-items: center;
+	}
 }
 
-.form_block{
+.form_book.form_block {
+	flex-direction: inherit;
+
+	@include for-mobile {
+		flex-direction: column;
+	}
+}
+
+.form_block {
 	display: flex;
 	margin-top: 30px;
+	flex-direction: column;
+	width: 100%;
 
 	@include for-pad{
 		flex-direction: column;
@@ -101,10 +151,18 @@
 	    align-items: center;
 	}
 
-	.form_inputs{
+	.form_inputs {
 		display: flex;
 		flex-wrap: wrap;
 		width: 780px;
+
+		.input_wrapper:nth-child(1){ order: 1; }
+		.input_wrapper:nth-child(2){ order: 2; }
+		.input_wrapper:nth-child(3){ order: 4; }
+		.input_wrapper:nth-child(4){ order: 5; }
+		.input_wrapper:nth-child(5){ order: 6; }
+		.form_checkboxes{ order: 7; }
+		.form_connection{ order: 8; }
 
 		.input_wrapper{
 			width: 130px;
@@ -185,6 +243,7 @@
 
 				@include for-mobile{
 				    flex-direction: column;
+					margin-bottom: 10px;
 					width: 100%;
 				}
 			}
@@ -201,6 +260,7 @@
 
 		@include for-mobile{
 			width: 100%;
+			.form_connection{ order: 3; }
 
 			.input_wrapper{
 				margin: 0px 0px 15px;
@@ -208,8 +268,76 @@
 		}
 	}
 
+	.form_connection {
+		margin-top: 10px;
+		margin-bottom: 20px;
+
+		p {
+			font-style: normal;
+			font-weight: 500;
+			font-size: 16px;
+			line-height: 26px;
+			color: $clrBlack;
+			margin-bottom: 5px;
+		}
+
+		.form_media {
+			display: flex;
+			flex-wrap: wrap;
+			row-gap: 10px;
+			column-gap: 10px;
+
+			button {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border: 1px solid $clrLightGrey;
+				border-radius: 5px;
+				width: 142px;
+				height: 34px;
+				cursor: pointer;
+
+				&:hover {
+					transition: all 0.3s ease;
+					background-color: $clrPagination;
+					border: 1px solid $clrPagination;
+				}
+
+				@include for-mobile {
+					//width: 127px;
+					flex-grow: 1;
+				}
+			}
+
+			img {
+				padding-right: 6px;
+			}
+
+			span {
+				font-style: normal;
+				font-weight: 500;
+				font-size: 14px;
+				line-height: 22px;
+				color: $clrBlack;
+			}
+
+			@include for-mobile {
+				justify-content: space-between;
+			}
+
+			@media (max-width: 340px) {
+				//column-gap: inherit;
+			}
+		}
+	}
+
 	.form_submit{
-		width: calc(100% - 780px);
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		column-gap: 15px;
+		row-gap: 8px;
+		//width: calc(100% - 780px);
 
 		@include for-pad{
 		    width: 100%;
@@ -225,7 +353,7 @@
 
 		input._button{
 			height: 50px;
-			margin-top: 21px;
+			//margin-top: 21px;
 
 			@include for-pad{
 				width: 180px;
@@ -242,7 +370,7 @@
 		}
 
 		.form_policy{
-			margin-top: 10px;
+			//margin-top: 10px;
 
 			p{
 				font-weight: 500;
@@ -323,4 +451,14 @@
 	.form_success_close{
 
 	}
+}
+
+.active_form_btn {
+	border: 1px solid $clrPagination !important;
+	background-color: $clrPagination !important;
+}
+
+.form_item_anchor {
+	position: absolute;
+	top: -140px;
 }

@@ -74,9 +74,36 @@ class Module extends \yii\base\Module
             $subdomen_phone_pretty = '7-' . $matches[1] . '-' . $matches[2] . '-' . $matches[3] . '-' . $matches[4];
         }
         Yii::$app->params['subdomen_phone_pretty'] = $subdomen_phone_pretty;
+
+        Yii::$app->params['subdomen_favorite_cookie_name'] = 'favorite';
+        Yii::$app->params['subdomen_favorite'] = $this->getFavorite();
+
         //Yii::$app->setLayoutPath('@app/modules/svadbanaprirode/layouts');
         //Yii::$app->layout = 'svadbanaprirode';
         //$this->viewPath = '@app/modules/svadbanaprirode/views/';
+
+        $_SERVER['HTTPS']='on';
+        $url = \Yii::$app->request->url;
+        if ($currentSubdomenAlias == 'msk'){
+            if ($url == '/catalog/za-gorodom/' or $url == '/za-gorodom/') {
+                \Yii::$app->response->redirect('/catalog/v-podmoskovie/', 301)->send();
+                \Yii::$app->end();
+            }
+            if ($url == '/catalog/v-gorode/' or $url == '/v-gorode/') {
+                \Yii::$app->response->redirect('/catalog/v-moskve/', 301)->send();
+                \Yii::$app->end();
+            }
+        }else{
+            if ($url == '/'.Yii::$app->params['subdomen'].'catalog/v-podmoskovie/'){
+                \Yii::$app->response->redirect('/'.Yii::$app->params['subdomen'].'catalog/za-gorodom/', 301)->send();
+                \Yii::$app->end();
+            }
+            if ($url == '/'.Yii::$app->params['subdomen'].'catalog/v-moskve/'){
+                \Yii::$app->response->redirect('/'.Yii::$app->params['subdomen'].'catalog/v-gorode/', 301)->send();
+                \Yii::$app->end();
+            }
+        }
+
         parent::init();
         //$this->viewPath = '@app/modules/svadbanaprirode/views/';
 
@@ -85,6 +112,12 @@ class Module extends \yii\base\Module
 //        die();
 
         // custom initialization code goes here
+    }
+
+    private function getFavorite()
+    {
+        $favorite = Yii::$app->request->cookies->get(Yii::$app->params['subdomen_favorite_cookie_name']);
+        return !empty($favorite) ? $favorite->value : ['count'=>0, 'items'=>[]];
     }
 }
 

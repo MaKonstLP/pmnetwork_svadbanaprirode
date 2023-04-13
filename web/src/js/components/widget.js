@@ -3,7 +3,7 @@ import Swiper from 'swiper';
 
 export default class Widget{
 	constructor(){
-		self = this;
+		let self = this;
 		this.swiperArr = [];
 
 		if($(window).width() <= 1650){
@@ -34,6 +34,8 @@ export default class Widget{
 		let swiper = new Swiper($container, {
 	        slidesPerView: 3,
 	        spaceBetween: 30,
+			observer: true,
+			observeParents: true,
 	        navigation: {
               nextEl: '.listing_widget_arrow._next',
               prevEl: '.listing_widget_arrow._prev',
@@ -45,12 +47,18 @@ export default class Widget{
 	        breakpoints: {
 	        	1200:{
 	        		slidesPerView: 2,
+					spaceBetween: 30,
 	        	},
 	        	768:{
-	        		slidesPerView: 1,
-
-	        		navigation: false,
-	        	}
+	        		slidesPerView: 2,
+					spaceBetween: 20,
+	        		// navigation: false,
+	        	},
+				540:{
+					slidesPerView: 1,
+					spaceBetween: 20,
+					// navigation: false,
+				}
 	        }
 	    });
 

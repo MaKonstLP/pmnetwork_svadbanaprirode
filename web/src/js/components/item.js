@@ -8,15 +8,104 @@ export default class Item {
 		var self = this;
 		this.subdomen = $('[data-city-block]');
 		self.mobileMode = self.getScrollWidth() < 768 ? true : false;
-		console.log(self.mobileMode);
+
+		//ДЛЯ МОБИЛОК ОТОБРАЖАЕМ КАРТУ В ДРУГОМ МЕСТЕ
+		if (self.mobileMode) {
+			// let map = $('.object_map_desktop');
+			// $('.object_map_desktop').remove();
+			// $('.object_map_mobile').show();
+			// $('.object_map_mobile').append(map);
+
+			var block1 = $('.object_map_mobile');
+			var block2 = $('.object_map_desktop');
+			block1.replaceWith(block2);
+		}
+
+		const nav_panel_observer = new IntersectionObserver((entries) => {
+			entries.forEach((entry) => {
+				if (entry.isIntersecting) {
+					console.log($(entry.target).data('nav-label') + ' SHOW');
+
+					let scrollLeft = 0;
+					let animateTime = 200;
+					let attr = $(entry.target).data('nav-label');
+
+					$('.navigation_item._active_nav_item').removeClass('_active_nav_item');
+					$('[data-item-navigation="'+ attr +'"]').addClass('_active_nav_item');
+
+					$('.navigation_item').each(function () {
+						if ($(this).hasClass('_active_nav_item'))
+							return false;
+
+						scrollLeft += $(this).width() + 40;
+					})
+
+					// $('.navigation_wrap').scrollLeft(scrollLeft);
+					$('.navigation_wrap').animate({ scrollLeft: scrollLeft }, animateTime);
+				}else {
+					console.log($(entry.target).data('nav-label') + ' HIDE');
+				}
+			});
+		}, {
+			rootMargin: '-46px 0px 0px 0px',
+			treshold: 0.7
+		});
+
+		// let isVisibleBtns = false;
+		const bottom_btns_observer = new IntersectionObserver(entries => {
+			entries.forEach(entry => {
+				if (entry.isIntersecting) {
+					// isVisibleBtns = true;
+					$('.item_mobile_btns').addClass('hidden');
+					$('.footer_wrap').css('margin-bottom', '0px');
+					// console.log('Кнопки появились');
+				} else {
+					$('.item_mobile_btns').removeClass('hidden');
+					if (self.mobileMode) {
+						$('.footer_wrap').css('margin-bottom', '80px');
+					}
+					// console.log('Кнопки исчезли');
+				}
+			});
+		}, {
+			rootMargin: '-46px 0px 0px 0px',
+			threshold: 0.5
+		});
+
+		//ПЕРЕКЛЮЧАЛКА ПУНКТОВ В НАВИГАЦИОННОЙ ПАНЕЛИ ПРИ СКРОЛЛЕ
+		document.querySelectorAll('.nav-label').forEach(
+			(section) => nav_panel_observer.observe(section),
+		);
+
+		//СКРЫТЬ/ПОКАЗАТЬ КНОПКИ СНИЗУ НА МОБИЛКЕ
+		// const bottom_btns_el = document.querySelector('.object_book .item_info_bottom');
+		const bottom_btns_el = document.querySelector('.item_info_bottom');
+		bottom_btns_observer.observe(bottom_btns_el);
+
+		//НАВИГАЦИОННАЯ ПАНЕЛЬ
+		if ($(window).width()<= 767) {
+			$('.navigation').addClass('hidden');
+			window.addEventListener('scroll', () => {
+				if ($(window).scrollTop() > 100) {
+					$('.navigation').removeClass('hidden');
+					$('.navigation').addClass('navigation_mobile');
+					$('.navigation').show();
+				} else {
+					$('.navigation_wrap').scrollLeft(0);
+					$('.navigation').addClass('hidden');
+					$('.navigation').removeClass('navigation_mobile');
+					$('.navigation').hide();
+				}
+			});
+		}
 
 		$('[data-action="show_phone"]').on('click', function () {
 			$('.object_book_hidden').addClass('_active');
 			ym(64598434, 'reachGoal', 'show_phone');
 			gtag('event', 'show_phone');
 			if ($(this).data('commission')) {
-				ym(64598434, 'reachGoal', 'show_phone_comm');
-				gtag('event', 'show_phone_comm');
+				ym(64598434, 'reachGoal', 'pozvonit_listing');
+				gtag('event', 'pozvonit_listing');
 				
 				// ==== Gorko-calltracking ====
 				let phone = $(this).closest('.object_book_hidden').find('.object_real_phone').text();
@@ -32,6 +121,24 @@ export default class Item {
 			let scroll_length = map_offset_top - header_height - ((window_height - header_height) / 2) + map_height / 2;
 			$('html,body').animate({ scrollTop: scroll_length }, 400);
 		});
+
+		$('.add_favorites').on('click', function () {
+			ym(64598434, 'reachGoal', 'izbrannoe_zal');
+			gtag('event', 'izbrannoe_zal');
+		})
+
+		$('.bottom_call_mobile').on('click', function () {
+			if ($(this).data('commission')) {
+				ym(64598434, 'reachGoal', 'pozvonit_zal');
+				gtag('event', 'pozvonit_zal');
+			}
+		})
+
+		$('.info-bottom__desc span').on('click', function () {
+			ym(64598434, 'reachGoal', 'rashet');
+			gtag('event', 'rashet');
+		})
+
 
 		$('[data-book-button]').on('click', function () {
 			let form = $('[data-type="item"]').closest('.form_wrapper');

@@ -75,6 +75,7 @@ header{
                 @include for-mobile{
                     width: 90px;
                     height: 38px;
+                    margin-left: 4px;
                 }
             }
 
@@ -235,8 +236,25 @@ header{
                 align-items: center;
                 column-gap: 6px;
 
+                @media (max-width: 1522px) {
+                    margin-right: 40px;
+                }
+
                 @include for-notdesc {
                     margin-right: 0px;
+                }
+            }
+
+            .header_favorites_link {
+
+                .favorites_header_icon {
+                    margin-bottom: -4px;
+                }
+
+                @media (max-width: 1574px) {
+                    span {
+                        display: none;
+                    }
                 }
             }
 
@@ -311,6 +329,44 @@ header{
                 }
             }
 
+            .favorites {
+                .header_favorites_link {
+                    &::after {
+                        content: attr(data-count);
+                        position: absolute;
+                        //left: calc(100% + 8px);
+                        top: 50%;
+                        //height: 100%;
+                        transform: translateY(-50%);
+                        //margin-top: 2px;
+                        margin-left: -4px;
+                        min-width: 33px;
+                        text-align: center;
+                        font-family: 'Montserrat';
+                        font-style: normal;
+                        font-weight: 500;
+                        font-size: 14px;
+                        color: $clrTextInactive;
+                    }
+                }
+
+                .header_favorites_link[data-count='0']::after { display: none; }
+
+                .header_menu_favorites {
+                    font-family: 'Montserrat';
+                    font-style: normal;
+                    font-weight: 700;
+                    font-size: 16px;
+                    line-height: 26px;
+                    color: $clrBlack;
+                    position: relative;
+                }
+
+                @include for-mobile {
+                    display: none !important;
+                }
+            }
+
             .header_menu_item_mobile{
                 display: none;
                 margin-top: 20px;
@@ -331,6 +387,10 @@ header{
                     }
                 }
             }
+
+            @media (max-width: 1574px) {
+                //margin-left: -80px;
+            }
         }
 
         .header_phone{
@@ -346,6 +406,10 @@ header{
 
             @include for-mobile{
                 right: 50px;
+
+                p {
+                    display: none;
+                }
             }
 
             & > a > p{
@@ -489,6 +553,10 @@ header{
         @include for-notdesc {
             margin-left: 0px;
         }
+
+        @include for-mobile {
+            justify-content: flex-end;
+        }
     }
 
     &._active{
@@ -519,4 +587,45 @@ header{
 .under_cities_wrap,.all_cities_wrap a:hover {
     transition: all 0.3s ease;
     color: $clrGreen;
+}
+
+.favorites{
+    &.mobile_header_favorites {
+        display: none;
+
+        .header_favorites_link {
+            &::after {
+                content: attr(data-count);
+                position: absolute;
+                //left: calc(100% + 8px);
+                top: 50%;
+                //height: 100%;
+                transform: translateY(-50%);
+                //margin-top: -4px;
+                margin-left: -4px;
+                //padding: 2px 8px 0;
+                min-width: 33px;
+                text-align: center;
+                font-family: 'Montserrat';
+                font-style: normal;
+                font-weight: 500;
+                font-size: 14px;
+                //line-height: 22px;
+                color: $clrTextInactive;
+            }
+        }
+
+        .header_favorites_link[data-count='0']::after { display: none; }
+
+        .favorites_header_icon {
+            margin-bottom: -4px;
+        }
+    }
+
+    @include for-mobile {
+        &.mobile_header_favorites {
+            display: block;
+            margin-right: 68px;
+        }
+    }
 }

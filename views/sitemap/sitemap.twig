@@ -1,25 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
     <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"> 
         <url>
-            <loc>{{host}}</loc>
+            <loc>{{host}}/{{subdomen}}</loc>
         </url>
-        <url>
-            <loc>{{host}}/catalog/</loc>
-        </url>
+{#        <url>#}
+{#            <loc>{{host}}/{{subdomen}}catalog/</loc>#}
+{#        </url>#}
 
         {% for slice in slices %}
-        	<url>
-	            <loc>{{host}}/catalog/{{slice.alias}}/</loc>
-	        </url>
+
+            {% if (subdomen == '') %}
+                {% if not ('gorod' in slice.alias|lower or '-na-' in slice.alias|lower) %}
+                    <url>
+                        <loc>{{host}}/{{subdomen}}catalog/{{slice.alias}}/</loc>
+                    </url>
+                {% endif %}
+            {% else %}
+                {% if not ('mosk' in slice.alias|lower or '-na-' in slice.alias|lower)%}
+                    <url>
+                        <loc>{{host}}/{{subdomen}}catalog/{{slice.alias}}/</loc>
+                    </url>
+                {% endif %}
+            {% endif %}
         {% endfor %}
 
-        <url>
-            <loc>{{host}}/privacy/</loc>
-        </url>
+{#        <url>#}
+{#            <loc>{{host}}/{{subdomen}}privacy/</loc>#}
+{#        </url>#}
 
         {% for item in items %}
         	<url>
-	            <loc>{{host}}/catalog/{{item.unique_id}}/</loc>
+	            <loc>{{host}}/{{subdomen}}catalog/{{item.unique_id}}/</loc>
 	        </url>
         {% endfor %}
         

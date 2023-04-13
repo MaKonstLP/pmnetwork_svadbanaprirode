@@ -21,6 +21,23 @@ export default class Form {
 
 	bind() {
 
+		this.$form.find('button.socials').on('click', function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+			$('.socials').removeClass('active_form_btn');
+			$(this).addClass('active_form_btn');
+
+			let name_connection = $(this).closest('.form_connection').find('[name="connection"]');
+			let value_connection = $(this).data('value');
+			name_connection.val(value_connection);
+
+			$('.form_connection').find('.socials').each((i, el) => {
+				if ($(el).data('value') == value_connection) {
+					$(el).addClass('active_form_btn');
+				}
+			})
+		})
+
 		this.$form.find('[data-dynamic-placeholder]').each(function () {
 			$(this).on('blur',function () {
 				if ($(this).val() == '')
@@ -182,13 +199,19 @@ export default class Form {
 		//modal.show();
 		switch(formType) {
 		  case 'main':
-		    ym(64598434,'reachGoal','form_main');
-		    gtag('event', 'form');
+		    // ym(64598434,'reachGoal','form_main');
+		    ym(64598434,'reachGoal','otpravit_zabronirovat_listing')
+		    gtag('event', 'otpravit_zabronirovat_listing');
 		    break;
 
 		  case 'item':
 		    ym(64598434,'reachGoal','form_room');
 		    gtag('event', 'form');
+		    break;
+		    
+		  case 'help':
+		    ym(64598434,'reachGoal','otpravka_pomoch_float');
+		    gtag('event', 'otpravka_pomoch_float');
 		    break;
 
 		  case 'book':
@@ -196,6 +219,14 @@ export default class Form {
 		  	gtag('event', 'form');
 		    $('.object_book_email._form').removeClass('_form').addClass('_success');
 		    break;
+
+		  case 'favorites':
+		  	ym(64598434,'reachGoal','zayavka_izbrannoe');
+			gtag('event', 'zayavka_izbrannoe');
+
+			$('.object_book_email._form').removeClass('_form').addClass('_success');
+			break;
+
 		}
 		let dataObj = data;
 		console.log(dataObj);
@@ -229,6 +260,7 @@ export default class Form {
 		    console.log(pair[0]+ ', ' + pair[1]); 
 		}
 
+	    console.log('formData', formData);
 	    console.log('self.to', self.to); 
 
 	    $.ajax({

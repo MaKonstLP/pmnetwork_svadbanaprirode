@@ -45,6 +45,7 @@ class ListingController extends Controller
 
 //        echo '<pre>';
 //        print_r($_GET);
+//        die();
 
 		$slice_obj = new QueryFromSlice($slice);
 
@@ -89,8 +90,9 @@ class ListingController extends Controller
 				$per_page		=	$this->per_page,
 				$params_filter	= 	$params['params_filter'],
 				$breadcrumbs 	=	Breadcrumbs::get_breadcrumbs(1),
-				$canonical 		= 	$canonical
-			);	
+				$canonical 		= 	$canonical,
+                $type 		    = 	'catalog'
+			);
 		}
 		else{
 			$canonical = $_SERVER['REQUEST_SCHEME'] .'://'. $_SERVER['HTTP_HOST'] . explode('?', $_SERVER['REQUEST_URI'], 2)[0];
@@ -100,7 +102,8 @@ class ListingController extends Controller
 				$per_page		=	$this->per_page,
 				$params_filter	= 	[],
 				$breadcrumbs 	= 	Breadcrumbs::get_breadcrumbs(1),
-				$canonical 		= 	$canonical
+				$canonical 		= 	$canonical,
+				$type 		    = 	'listing'
 			);
 		}
 	}
@@ -140,20 +143,13 @@ class ListingController extends Controller
 			$seo['text_bottom'] = '';
 		}
 
-		//echo '<pre style="display:none;">';
-		//print_r($items->query);
-		//echo '</pre>';
-
-//        echo '<pre>';
-//        print_r( $items->items);
-//        die();
-
 		return $this->render('index.twig', array(
 			'items' => $items->items,
 			'filter' => $filter,
 			'pagination' => $pagination,
 			'seo' => $seo,
-			'count' => $items->total
+			'count' => $items->total,
+//            'rests_properties' => $rests_properties,
 		));	
 	}
 
@@ -169,8 +165,16 @@ class ListingController extends Controller
 		]);
 
 		substr($params['listing_url'], 0, 1) == '?' ? $breadcrumbs = Breadcrumbs::get_breadcrumbs(1) : $breadcrumbs = Breadcrumbs::get_breadcrumbs(2);
-		$slice_url = ParamsFromQuery::isSlice(json_decode($_GET['filter'], true));
-		$seo_type = $slice_url ? $slice_url : 'listing';
+		$get = json_decode($_GET['filter'], true);
+		unset($get['msk']);
+		$slice_url = ParamsFromQuery::isSlice($get);
+        $seo_type = $slice_url ? $slice_url : 'listing';
+
+        unset($get['msk']);
+        unset($get['page']);
+        if (!empty($get) and $seo_type == 'listing')
+		    $seo_type = 'catalog';
+
 		$seo = $this->getSeo($seo_type, $params['page'], $items->total);
 		$seo['breadcrumbs'] = $breadcrumbs;
 
@@ -208,7 +212,15 @@ class ListingController extends Controller
 	}
 
 	public function actionAjaxFilterSlice(){
-		$slice_url = ParamsFromQuery::isSlice(json_decode($_GET['filter'], true));
+
+        $get = json_decode($_GET['filter'], true);
+		$slice_url = ParamsFromQuery::isSlice($get);
+        $slice = Slices::findOne(['alias'=>str_replace('/','', $slice_url)]);
+
+        if (empty($slice)){
+            unset($get['msk']);
+            $slice_url = ParamsFromQuery::isSlice($get);
+        }
 
 		return $slice_url;
 	}
@@ -224,11 +236,19 @@ class ListingController extends Controller
 		}
 
 		$temp_params = new ParamsFromQuery($getQuery, $filter_model, $this->slices_model);
+		$slice = Slices::findOne(['alias'=>str_replace('/','',$temp_params->listing_url)]);
+		if (empty($slice)){
+		    unset($getQuery['msk']);
+            $temp_params = new ParamsFromQuery($getQuery, $filter_model, $this->slices_model);
+//            echo $temp_params->listing_url;
+//            die();
+        }
 
-		$return['params_api'] = $temp_params->params_api;
-		$return['params_filter'] = $temp_params->params_filter;
-		$return['listing_url'] = $temp_params->listing_url;
-		$return['canonical'] = $temp_params->canonical;
+        $return['params_api'] = $temp_params->params_api;
+        $return['params_filter'] = $temp_params->params_filter;
+        $return['listing_url'] = $temp_params->listing_url;
+        $return['canonical'] = $temp_params->canonical;
+
 		return $return;
 	}
 
@@ -242,7 +262,7 @@ class ListingController extends Controller
 		$this->view->title = $seo['title'];
 		$this->view->params['desc'] = $seo['description'];
 		if($page != 1){
-			$this->view->params['canonical'] = $canonical;
+//			$this->view->params['canonical'] = $canonical;
 		}
         $this->view->params['kw'] = $seo['keywords'];
 	}

@@ -1,0 +1,117 @@
+<div class="form_wrapper">
+
+    <span id="form_item" class="form_item_anchor"></span>
+
+    <div class="form_close" data-close-popup>
+
+    </div>
+
+    <div class="form_main">
+        <div class="form_title">
+            <p class="form_title_main">Помочь с выбором зала?</p>
+            <p class="form_title_desc">Это бесплатно!</p>
+        </div>
+
+
+        <form class="form_block" action="/ajax/form/" data-type={{ type }}>
+
+        <div class="form_inputs">
+
+            <div class="input_wrapper _big">
+                <div class="input_label">Как Вас зовут?</div>
+                <input type="text" name="name" data-required/>
+            </div>
+            <div class="input_wrapper _big">
+                <div class="input_label">Номер телефона</div>
+                <input type="tel" name="phone" data-required autocomplete="off" inputmode="tel"/>
+            </div>
+            <div class="input_wrapper">
+                <div class="input_label">Дата свадьбы</div>
+                <input style="padding: 0px 0px 0px 10px; font-size: 13px;" type="date" name="date"/>
+            </div>
+            <div class="input_wrapper">
+                <div class="input_label">Кол-во гостей</div>
+                <input type="text" name="count" inputmode="numeric"/>
+            </div>
+
+{#            {% if type != 'item' and type != 'main' %}#}
+
+                <div class="form_checkboxes">
+                    <div class="checkbox_title">Зал должен быть:</div>
+                    <div class="checkbox_wrapper">
+                        <div class="checkbox_item">
+                            <input type="checkbox" name="water"/>
+                            <div class="checkbox_pseudo" data-action="form_checkbox">У воды</div>
+                        </div>
+                        <div class="checkbox_item">
+                            <input type="checkbox" name="tent"/>
+                            <div class="checkbox_pseudo" data-action="form_checkbox">С шатром</div>
+                        </div>
+                        <div class="checkbox_item">
+                            <input type="checkbox" name="country"/>
+                            <div class="checkbox_pseudo" data-action="form_checkbox">За городом</div>
+                        </div>
+                        <div class="checkbox_item">
+                            <input type="checkbox" name="incity"/>
+                            <div class="checkbox_pseudo" data-action="form_checkbox">В черте города</div>
+                        </div>
+                    </div>
+                </div>
+
+{#            {% else %}#}
+
+{#                <input type="hidden" name="venue_id" value="{{venue_id}}"/>#}
+{#                <input type="hidden" name="room_name" value="{{room_name}}"/>#}
+
+{#            {% endif %}#}
+
+            <div class="form_connection">
+                <p>Как с вами связаться:</p>
+                <input type="hidden" class="hidden" name="connection" value="Звонок">
+                <div class="form_media">
+                    <button class="socials phone active_form_btn" data-type="phone-connetcion" data-value="Звонок">
+                        <img src="/img/phone.svg" alt="">
+                        <span>Звонок</span>
+                    </button>
+                    <button class="socials whatsapp" data-type="whatsapp-connetcion" data-value="WhatsApp">
+                        <img src="/img/whatsapp.svg" alt="">
+                        <span>WhatsApp</span>
+                    </button>
+                    <button class="socials viber" data-type="viber-connetcion" data-value="Viber">
+                        <img src="/img/viber.svg" alt="">
+                        <span>Viber</span>
+                    </button>
+                    <button class="socials telegram" data-type="telegram-connetcion" data-value="Telegram">
+                        <img src="/img/telegram.svg" alt="">
+                        <span>Telegram</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form_submit">
+            <input type="submit" class="_button" value="Забронировать"/>
+            <div class="form_policy checkbox_item _active" data-form-privacy>
+                <input type="checkbox" name="policy" class="personalData" checked="">
+                <p class="checkbox_pseudo">Я согласен с <a class="_link" href="/privacy/" target="_blank">политикой обработки персональных данных</a></p>
+            </div>
+        </div>
+        <input type="hidden" name="_csrf" value="{{Declension.csrfToken()}}" />
+        </form>
+
+    </div>
+    <div class="form_success" data-success>
+
+        <div class="form_success_title">
+            <p class="form_success_title_main">Заявка успешно отправлена</p>
+        </div>
+
+        <div class="form_success_text">
+            <p class="form_success_text_main"><span data-success-name></span>, спасибо за проявленный интерес. Мы свяжемся с вами по телефону <span data-success-phone></span> в течение рабочего дня.</p>
+        </div>
+
+        <div class="form_success_close _link" data-success-close>Закрыть</div>
+
+    </div>
+</div>

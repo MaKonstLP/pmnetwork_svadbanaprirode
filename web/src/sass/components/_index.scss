@@ -3,6 +3,7 @@
     margin: 42px auto 50px;
     display: flex;
     align-items: center;
+    flex-direction: column;
 
     @include for-notdesc{
         flex-direction: column;
@@ -18,11 +19,12 @@
     }
 
     h1{
-    	width: calc(50% - 35px);
+    	//width: calc(50% - 35px);
     	text-align: right;
-    	margin-right: 35px;
+    	//margin-right: 35px;
     	font-size: 50px;
         line-height: 60px;
+        text-align: center;
 
         @include for-notdesc{
             text-align: center;
@@ -38,6 +40,7 @@
 
     .main_top_desc{
     	width: 50%;
+        text-align: center;
 
         @include for-notdesc{
             text-align: center;

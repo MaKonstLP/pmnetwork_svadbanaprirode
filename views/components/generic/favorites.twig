@@ -1,0 +1,359 @@
+<article class="compare-wrap">
+
+
+    <div class="scroll-detect"></div>
+
+    <div class="favorites-list-wrap">
+        <div class="favorites_relative_block">
+            <div class="swiper-button-next favorites-button-next wrap_swipe wrap_swipe_right"></div>
+            <div class="swiper-button-prev favorites-button-prev wrap_swipe wrap_swipe_left"></div>
+
+            <section class="favorites-list swiper" data-swiper="favorites">
+                <div class="swiper-wrapper">
+                    {% for item in items %}
+                        <div class="swiper-slide favorites-item" data-room-id="{{ item.id }}">
+                            <div class="favorites-item__slider">
+                                <a class="favorites-item__link" href="/{{ app.params.subdomen }}catalog/{{item.unique_id}}/">
+                                    <div class="swiper item_swiper">
+                                        <div class="swiper-wrapper">
+                                            {% for image in item.images %}
+                                                <div class="swiper-slide">
+                                                    <img src="{{image.subpath}}=rw" loading="lazy" alt="{{img_alt | replace({"**room**" : item.name}) | replace({"**restaurant**" : item.restaurant_name}) | replace({"**room_name**" : item.name}) }}"/>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="swiper-button-next item-button-next item-button-swipe"></div>
+                                        <div class="swiper-button-prev item-button-prev item-button-swipe"></div>
+                                        <div class="swiper-pagination swiper-pagination-bullets swiper-pagination-bullets-dynamic item-pagination"></div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="favorites-item__info-main">
+                                <p class="item-name"><a href="/{{ app.params.subdomen }}catalog/{{item.unique_id}}/">{{item.name}}</a></p>
+                                <p class="item-parent-name">{{item.restaurant_name}}</p>
+                            </div>
+                            <div class="favorites-item__info-bottom">
+                                <button class="favorite-book" data-favorite-book>
+                                    <svg class="item_bottom_icon" width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M16.1061 1.37078C14.6713 0.500834 12.9879 0 11.1875 0C5.94079 0 1.6875 4.25329 1.6875 9.5C1.6875 14.7467 5.94079 19 11.1875 19C16.4342 19 20.6875 14.7467 20.6875 9.5C20.6875 9.07537 20.6596 8.65724 20.6056 8.24735L18.6113 10.5732C18.0907 14.2069 14.9653 17 11.1875 17C7.04536 17 3.6875 13.6421 3.6875 9.5C3.6875 5.35786 7.04536 2 11.1875 2C12.4896 2 13.7143 2.33184 14.7815 2.91557L16.1061 1.37078Z" fill="white"/>
+                                        <path d="M19.5763 3.33301L11.6483 12.2219L7.35413 8.06825" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                                    </svg>
+                                    <span class="item_btn_text">Забронировать</span>
+{#                                    <span class="item_btn_text_mobile">Заказать</span>#}
+                                </button>
+                                <button class="favorite-delete" data-del-favorites="{{ item.id }}" data-del-all="false">
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M4 5H16V17C16 17.5523 15.5523 18 15 18H5C4.44772 18 4 17.5523 4 17V5Z" stroke="#333333" stroke-width="2"/>
+                                        <path d="M7 5H13V3C13 2.44772 12.5523 2 12 2H8C7.44772 2 7 2.44772 7 3V5Z" stroke="#333333" stroke-width="2"/>
+                                        <line x1="8" y1="9" x2="8" y2="14" stroke="#333333" stroke-width="2" stroke-linecap="round"/>
+                                        <line x1="12" y1="9" x2="12" y2="14" stroke="#333333" stroke-width="2" stroke-linecap="round"/>
+                                        <line x1="2" y1="5" x2="18" y2="5" stroke="#333333" stroke-width="2" stroke-linecap="round"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <section class="group-options">
+        {% if difference.rating %}
+            <div class="group-option rating">
+                <h4 class="group-option__title">Рейтинг заведения</h4>
+                <div class="group-option__items swiper" data-swiper="rating">
+                    <div class="swiper-wrapper">
+                        {% for item in items %}
+                            <div class="swiper-slide group-option__item" data-room-id="{{ item.id }}">
+                                {% if item.restaurant_rev_ya.id and item.restaurant_rev_ya.rate %}
+                                    <div class="rate">
+                                        <div class="stars">
+                                            <div class="stars__empty"></div>
+                                            <div class="stars__fill" style="width:calc({{item.restaurant_rev_ya.rate}} * 20%)"></div>
+                                        </div>
+                                        <p class="rate__count">{{item.restaurant_rev_ya.rate}}</p>
+                                        <p class="rate__reviews">(<a href="/{{ app.params.subdomen }}catalog/{{item.unique_id}}/#reviews">{{item.restaurant_rev_ya.count}}</a>)</p>
+                                    </div>
+                                {% else %}
+                                    <span>Нет отзывов</span>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if difference.district %}
+            <div class="group-option location">
+                <h4 class="group-option__title">Район</h4>
+                <div class="group-option__items swiper" data-swiper="location">
+                    <div class="swiper-wrapper">
+                        {% for item in items %}
+                            <div class="group-option__item swiper-slide" data-room-id="{{ item.id }}">
+                                {% if item.restaurant_region %}
+                                    <span>{{ item.restaurant_region }}</span>
+                                {% else %}
+                                    —
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if difference.capacity %}
+            <div class="group-option capacity">
+                <h4 class="group-option__title">Вместительность на банкет</h4>
+                <div class="group-option__items swiper" data-swiper="capacity">
+                    <div class="swiper-wrapper">
+                        {% for item in items %}
+                            <div class="group-option__item swiper-slide" data-room-id="{{ item.id }}">
+                                {% if item.restaurant_max_capacity and item.restaurant_min_capacity %}
+                                    {% if item.restaurant_max_capacity ==  item.restaurant_min_capacity %}
+                                        {{ item.restaurant_min_capacity }} чел.
+                                    {% else %}
+                                        {{ item.restaurant_min_capacity }} - {{ item.restaurant_max_capacity }} чел.
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+    </section>
+
+    {% if difference.price_with_food or difference.price_without_food %}
+        <section class="group-options">
+            <h3>Стоимость</h3>
+            {% if difference.price_with_food %}
+                <div class="group-option price_with_banket">
+                    <h4 class="group-option__title">Стоимость с банкетом</h4>
+                    <div class="group-option__items swiper" data-swiper="price_banket">
+                        <div class="swiper-wrapper">
+        {#                    Есть поле у зала payment_model , значения такие#}
+        {#                    0 - не заполнено. Считаем по нашей старой схеме#}
+        {#                    1 -Только за еду и напитки. Цена из поля banquet_price_person#}
+        {#                    2 - За аренду зала + за еду и напитки. Цена из поля  rent_room_only + цена за 1 чел из поля price (25000 руб. + 3000 руб./чел.)#}
+        {#                    3 - Только аренда (без еды). Цена из поля rent_room_only#}
+                            {% for item in items %}
+                                <div class="group-option__item swiper-slide" data-room-id="{{ item.id }}">
+                                    {% if item.payment_model == 0 %}
+                                        {% if item.price and item.price > 0 %}
+                                            <p>меню от {{ item.price }} ₽/чел.</p>
+                                        {% endif %}
+                                        {% if item.rent_room_only == 0 %}
+                                            <p>аренда зала бесплатно</p>
+                                        {% else %}
+                                            <p>аренда зала от {{ item.rent_room_only }} ₽</p>
+                                        {% endif %}
+                                    {% elseif item.payment_model == 1 %}
+                                        {% if item.banquet_price_person and item.banquet_price_person > 0 %}
+                                            <p>меню от {{ item.banquet_price_person }} ₽/чел.</p>
+                                        {% endif %}
+                                        {% if item.rent_room_only == 0 %}
+                                            <p>аренда зала бесплатно</p>
+                                        {% endif %}
+                                    {% elseif item.payment_model == 2 %}
+                                        {% if item.price and item.price > 0 %}
+                                            <p>меню от {{ item.price }} ₽/чел.</p>
+                                        {% endif %}
+                                        {% if item.rent_room_only == 0 %}
+                                            <p>аренда зала бесплатно</p>
+                                        {% else %}
+                                            <p>аренда зала от {{ item.rent_room_only }} ₽</p>
+                                        {% endif %}
+                                    {% elseif item.payment_model == 3 %}
+                                        <p>—</p>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            {% if difference.price_without_food %}
+                <div class="group-option price_without_banket">
+                <h4 class="group-option__title">Возможность аренды без еды</h4>
+                <div class="group-option__items swiper" data-swiper="price">
+                    <div class="swiper-wrapper">
+                        {% for item in items %}
+                            <div class="group-option__item swiper-slide" data-room-id="{{ item.id }}">
+                                {% if item.payment_model == 3 or item.rent_only %}
+                                    {% if (item.rent_room_only and item.rent_room_only > 0) %}
+                                        <span>да, {{ item.rent_room_only }} ₽ за закрытие</span>
+                                    {% else %}
+                                        <span>нет</span>
+                                    {% endif %}
+                                {% else %}
+                                    <span>нет</span>
+                                {% endif %}
+
+
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+        </section>
+    {% endif %}
+
+    {% if difference.price or difference.kitchen or difference.parking or difference.outside_registration %}
+        <section class="group-options">
+        <h3>Дополнительные параметры</h3>
+        {% if difference.price %}
+            <div class="group-option min_price_banket">
+                <h4 class="group-option__title">Минимальная стоимость банкета</h4>
+                <div class="group-option__items swiper" data-swiper="min_price_banket">
+                    <div class="swiper-wrapper">
+                        {% for item in items %}
+                            <div class="group-option__item swiper-slide" data-room-id="{{ item.id }}">
+                                {% if item.banquet_price %}
+                                    <span>{{ item.banquet_price }} ₽</span>
+                                {% else %}
+                                    <span>—</span>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if difference.kitchen %}
+            <div class="group-option kitchen">
+                <h4 class="group-option__title">Кухня</h4>
+                <div class="group-option__items swiper" data-swiper="kitchen">
+                    <div class="swiper-wrapper">
+                        {% for item in items %}
+                            <div class="group-option__item swiper-slide" data-room-id="{{ item.id }}">
+                                {% if item.restaurant_cuisine %}
+                                    <span>{{ item.restaurant_cuisine }}</span>
+                                {% else %}
+                                    <span>—</span>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if difference.parking %}
+            <div class="group-option parking">
+                <h4 class="group-option__title">Парковка</h4>
+                <div class="group-option__items swiper" data-swiper="parking">
+                    <div class="swiper-wrapper">
+                        {% for item in items %}
+                            <div class="group-option__item swiper-slide" data-room-id="{{ item.id }}">
+                                {% if item.restaurant_parking %}
+                                    <span>{{item.restaurant_parking}} машин</span>
+                                {% else %}
+                                    <span>—</span>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if difference.outside_registration %}
+            <div class="group-option outside_registration">
+                <h4 class="group-option__title">Выездная регистрация</h4>
+                <div class="group-option__items swiper" data-swiper="outside_registration">
+                    <div class="swiper-wrapper">
+                        {% for item in items %}
+                            <div class="group-option__item swiper-slide" data-room-id="{{ item.id }}">
+                                {% if item.outside_registration %}
+                                    <img src="/img/check_approove.svg" alt="">
+                                {% else %}
+                                    <span>—</span>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </section>
+    {% endif %}
+
+    {% if difference.alcohol and difference.firework and difference.own_fruits %}
+    <section class="group-options">
+        <h3>Разрешены</h3>
+        {% if difference.alcohol %}
+            <div class="group-option alcohol">
+                <h4 class="group-option__title">Алкоголь</h4>
+                <div class="group-option__items swiper" data-swiper="alcohol">
+                    <div class="swiper-wrapper">
+                        {% for item in items %}
+                            <div class="group-option__item swiper-slide" data-room-id="{{ item.id }}">
+                                {% if item.restaurant_alcohol %}
+                                    {% if item.restaurant_alcohol == 1 %}
+                                        <span>можно свой алкоголь</span>
+                                    {% elseif item.restaurant_alcohol == 2 %}
+                                        <span>за доп. плату</span>
+                                    {% elseif item.restaurant_alcohol == 3 %}
+                                        <span>нельзя свой алкоголь</span>
+                                    {% endif %}
+                                {% else %}
+                                    —
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if difference.firework %}
+            <div class="group-option fireworks">
+                <h4 class="group-option__title">Запуск фейерверка</h4>
+                <div class="group-option__items swiper" data-swiper="fireworks">
+                    <div class="swiper-wrapper">
+                        {% for item in items %}
+                            <div class="group-option__item swiper-slide" data-room-id="{{ item.id }}">
+                                {% if item.restaurant_firework %}
+                                    <img src="/img/check_approove.svg" alt="">
+                                {% else %}
+                                    —
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if difference.own_fruits %}
+            <div class="group-option own_fruits">
+                <h4 class="group-option__title">Свои фрукты</h4>
+                <div class="group-option__items swiper" data-swiper="own_fruits">
+                    <div class="swiper-wrapper">
+                        {% for item in items %}
+                            <div class="group-option__item swiper-slide" data-room-id="{{ item.id }}">
+                                {% if item.own_fruits %}
+                                    <span>{{ item.own_fruits }}</span>
+                                {% else %}
+                                    —
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+    </section>
+    {% endif %}
+
+    <div class="scroll-detect-bottom"></div>
+
+</article>

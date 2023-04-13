@@ -18,7 +18,7 @@ export default class Filter{
 		//КЛИК ПО СТРОКЕ В СЕЛЕКТЕ
 		this.$filter.find('[data-filter-select-item]').on('click', function(){
 			$(this).toggleClass('_active');
-			self
+			// self
 			self.selectStateRefresh($(this).closest('[data-filter-select-block]'));
 		});
 
@@ -32,6 +32,13 @@ export default class Filter{
 		$('body').find('[data-filter-open]').on('click', (e) => {
 			this.$filter.addClass('_active');
 		});
+
+		//
+		if (this.subdomen.data('id') == '4400'){
+			let msk = this.$filter.find('[data-type="msk"]');
+			msk.addClass('_checked');
+			self.checkboxStateRefresh(msk);
+		}
 
 		//ЗАКРЫТЬ МОБИЛЬНЫЙ ФИЛЬТР
 		this.$filter.find('[data-filter-close]').on('click', (e) => {
@@ -60,7 +67,8 @@ export default class Filter{
 			threshold: [0, 1]
 		});
 
-		observer.observe(document.querySelector(".filter_mobile_flag"));
+		if (document.querySelector(".filter_mobile_flag"))
+			observer.observe(document.querySelector(".filter_mobile_flag"));
 	}
 
 	init(){
@@ -123,11 +131,11 @@ export default class Filter{
 			data: data,
 			success: function(response) {
 				if(response){
-					//console.log(response);
+					// console.log('response', response);
 					self.resolve('/'+self.subdomen.data('alias')+'catalog/'+response);
 				}
 				else{
-					//console.log(response);
+					// console.log('response', response);
 					self.resolve(self.filterListingHref());
 				}
 			},

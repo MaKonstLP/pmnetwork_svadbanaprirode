@@ -1,0 +1,55 @@
+<div class="favorites favorites_block {{ items|length > 0 ? '' : 'hidden' }}" data-page-type="favorites">
+
+    <div class="breadcrumbs">
+        {% for link,name in seo.breadcrumbs %}
+            <a class="breadcrumbs_item" href="{{link}}">{{name}}</a>
+        {% endfor %}
+    </div>
+
+    <h1 class="favorites-title">Избранные залы</h1>
+    <div class="favorites-wrap">
+
+        {#        <div class="wrap_swipe wrap_swipe_left noselect disabled" data-swipe data-swipe-direction="left">#}
+        {#            <img src="/img/arrow_slider.svg" alt="">#}
+        {#        </div>#}
+        {#        <div class="wrap_swipe wrap_swipe_right noselect" data-swipe data-swipe-direction="right">#}
+        {#            <img src="/img/arrow_slider.svg" alt="">#}
+        {#        </div>#}
+
+        <div class="favorites-effect">
+            <div class="favorites-clear" data-del-favorites="" data-del-all="true">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 5H16V17C16 17.5523 15.5523 18 15 18H5C4.44772 18 4 17.5523 4 17V5Z" stroke="#333333"
+                          stroke-width="2"/>
+                    <path d="M7 5H13V3C13 2.44772 12.5523 2 12 2H8C7.44772 2 7 2.44772 7 3V5Z" stroke="#333333"
+                          stroke-width="2"/>
+                    <line x1="8" y1="9" x2="8" y2="14" stroke="#333333" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="12" y1="9" x2="12" y2="14" stroke="#333333" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="2" y1="5" x2="18" y2="5" stroke="#333333" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span>Очистить список</span>
+            </div>
+
+{#            {% if have_diff %}#}
+                <div class="favorites-difference">
+                    <input type="radio" class="favorites_difference_radio" data-diff data-value=""
+                           id="favorites_difference">
+                    {#                <span class="difference-radio" data-difference=""></span>#}
+                    <label for="favorites_difference">Показывать только отличия</label>
+                </div>
+{#            {% endif %}#}
+        </div>
+        <div class="favorites-compare" data-favorites-block>
+            {{ this.render('//components/generic/favorites.twig', {'items':items, 'difference':difference, 'seo':seo}) | raw }}
+        </div>
+    </div>
+</div>
+
+<div class="favorites-form {{ items|length > 0 ? '' : 'hidden' }}">
+    {#    <span class="favorites_form_anchor"></span>#}
+    {{ this.render('//components/generic/form.twig', {'type' : 'favorites'}) | raw }}
+</div>
+
+<div class="favorites-empty {{ items|length > 0 ? 'hidden' : '' }}">
+    {{ this.render('//favorites/error.twig', {'widgets' : widgets, 'subdomen' : subdomen}) | raw }}
+</div>

@@ -1,11 +1,11 @@
 <div data-page-type="index">
 
 	<div class="main_top">
-        <h1>{{seo.h1}}</h1>
-        <div class="main_top_desc">
-            {{seo.text_top | raw}}
-        </div>                    
-    </div>
+		<h1>{{seo.h1}}</h1>
+		<div class="main_top_desc">
+			{{seo.text_top | raw}}
+		</div>
+	</div>
 
 	<div class="content_block">
 		<div class="title">
@@ -21,7 +21,7 @@
 		<div class="filter_mobile_button _button" data-filter-open>Показать фильтр</div>
 	</div>
 
-	<div class="map_container">
+	<div class="map_container _lazy">
 		<div class="map_placeholder" data-show-map>
 			<div class="map_placeholder_show">
 				<img src="/img/svadbanaprirode/map_icon.svg"/>
@@ -29,20 +29,20 @@
 			</div>
 		</div>
 		<div class="map"></div>
-	</div>	
+	</div>
 
-	{% for widget in widgets %}
+	{% for widget in widgets if (app.params.subdomen is empty and widget.slice.alias != 'za-gorodom') or (app.params.subdomen is not empty and widget.slice.alias != 'v-podmoskovie')  %}
 		<div data-widget-wrapper>
 			<div class="listing_widget_header">
-				<h3 class="listing_widget_title">{{widget.title}}</h3>
-				<p class="listing_widget_subtitle">{{widget.subtitle}}</p>
+				<h3 class="listing_widget_title">{{widget.title | replace({"**city_dec**" : city_dec}) | replace({"**city_rod**" : city_rod}) | replace({"**city_name**" : city})}}</h3>
+				<p class="listing_widget_subtitle">{{widget.subtitle | replace({"**city_dec**" : city_dec}) | replace({"**city_rod**" : city_rod}) | replace({"**city_name**" : city}) }}</p>
 			</div>
 			<div class="items_list_listing swiper-container" data-listing-wrapper>
 				<div class="items_list swiper-wrapper" data-listing-list>
-					{{ this.render('//components/generic/listing.twig', {'items':widget.items, 'img_alt': widget.img_alt}) | raw }}
-					<a href="/{{ app.params.subdomen }}catalog/{{widget.slice.alias}}" class="item listing_widget_link swiper-slide">
+					{{ this.render('//components/generic/listing.twig', {'items':widget.items, 'img_alt': widget.img_alt, 'rests_properties': rests_properties}) | raw }}
+					<a href="/{{ app.params.subdomen }}catalog/{{widget.slice.alias}}/" class="item listing_widget_link swiper-slide">
 						<div class="listing_widget_link_img"></div>
-						<div class="listing_widget_link_text">{{widget.link_text }}</div>
+						<div class="listing_widget_link_text">{{widget.link_text | replace({"**city_dec**" : city_dec}) | replace({"**city_rod**" : city_rod}) | replace({"**city_name**" : city}) }}</div>
 						<div class="listing_widget_link_arrow"></div>
 					</a>
 				</div>
@@ -50,7 +50,7 @@
 					<div class="listing_widget_arrow _prev"></div>
 					<div class="listing_widget_pagination"></div>
 					<div class="listing_widget_arrow _next"></div>
-				</div>					
+				</div>
 			</div>
 
 			<a href="/{{ app.params.subdomen }}catalog/{{widget.slice.alias}}/" class="main_widget_link _button">
@@ -59,7 +59,7 @@
 
 			<div class="listing_widget_footer">
 				<div class="seo_text" data-seo-text>
-					{{widget.text | raw }}
+					{{widget.text | replace({"**city_dec**" : city_dec}) | replace({"**city_rod**" : city_rod}) | replace({"**city_name**" : city}) | raw }}
 					<div class="seo_text_control" data-seo-control>
 						<p class="_link">Показать полностью</p>
 					</div>
@@ -69,7 +69,7 @@
 	{% endfor %}
 
 	<div class="content_block">
-		{{ this.render('//components/generic/form.twig') | raw }}
+		{{ this.render('//components/generic/form.twig', {'type' : 'main-footer'}) | raw }}
 	</div>
 
 </div>

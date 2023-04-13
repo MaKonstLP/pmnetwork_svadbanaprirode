@@ -12,6 +12,7 @@ use common\models\RestaurantsSpecial;
 use common\models\RestaurantsExtra;
 use common\models\RestaurantsLocation;
 use common\models\ImagesModule;
+use common\models\DistrictGlobal;
 use common\components\AsyncRenewImages;
 
 class ElasticItems extends \yii\elasticsearch\ActiveRecord
@@ -26,6 +27,7 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
             'restaurant_min_capacity',
             'restaurant_max_capacity',
             'restaurant_district',
+            'restaurant_region',
             'restaurant_parent_district',
             'restaurant_alcohol',
             'restaurant_firework',
@@ -38,8 +40,10 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
             'restaurant_cuisine',
             'restaurant_parking',
             'restaurant_extra_services',
+            'restaurant_actual_extra_services',
             'restaurant_payment',
             'restaurant_special',
+            'restaurant_actual_special',
             'restaurant_phone',
             'restaurant_location',
             'restaurant_commission',
@@ -56,7 +60,10 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
             'type',
             'city_id',
             'rent_only',
+            'rent_room_only',
             'banquet_price',
+            'banquet_price_min',
+            'banquet_price_person',
             'bright_room',
             'separate_entrance',
             'type_name',
@@ -68,6 +75,9 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
             'description',
             'outside_registration',
             'restaurant_rev_ya',
+            'payment_model',
+            'own_fruits',
+            'own_ba_drinks',
         ];
     }
 
@@ -98,7 +108,10 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
                     'restaurant_firework'              => ['type' => 'integer'],
                     'restaurant_city_id'               => ['type' => 'integer'],
                     'restaurant_name'                  => ['type' => 'text'],
+                    'own_fruits'                       => ['type' => 'text'],
+                    'own_ba_drinks'                    => ['type' => 'text'],
                     'restaurant_address'               => ['type' => 'text'],
+                    'restaurant_region'                => ['type' => 'text'],
                     'restaurant_cover_url'             => ['type' => 'text'],
                     'restaurant_latitude'              => ['type' => 'text'],
                     'restaurant_longitude'             => ['type' => 'text'],
@@ -106,8 +119,10 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
                     'restaurant_cuisine'               => ['type' => 'text'],
                     'restaurant_parking'               => ['type' => 'text'],
                     'restaurant_extra_services'        => ['type' => 'text'],
+                    'restaurant_actual_extra_services'        => ['type' => 'text'],
                     'restaurant_payment'               => ['type' => 'text'],
                     'restaurant_special'               => ['type' => 'text'],
+                    'restaurant_actual_special'               => ['type' => 'text'],
                     'restaurant_phone'                 => ['type' => 'text'],
                     'restaurant_location'              => ['type' => 'nested', 'properties' =>[
                         'id'                                => ['type' => 'integer'],
@@ -127,11 +142,15 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
                     'capacity'                         => ['type' => 'integer'],
                     'type'                             => ['type' => 'integer'],
                     'rent_only'                        => ['type' => 'integer'],
+                    'rent_room_only'                   => ['type' => 'integer'],
                     'banquet_price'                    => ['type' => 'integer'],
+                    'banquet_price_min'                => ['type' => 'integer'],
+                    'banquet_price_person'             => ['type' => 'integer'],
                     'bright_room'                      => ['type' => 'integer'],
                     'city_id'                          => ['type' => 'integer'],
                     'separate_entrance'                => ['type' => 'integer'],
                     'outside_registration'             => ['type' => 'integer'],
+                    'payment_model'                    => ['type' => 'integer'],
                     'type_name'                        => ['type' => 'text'],
                     'name'                             => ['type' => 'text'],
                     'features'                         => ['type' => 'text'],
@@ -234,6 +253,13 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
             ->all();
         $restaurants_location = ArrayHelper::index($restaurants_location, 'value');
 
+        $restaurants_region = DistrictGlobal::find()
+            ->limit(100000)
+            ->asArray()
+            ->all();
+        $restaurants_region = ArrayHelper::index($restaurants_region, 'id');
+
+
         $restaurants = Restaurants::find()
             ->with('rooms')
             ->with('imagesext')
@@ -261,7 +287,7 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
 
         foreach ($restaurants as $restaurant) {
             foreach ($restaurant->rooms as $room) {
-                $res = self::addRecord($room, $restaurant, $restaurants_types, $restaurants_spec, $restaurants_specials ,$restaurants_extra, $restaurants_location, $images_module, $rooms_unique_id, $params);
+                $res = self::addRecord($room, $restaurant, $restaurants_types, $restaurants_spec, $restaurants_specials ,$restaurants_extra, $restaurants_location, $restaurants_region, $images_module, $rooms_unique_id, $params);
             }            
         }
         echo 'Обновление индекса '. self::index().' '. self::type() .' завершено<br>';
@@ -284,7 +310,7 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
         echo 'Обновление индекса '. self::index().' '. self::type() .' завершено<br>';
     }
 
-    public static function addRecord($room, $restaurant, $restaurants_types, $restaurants_spec, $restaurants_specials ,$restaurants_extra, $restaurants_location, $images_module, $rooms_unique_id, $params){
+    public static function addRecord($room, $restaurant, $restaurants_types, $restaurants_spec, $restaurants_specials ,$restaurants_extra, $restaurants_location, $restaurants_region, $images_module, $rooms_unique_id, $params){
         if(!$restaurant->top){
             return 'Не абонент';
         }
@@ -322,9 +348,8 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
         $record->restaurant_id = $restaurant->id;
         $record->restaurant_gorko_id = $restaurant->gorko_id;
         $record->restaurant_price = $restaurant->price;
-        $record->restaurant_min_capacity = $restaurant->min_capacity;
-        $record->restaurant_max_capacity = $restaurant->max_capacity;
         $record->restaurant_district = $restaurant->district;
+        $record->restaurant_region = !empty($restaurants_region[$restaurant->district]['name_short']) ? $restaurants_region[$restaurant->district]['name_short'] : '';
         $record->restaurant_parent_district = $restaurant->parent_district;
         $record->restaurant_alcohol = $restaurant->alcohol;
         $record->restaurant_firework = $restaurant->firework;
@@ -361,6 +386,50 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
         }
         $record->restaurant_rev_ya = $reviews;
 
+
+
+//        $rests_properties = [];
+//
+//        foreach ($items->items as $key => $item) {
+//            $rests_properties[$item['id']][] =  explode(', ', $items->items[$key]['restaurant_cuisine']);
+//            $rests_properties[$item['id']][] =  explode(', ', $items->items[$key]['restaurant_extra_services']);
+//            $rests_properties[$item['id']][] =  explode(', ', $items->items[$key]['restaurant_special']);
+//        }
+
+        $extra = explode(', ', $restaurant->extra_services);
+        $special = explode(', ', $restaurant->special);
+
+//        $temp_arr = [];
+//        foreach ($extra as $key => $item) {
+//            if ($item == 'Фейерверк') {
+//                $temp_arr[] = $item;
+//                break;
+//          }
+//        }
+//        $extra = implode(', ', $temp_arr);
+//        $record->restaurant_actual_extra_services = $extra;
+
+        $own_fruits = '';
+        $own_ba_drinks = '';
+        $temp_arr = [];
+        foreach ($special as $key => $item) {
+            if ($item == 'Выездная регистрация' or $item == 'Велком зона' or $item == 'Сцена' or $item == 'Музыкальное оборудование') {
+                $temp_arr[] = $item;
+            }
+
+            if ($item == 'Можно свои фрукты') {
+                $own_fruits = $item;
+            }
+
+            if ($item == 'Можно свои б/а напитки') {
+                $own_ba_drinks = $item;
+            }
+        }
+        $special = implode(', ', $temp_arr);
+        $record->restaurant_actual_special = $special;
+        $record->own_fruits = $own_fruits;
+        $record->own_ba_drinks = $own_ba_drinks;
+
         //Тип локации
         $restaurant_location = [];
         $restaurant_location_rest = explode(',', $restaurant->location);
@@ -392,16 +461,23 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
         $record->restaurant_id = $room->restaurant_id;
         $record->price = $room->price;
         $record->capacity_reception = $room->capacity_reception;
+        $record->restaurant_min_capacity = $room->capacity_min;
+        $record->restaurant_max_capacity = $room->capacity;
         $record->capacity = $room->capacity;
         $record->type = $room->type;
         $record->rent_only = $room->rent_only;
+        $record->rent_room_only = $room->rent_room_only;
         $record->banquet_price = $room->banquet_price;
+        $record->banquet_price_min = $room->banquet_price_min;
+        $record->banquet_price_person = $room->banquet_price_person;
         $record->bright_room = $room->bright_room;
         $record->separate_entrance = $room->separate_entrance;
         $record->type_name = $room->type_name;
         $record->name = $room->name;
         $record->features = $room->features;
         $record->cover_url = $room->cover_url;
+
+        $record->payment_model = $room->payment_model;
 
         //Уникальные св-ва для залов в модуле
         if(isset($rooms_unique_id[$room->gorko_id]) && $rooms_unique_id[$room->gorko_id]['unique_id']){

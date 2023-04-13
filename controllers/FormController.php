@@ -24,6 +24,8 @@ class FormController extends Controller
             $payload['name'] = $_POST['name'];
         if(isset($_POST['phone']))
             $payload['phone'] = $_POST['phone'];
+        if(isset($_POST['connection']))
+            $payload['connection'] = $_POST['connection'];
         if(isset($_POST['count']))
             $payload['guests'] = intval($_POST['count']);
         if(isset($_POST['date']))

@@ -1,27 +1,56 @@
 <div class="form_wrapper">
+
+	<span id="form_item" class="form_item_anchor"></span>
+
+	{% if type == 'item' or type == 'favorites' %}
+		<img class="flower_corner top_left" src="/img/flower_corner.svg" alt="">
+		<img class="flower_corner top_right" src="/img/flower_corner.svg" alt="">
+		<img class="flower_corner bottom_right"src="/img/flower_corner.svg" alt="">
+		<img class="flower_corner bottom_left" src="/img/flower_corner.svg" alt="">
+	{% endif %}
+
 	<div class="form_close" data-close-popup>
 
 	</div>
 
 	<div class="form_main">
-
 		{% if type != 'item' %}
+			{% if type == 'favorites' %}
+				<div class="form_title">
+					<p class="form_title_main">Узнать наличие зала из <span>избранного</span> на дату и стоимость свадьбы</p>
+					<div class="form_title_desc">
+						<p>Оставьте заявку, и менеджер нашей банкетной службы:</p>
+						<ul>
+							<li>— Проверит наличие зала на вашу дату</li>
+							<li>— Уточнит условие бронирования и актуальные цены на ваше количество гостей и день недели</li>
+							<li>— Поможет определиться с лучшим залом из выбранных</li>
+							<li>— Предложит альтернативу, подходящую по вашим параметрам</li>
+						</ul>
+					</div>
+				</div>
 
-		<div class="form_title">
-			<p class="form_title_main">Помочь с выбором зала?</p>
-			<p class="form_title_desc">Это бесплатно!</p>
-		</div>
+			{% else %}
+				{% if type == 'main' %}
+					<div class="form_title">
+						<p class="form_title_main">Хотите свадьбу в этом зале?</p>
+					</div>
+				{% else %}
+					<div class="form_title">
+						<p class="form_title_main">Помочь с выбором зала?</p>
+						<p class="form_title_desc">Это бесплатно!</p>
+					</div>
+				{% endif %}
+			{% endif %}
 
-		{% else %}
-
-		<div class="form_title">
-			<p class="form_title_main">Хотите свадьбу в этом зале?</p>
-		</div>
-		
+		{% elseif type == 'item' %}
+			<div class="form_title">
+				<p class="form_title_main">Хотите свадьбу в этом зале?</p>
+			</div>
 		{% endif %}
 		
 
-		<form class="form_block" action="/ajax/form/" data-type={% if type != 'item' %}"main"{% else %}"item"{% endif %}>
+{#		<form class="form_block" action="/ajax/form/" data-type={% if type != 'item' %}"main"{% else %}"item"{% endif %}>#}
+		<form class="form_block" action="/ajax/form/" data-type={{ type }}>
 
 			<div class="form_inputs">
 
@@ -42,7 +71,7 @@
 					<input type="text" name="count" inputmode="numeric"/>
 				</div>
 
-				{% if type != 'item' %}
+				{% if type != 'item' and type != 'main' %}
 
 				<div class="form_checkboxes">
 					<div class="checkbox_title">Зал должен быть:</div>
@@ -72,6 +101,29 @@
 					<input type="hidden" name="room_name" value="{{room_name}}"/>
 
 				{% endif %}
+
+				<div class="form_connection">
+					<p>Как с вами связаться:</p>
+					<input type="hidden" class="hidden" name="connection" value="Звонок">
+					<div class="form_media">
+						<button class="socials phone active_form_btn" data-type="phone-connetcion" data-value="Звонок">
+							<img src="/img/phone.svg" alt="">
+							<span>Звонок</span>
+						</button>
+						<button class="socials whatsapp" data-type="whatsapp-connetcion" data-value="WhatsApp">
+							<img src="/img/whatsapp.svg" alt="">
+							<span>WhatsApp</span>
+						</button>
+						<button class="socials viber" data-type="viber-connetcion" data-value="Viber">
+							<img src="/img/viber.svg" alt="">
+							<span>Viber</span>
+						</button>
+						<button class="socials telegram" data-type="telegram-connetcion" data-value="Telegram">
+							<img src="/img/telegram.svg" alt="">
+							<span>Telegram</span>
+						</button>
+					</div>
+				</div>
 
 			</div>
 
