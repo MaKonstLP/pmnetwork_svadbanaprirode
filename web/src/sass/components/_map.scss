@@ -310,7 +310,7 @@
 
 	.balloon_link{
 		margin: auto;
-
+		margin-top: 8px;
 
 		.balloon_link_button{
 			padding: 6px 20px;
@@ -324,9 +324,9 @@
 			}
 		}
 
-		@media (max-width: 540px) {
-			margin-top: 8px;
-		}
+		//@media (max-width: 540px) {
+		//
+		//}
 
 	}
 
