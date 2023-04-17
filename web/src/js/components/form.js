@@ -91,6 +91,9 @@ export default class Form {
 
 		this.$formWrap.find('[data-success] [data-success-close]').on('click', (e) => {
 			this.$formWrap.find('[data-success]').removeClass('_active');
+
+			$('.popup_wrap._active').removeClass('_active');
+			$('body').removeClass('_overflow');
 		});
 
 		this.$form.find('[data-form-privacy]').on('click', (e) => {

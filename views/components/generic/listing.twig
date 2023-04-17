@@ -157,7 +157,7 @@
                     {% if item.restaurant_own_alcohol != 'Нельзя свой алкоголь' %}
                         <div class="item_meta_item">
                             <img src="/img/check_approove.svg" alt="">
-                            <span class="item_meta_label">Алкоголь: </span><span class="item_meta_text">за доп. плату</span>
+                            <span class="item_meta_label">Алкоголь </span><span class="item_meta_text">за доп. плату</span>
                         </div>
                     {% endif %}
 
@@ -171,7 +171,7 @@
                     {% if item.restaurant_parking %}
                         <div class="item_meta_item">
                             <img src="/img/check_approove.svg" alt="">
-                            <span class="item_meta_label">Парковка: </span><span class="item_meta_text">на {{item.restaurant_parking}} машин</span>
+                            <span class="item_meta_label">Парковка </span><span class="item_meta_text">на {{item.restaurant_parking}} машин</span>
                         </div>
                     {% endif %}
 
@@ -221,12 +221,12 @@
             </div>
             <div class="item_info_bottom">
                 <a href="/{{ app.params.subdomen }}catalog/{{item.unique_id}}/#form_item" class="bottom_call" data-open-popup-form data-type="main">
-                    <button>
+                    <button class="bottom_call">
                         <svg class="item_bottom_icon book_icon" width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M16.1061 1.37078C14.6713 0.500834 12.9879 0 11.1875 0C5.94079 0 1.6875 4.25329 1.6875 9.5C1.6875 14.7467 5.94079 19 11.1875 19C16.4342 19 20.6875 14.7467 20.6875 9.5C20.6875 9.07537 20.6596 8.65724 20.6056 8.24735L18.6113 10.5732C18.0907 14.2069 14.9653 17 11.1875 17C7.04536 17 3.6875 13.6421 3.6875 9.5C3.6875 5.35786 7.04536 2 11.1875 2C12.4896 2 13.7143 2.33184 14.7815 2.91557L16.1061 1.37078Z" fill="white"/>
                             <path d="M19.5763 3.33301L11.6483 12.2219L7.35413 8.06825" stroke="white" stroke-width="2" stroke-linecap="round"/>
                         </svg>
-                        <span class="item_book item_btn_text item_btn_book">Забронировать</span>
+                        <span class="item_book item_btn_text item_btn_book">Оставить заявку</span>
                         <span class="item_book span_mobile">Заказать</span>
                     </button>
                 </a>

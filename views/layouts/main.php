@@ -251,6 +251,7 @@ frontend\modules\svadbanaprirode\assets\AppAsset::register($this);
     </div>
 
 <?php $this->endBody() ?>
+
 <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700&display=swap&subset=cyrillic" rel="stylesheet">
 <!-- Yandex.Metrika counter -->
 <noscript><div><img src="https://mc.yandex.ru/watch/64598434" style="position:absolute; left:-9999px;" alt="" /></div></noscript>

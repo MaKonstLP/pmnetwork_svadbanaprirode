@@ -7,8 +7,9 @@ export default class Favorites {
         let self = this;
         this.subdomen = $('[data-city-block]');
         this.swiper_objects = [];
-        self.swiperItemInit();
+
         self.swiperInit();
+        self.swiperItemInit();
 
         let fixed_swiper_height = $('[data-swiper="favorites"]').outerHeight();
         $('.compare-wrap').css('height', $('.compare-wrap').height());
@@ -152,9 +153,9 @@ export default class Favorites {
                 },
             });
 
-            window.addEventListener('load', function() {
-                item_swiper.update();
-            });
+            // window.addEventListener('load', function() {
+            //     item_swiper.update();
+            // });
         });
 
     }
@@ -175,7 +176,13 @@ export default class Favorites {
             // autoHeight: true,
             slidesPerView: 4,
             spaceBetween: 20,
+            watchSlidesProgress: true,
+            watchSlidesVisibility: true,
+            // loop: false,
+            // freeMode: false,
+            // autoResize: true,
             allowTouchMove: countSlides < 5 ? false : true,
+            // hashNavigation: true,
             navigation: {
                 nextEl: ".favorites-button-next",
                 prevEl: ".favorites-button-prev",
@@ -183,7 +190,7 @@ export default class Favorites {
             breakpoints: {
                 540: {
                     slidesPerView: 1,
-                    allowTouchMove: countSlides < 2 ? false : true
+                    allowTouchMove: countSlides < 2 ? false : true,
                 },
                 768: {
                     slidesPerView: 2,

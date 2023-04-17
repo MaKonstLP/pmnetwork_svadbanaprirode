@@ -44,6 +44,8 @@
     "js-cookie": "2.1.4",
     "lightbox2": "2.11.1",
     "slick-carousel": "^1.8.1",
-    "sortablejs": "^1.10.0"
+    "sortablejs": "^1.10.0",
+    "swiper6": "npm:swiper@^6.4.8",
+    "swiper9": "npm:swiper@^9.2.1"
   }
 }

@@ -24,17 +24,23 @@ class ItemController extends Controller
 //	    echo $id;
 //	    die();
 
-		$elastic_model = new ElasticItems;
-		$item = $elastic_model::find()
-			->query(['bool' => ['must' => ['match' => ['unique_id' => $id]]]])
-			->limit(1)
-			->search();
+        $elastic_model = new ElasticItems;
+        $item = $elastic_model::find()
+            ->query([
+                'bool' => [
+                    'must' => [
+                        ['match' => ['unique_id' => $id]],
+                        ['match' => ['city_id' =>\Yii::$app->params['subdomen_id']]],
+                    ]
+                ]
+            ])
+            ->limit(1)
+            ->search();
 
-		if (!isset($item['hits']['hits'][0]))
-			throw new \yii\web\NotFoundHttpException();
+        if (empty($item) or !isset($item['hits']['hits'][0]))
+            throw new \yii\web\NotFoundHttpException();
 
-		$item = $item['hits']['hits'][0];
-
+        $item = $item['hits']['hits'][0];
 
 		$seo = new Seo('item', 1, 0, $item);
 		$seo = $seo->seo;

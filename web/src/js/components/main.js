@@ -86,6 +86,13 @@ export default class Main {
             $('.header_menu_mobile_under').addClass('hidden');
             $('body').removeClass('overflow_hidden');
         });
+
+        $(window).scroll(function () {
+            $('.header_menu').removeClass('_active');
+            $('.header_burger').removeClass('_active');
+            $('header').removeClass('_active');
+        })
+
         var fired = false;
 
         window.addEventListener('click', () => {

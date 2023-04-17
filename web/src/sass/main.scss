@@ -706,6 +706,21 @@ h3{
         display: none;
     }
 
+    .bottom_call {
+            color: #FFFFFF;
+            background-color: $clrButton;
+            border-radius: 5px;
+
+            &:hover {
+                transition: all 0.3s ease;
+                background-color: $clrGreen;
+
+                @include for-mobile {
+                    background-color: $clrButton;
+                }
+            }
+    }
+
     button {
         display: flex;
         align-items: center;
@@ -725,10 +740,14 @@ h3{
             color: #FFFFFF;
             background-color: $clrButton;
 
-            &:hover {
-                transition: all 0.3s ease;
-                background-color: $clrGreen;
-            }
+            //&:hover {
+            //    transition: all 0.3s ease;
+            //    background-color: $clrGreen;
+            //
+            //    @include for-mobile {
+            //        background-color: $clrButton;
+            //    }
+            //}
         }
 
         &:last-child  {

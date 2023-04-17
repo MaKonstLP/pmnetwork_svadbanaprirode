@@ -10,6 +10,10 @@
 		width: 100%;
 		height: 100%;
 	}
+
+	.ymaps-2-1-79-b-cluster-tabs__section {
+		//overflow-x: scroll;
+	}
 }
 
 .map_container{
@@ -283,6 +287,24 @@
 				color: #666666;
 				padding-top: 5px;
 			}
+
+			@media (max-width: 540px) {
+				padding-left: 0px;
+				padding-right: 8px;
+				
+				.balloon_header {
+					text-align: center;
+				}
+
+				.balloon_address {
+					text-align: center;
+				}
+			}
+		}
+
+		@media (max-width: 540px) {
+			flex-direction: column;
+			align-items: center;
 		}
 	}
 
@@ -301,6 +323,15 @@
 				line-height: 22px;
 			}
 		}
+
+		@media (max-width: 540px) {
+			margin-top: 8px;
+		}
+
+	}
+
+	@media (max-width: 540px) {
+		width: unset;
 	}
 }
 

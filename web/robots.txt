@@ -8,6 +8,7 @@ Disallow: *na-kryshe=*
 Disallow: *?keyword=*
 Disallow: *?yhid=*
 Disallow: *?from=*
+Disallow: */favorites/
 
 Sitemap:  https://svadbanaprirode.com/sitemap/
 Sitemap:  https://svadbanaprirode.com/samara/sitemap/
