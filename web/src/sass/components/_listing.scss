@@ -234,14 +234,15 @@
                     //grid-template-columns: 1fr 1fr;
 
                     .item_meta_item{
-                        margin: 10px 0px 0px;
+                        margin: 8px 0px 0px;
                         min-width: 202px;
                         font-weight: 500;
                         font-size: 12px;
                         line-height: 15px;
 
                         img {
-                            margin-bottom: -2px;
+                            margin-bottom: -3px;
+                            width: 14px;
                         }
 
                         //&:nth-child(odd) {
