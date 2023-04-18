@@ -1,3 +1,11 @@
+[data-widget-wrapper] {
+	.items_list_listing .items_list {
+		display: flex;
+		justify-content: unset !important;
+		flex-wrap: unset;
+	}
+}
+
 .listing_widget_header{
 	width: 940px;
 	margin: 80px auto 0px;
@@ -119,13 +127,13 @@
 	}
 
 	.listing_widget_controll{
-		display: none;
+		display: flex;
 		justify-content: center;
 		align-items: center;
 
-		@include for-lowdesc{
-			display: flex;
-		}
+		//@include for-lowdesc{
+		//	display: flex;
+		//}
 
 		.listing_widget_arrow{
 			width: 32px;

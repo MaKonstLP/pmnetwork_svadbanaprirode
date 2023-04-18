@@ -1,41 +1,42 @@
 'use strict';
 import Swiper from 'swiper';
 
-export default class Widget{
-	constructor(){
+export default class Widget {
+	constructor() {
 		let self = this;
 		this.swiperArr = [];
 
-		if($(window).width() <= 1650){
-			$('[data-widget-wrapper]').each(function(){
+		// if ($(window).width() <= 16500) {
+			$('[data-widget-wrapper]').each(function() {
 				self.initSwiper($(this).find('[data-listing-wrapper]'));
 			});
-		}
+		// }
 
-		$(window).on('resize', function(){
+		$(window).on('resize', function() {
 			console.log(self.swiperArr.length);
-			if($(window).width() <= 1650){
-				if(self.swiperArr.length == 0){
-					$('[data-widget-wrapper]').each(function(){
+			// if($(window).width() <= 1650) {
+				if(self.swiperArr.length == 0) {
+					$('[data-widget-wrapper]').each(function() {
 						self.initSwiper($(this).find('[data-listing-wrapper]'));
 					});
 				}					
-			}
-			else{
-				$.each(self.swiperArr, function(){
-					this.destroy(true, true);
-				});
-				self.swiperArr = [];
-			}
+			// } else {
+			// 	$.each(self.swiperArr, function() {
+			// 		this.destroy(true, true);
+			// 	});
+			// 	self.swiperArr = [];
+			// }
 		});
 	}
 
-	initSwiper($container){
+	initSwiper($container) {
 		let swiper = new Swiper($container, {
-	        slidesPerView: 3,
+	        slidesPerView: 4,
 	        spaceBetween: 30,
 			observer: true,
 			observeParents: true,
+			centerInsufficientSlides: true,
+			watchOverflow: true,
 	        navigation: {
               nextEl: '.listing_widget_arrow._next',
               prevEl: '.listing_widget_arrow._prev',
@@ -46,7 +47,7 @@ export default class Widget{
             },
 	        breakpoints: {
 	        	1200:{
-	        		slidesPerView: 2,
+	        		slidesPerView: 3,
 					spaceBetween: 30,
 	        	},
 	        	768:{
