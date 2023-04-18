@@ -6,26 +6,26 @@ export default class Widget {
 		let self = this;
 		this.swiperArr = [];
 
-		// if ($(window).width() <= 16500) {
+		if ($(window).width() <= 1650) {
 			$('[data-widget-wrapper]').each(function() {
 				self.initSwiper($(this).find('[data-listing-wrapper]'));
 			});
-		// }
+		}
 
 		$(window).on('resize', function() {
 			console.log(self.swiperArr.length);
-			// if($(window).width() <= 1650) {
+			if($(window).width() <= 1650) {
 				if(self.swiperArr.length == 0) {
 					$('[data-widget-wrapper]').each(function() {
 						self.initSwiper($(this).find('[data-listing-wrapper]'));
 					});
 				}					
-			// } else {
-			// 	$.each(self.swiperArr, function() {
-			// 		this.destroy(true, true);
-			// 	});
-			// 	self.swiperArr = [];
-			// }
+			} else {
+				$.each(self.swiperArr, function() {
+					this.destroy(true, true);
+				});
+				self.swiperArr = [];
+			}
 		});
 	}
 

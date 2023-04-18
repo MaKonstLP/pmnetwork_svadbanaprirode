@@ -1,12 +1,20 @@
-[data-widget-wrapper] {
-	.items_list_listing .items_list {
-		display: flex;
-		justify-content: unset !important;
-		flex-wrap: unset;
-	}
+[data-page-type="item"] {
+	[data-widget-wrapper] {
+		.items_list_listing .items_list {
+			display: flex;
+			justify-content: unset !important;
+			flex-wrap: unset;
+		}
 
-	.item_arenda {
-		flex-wrap: wrap;
+		.item_arenda {
+			flex-wrap: wrap;
+		}
+
+		.listing_widget_controll{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
 	}
 }
 
@@ -131,13 +139,13 @@
 	}
 
 	.listing_widget_controll{
-		display: flex;
+		display: none;
 		justify-content: center;
 		align-items: center;
 
-		//@include for-lowdesc{
-		//	display: flex;
-		//}
+		@include for-lowdesc{
+			display: flex;
+		}
 
 		.listing_widget_arrow{
 			width: 32px;
