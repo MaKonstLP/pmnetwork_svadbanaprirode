@@ -768,7 +768,7 @@ h3{
             min-width: unset;
         }
 
-        @media (max-width: 480px) {
+        @media (max-width: 767px) {
 
             .item_btn_text:not(.item_btn_book) {
                 display: none;
@@ -837,7 +837,7 @@ h3{
         justify-content: space-between;
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: 767px) {
 
         a {
             display: inline-block;
@@ -918,7 +918,7 @@ h3{
 
     @media (max-width: 324px) {
         justify-content: space-between;
-        flex-wrap: nowrap;
+        //flex-wrap: nowrap;
         gap: 7px 7px;
     }
 }

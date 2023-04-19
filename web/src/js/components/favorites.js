@@ -189,7 +189,7 @@ export default class Favorites {
             },
             breakpoints: {
                 540: {
-                    slidesPerView: 1,
+                    slidesPerView: countSlides < 2 ? 1 : 1.2,
                     allowTouchMove: countSlides < 2 ? false : true,
                 },
                 768: {

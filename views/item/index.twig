@@ -384,9 +384,13 @@
         </div>
     {% endif %}
 
-    {{ this.render('//components/generic/other_widjet.twig', {'items':other_rooms, 'restaurant_name':item.restaurant_name, 'room_name':item.name}) | raw }}
+    <div data-item-widget>
+        {{ this.render('//components/generic/other_widjet.twig', {'items':other_rooms, 'restaurant_name':item.restaurant_name, 'room_name':item.name}) | raw }}
+    </div>
 
-    {{ this.render('//components/generic/similar_rooms.twig', {'items':similar_rooms}) | raw }}
+    <div data-item-widget>
+        {{ this.render('//components/generic/similar_rooms.twig', {'items':similar_rooms}) | raw }}
+    </div>
 
     <div class="item_mobile_btns hidden">
         <div class="item_info_bottom">

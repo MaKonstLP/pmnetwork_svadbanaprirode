@@ -171,6 +171,8 @@
                     gap: 8px 8px;
                     margin-top: 16px;
 
+                    flex-wrap: wrap;
+
                     & > div {
                         border: 1px solid $clrLightGrey;
                         border-radius: 5px;
@@ -251,7 +253,7 @@
 
                         @include for-mobile{
                             padding: 0px;
-                            width: 100%;
+                            //width: 100%;
                         }
 
                         .item_meta_label{

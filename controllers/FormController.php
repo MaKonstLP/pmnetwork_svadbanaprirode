@@ -33,7 +33,10 @@ class FormController extends Controller
         if(isset($_POST['venue_id']))
             $payload['venue_id'] = $_POST['venue_id'];
         $payload['details'] = '';
-        if(isset($_POST['water']) || isset($_POST['tent']) || isset($_POST['country']) || isset($_POST['incity'])){
+        if(isset($_POST['water']) || isset($_POST['tent']) || isset($_POST['country']) || isset($_POST['incity']) || isset($_POST['connection']) ){
+            $payload['details'] .= 'Клиент просит связаться с ним через: ';
+            if(isset($_POST['connection']))
+                $payload['details'] .= $_POST['connection'];
             $payload['details'] .= 'Клиент просит подобрать зал по условиям: ';
             if(isset($_POST['water']))
                 $payload['details'] .= ' у воды; ';
@@ -47,10 +50,17 @@ class FormController extends Controller
         if(isset($_POST['type']) && $_POST['type'] == 'item')
             $payload['details'] .= ' Клиент сделал заявку на конкретный зал - '.$_POST['url'];
         if(isset($_POST['url']))
-            $payload['details'] .= 'Заявка отправлена с '.$_POST['url'];
+            $payload['details'] .= ' Заявка отправлена с '.$_POST['url'];
 
         $payload['event_type'] = "Wedding";
-        $payload['city_id'] = 4400;
+//        $payload['city_id'] = 4400;
+        $payload['city_id'] = Yii::$app->params['subdomen_id'];
+
+        $this->SendTg();
+
+        echo '<pre>';
+        print_r(Yii::$app->params['subdomen_id']);
+        die();
 
         $resp = GorkoLeadApi::send_lead('v.gorko.ru', 'svadbanaprirode', $payload);
 
@@ -114,5 +124,69 @@ class FormController extends Controller
 
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         return $resp;
+    }
+
+    public function SendTg() {
+
+        $chat_id = '-975156926';
+        $token = '5991590602:AAF_0pOHAL735TtwT0m0vzcmfxLv73pUCUE';
+
+        $payload = [];
+
+        if(isset($_POST['name']))
+            $payload['name'] = $_POST['name'];
+        if(isset($_POST['phone'])) {
+            $phone =  preg_replace('/[^0-9]/', '', $_POST['phone']);
+            $payload['phone'] = '<a href="tel:+'.$phone.'">'.$phone.'</a>';
+        }
+        if(isset($_POST['connection']))
+            $payload['connection'] = $_POST['connection'];
+        if(isset($_POST['count']))
+            $payload['guests'] = intval($_POST['count']);
+        if(isset($_POST['date']))
+            $payload['date'] = $_POST['date'];
+        if(isset($_POST['venue_id']))
+            $payload['venue_id'] = $_POST['venue_id'];
+        $payload['details'] = '';
+        if(isset($_POST['water']) || isset($_POST['tent']) || isset($_POST['country']) || isset($_POST['incity']) || isset($_POST['connection']) ){
+            $payload['details'] .= 'Клиент просит связаться с ним через: ';
+            if(isset($_POST['connection']))
+                $payload['details'] .= $_POST['connection']."%0A";
+            $payload['details'] .= 'Клиент просит подобрать зал по условиям: ';
+            if(isset($_POST['water']))
+                $payload['details'] .= ' у воды; ';
+            if(isset($_POST['tent']))
+                $payload['details'] .= ' с шатром; ';
+            if(isset($_POST['country']))
+                $payload['details'] .= ' за городом; ';
+            if(isset($_POST['incity']))
+                $payload['details'] .= ' в черте города; ';
+        }
+        if(isset($_POST['type']) && $_POST['type'] == 'item')
+            $payload['details'] .= ' Клиент сделал заявку на конкретный зал - <a href="'.$_POST['url'].'">'.$_POST['url'].'</a>';
+        if(isset($_POST['url']))
+            $payload['details'] .= ' Заявка отправлена с <a href="'.$_POST['url'].'">'.$_POST['url'].'</a>';
+
+        $payload['event_type'] = "Wedding";
+//        $payload['city_id'] = 4400;
+        $payload['city_id'] = Yii::$app->params['subdomen_id'];
+
+        $content = '';
+        foreach ($payload as $key => $item) {
+            $content.= $key . ": " . $item . "%0A";
+        }
+
+//        $content = '<a href="http://www.example.com/">inline URL</a>';
+
+        $sendToTelegram = fopen("https://api.telegram.org/bot{$token}/sendMessage?chat_id={$chat_id}&parse_mode=html&text={$content}","r");
+
+//        $telegram = new Telegram\Bot\Api($token);
+//
+//        $res = $telegram->sendMessage(
+//            $chat_id,//'chat_id'
+//            $payload,//'text'
+//            true//disable_web_page_preview,
+//
+//        );
     }
 }

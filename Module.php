@@ -55,6 +55,10 @@ class Module extends \yii\base\Module
         Yii::$app->params['subdomen_dec'] = $subdomen_model->name_dec;
         Yii::$app->params['subdomen_rod'] = $subdomen_model->name_rod;
         Yii::$app->params['subdomen_phone'] = $subdomen_model->phone;
+        
+//        echo '<pre>';
+//        print_r(Yii::$app->params['subdomen_id']);
+//        die();
 
         Yii::$app->params['menu'] = [
             ['title' => 'За городом', 'link' => 'catalog/za-gorodom', 'submenu' => []],
