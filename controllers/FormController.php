@@ -58,10 +58,6 @@ class FormController extends Controller
 
         $this->SendTg();
 
-        echo '<pre>';
-        print_r(Yii::$app->params['subdomen_id']);
-        die();
-
         $resp = GorkoLeadApi::send_lead('v.gorko.ru', 'svadbanaprirode', $payload);
 
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
@@ -175,8 +171,6 @@ class FormController extends Controller
         foreach ($payload as $key => $item) {
             $content.= $key . ": " . $item . "%0A";
         }
-
-//        $content = '<a href="http://www.example.com/">inline URL</a>';
 
         $sendToTelegram = fopen("https://api.telegram.org/bot{$token}/sendMessage?chat_id={$chat_id}&parse_mode=html&text={$content}","r");
 
