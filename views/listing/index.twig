@@ -37,7 +37,7 @@
 	<div class="items_list_listing" data-listing-wrapper>
 		<div class="items_list" data-listing-list>
 
-			{{ this.render('//components/generic/listing.twig', {'items':items, 'img_alt':seo.img_alt,  'rests_properties':rests_properties}) | raw }}
+			{{ this.render('//components/generic/listing.twig', {'items':items, 'badge_type': badge_type, 'img_alt':seo.img_alt, 'rests_properties':rests_properties}) | raw }}
 
 		</div>
 	</div>

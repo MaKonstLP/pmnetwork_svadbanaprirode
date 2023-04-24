@@ -12,7 +12,15 @@
 
         <div class="item_info">
             <div class="item_info_top">
-                <p class="item_name"><a href="/{{ app.params.subdomen }}catalog/{{item.unique_id}}/">{{item.name}}</a></p>
+                <p class="item_name">
+                    <a href="/{{ app.params.subdomen }}catalog/{{item.unique_id}}/">{{item.name}}</a>
+                    {% if badge_type['y-vody'] %}
+                        <span class="item_location">
+                            <span class="item_location_voda">{{ item.restaurant_location_voda | lower}}</span>
+                            <span class="item_location_city">{{ item.restaurant_location_city | lower}}</span>
+                        </span>
+                    {% endif %}
+                </p>
 
                 {#                {% if type != 'other' %}#}
                 <p class="item_parent_name">{{item.restaurant_name}}</p>

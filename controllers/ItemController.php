@@ -59,9 +59,7 @@ class ItemController extends Controller
         $similar_rooms = $itemsWidget->getSimilar($item, 'rooms', $elastic_model);
 
 //		echo '<pre>';
-//        echo '$item->unique_id: '.$item->unique_id;
-//        echo '<br>';
-//		print_r($other_rooms);
+//		print_r($item);
 //		die();
 
         return $this->render('index.twig', array(

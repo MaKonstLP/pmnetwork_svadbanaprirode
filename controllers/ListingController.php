@@ -111,9 +111,6 @@ class ListingController extends Controller
     public function actionListing($page, $per_page, $params_filter, $breadcrumbs, $canonical, $type = false)
     {
 
-//        echo '<pre>';
-//        print_r($type);
-//        die();
 
         $elastic_model = new ElasticItems;
         $items = new ItemsFilterElastic($params_filter, $per_page, $page, false, 'rooms', $elastic_model, false, false, false, false, false, true);
@@ -159,11 +156,14 @@ class ListingController extends Controller
             $seo['text_bottom'] = '';
         }
 
+        $badge_type['y-vody'] = !empty($params_filter['y-vody']) ? true : false;
+
         return $this->render('index.twig', array(
             'items' => $items->items,
             'filter' => $filter,
             'pagination' => $pagination,
             'seo' => $seo,
+            'badge_type' => $badge_type,
             'count' => $items->total,
 //            'rests_properties' => $rests_properties,
         ));
@@ -216,10 +216,13 @@ class ListingController extends Controller
             $text_top = '';
             $text_bottom = '';
         }
+        
+        $badge_type['y-vody'] = !empty($params['params_filter']['y-vody']) ? true : false;
 
         return  json_encode([
             'listing' => $this->renderPartial('//components/generic/listing.twig', array(
                 'items' => $items->items,
+                'badge_type' => $badge_type,
                 'img_alt' => $seo['img_alt'],
             )),
             'pagination' => $pagination,
@@ -227,6 +230,7 @@ class ListingController extends Controller
             'title' => $title,
             'text_top' => $text_top,
             'text_bottom' => $text_bottom,
+            'badge_type' => $badge_type,
             'seo_title' => $seo['title']
         ]);
     }

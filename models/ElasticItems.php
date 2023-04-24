@@ -46,6 +46,8 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
             'restaurant_actual_special',
             'restaurant_phone',
             'restaurant_location',
+            'restaurant_location_voda',
+            'restaurant_location_city',
             'restaurant_commission',
             'restaurant_rating',
             'restaurant_type',
@@ -82,7 +84,7 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
     }
 
     public static function index() {
-        return 'pmn_sp_dev_rooms';
+        return 'pmn_sp_rooms';
     }
     
     public static function type() {
@@ -126,7 +128,10 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
                     'restaurant_phone'                 => ['type' => 'text'],
                     'restaurant_location'              => ['type' => 'nested', 'properties' =>[
                         'id'                                => ['type' => 'integer'],
+                        'text'                              => ['type' => 'text'],
                     ]],
+                    'restaurant_location_voda'         => ['type' => 'text'],
+                    'restaurant_location_city'         => ['type' => 'text'],
                     'restaurant_type'              => ['type' => 'nested', 'properties' =>[
                         'id'                                => ['type' => 'integer'],
                     ]],
@@ -251,7 +256,12 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
             ->limit(100000)
             ->asArray()
             ->all();
+        
         $restaurants_location = ArrayHelper::index($restaurants_location, 'value');
+
+//        echo "<pre>";
+//        print_r($restaurants_location);
+//        die();
 
         $restaurants_region = DistrictGlobal::find()
             ->limit(100000)
@@ -433,12 +443,36 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
         //Тип локации
         $restaurant_location = [];
         $restaurant_location_rest = explode(',', $restaurant->location);
+        
         foreach ($restaurant_location_rest as $key => $value) {
-            $restaurant_location_arr = [];
-            $restaurant_location_arr['id'] = $value;
-            array_push($restaurant_location, $restaurant_location_arr);
+            if(!empty($restaurants_location[$value])){
+                $restaurant_location_arr = [];
+                $restaurant_location_arr['id'] = $value;
+                $restaurant_location_arr['text'] = $restaurants_location[$value]['text'];
+                array_push($restaurant_location, $restaurant_location_arr);
+            }
         }
         $record->restaurant_location = $restaurant_location;
+
+        $flag_voda = true;
+        $flag_city = true;
+        foreach ($restaurant_location as $key => $item) {
+            //1 - Около моря
+            //2 - Около реки
+            //7 - Около озера
+            if ($flag_voda && ($item['id'] == 1 || $item['id'] == 2 || $item['id'] == 7)) {
+                $record->restaurant_location_voda = $item['text'];
+                $flag_voda = false;
+            }
+
+            //4 - В городе
+            //5 - В центре города
+            //6 - За городом
+            if ($flag_city && ($item['id'] == 4 || $item['id'] == 5 || $item['id'] == 6)) {
+                $record->restaurant_location_city = $item['text'];
+                $flag_city = false;
+            }
+        }
 
 
         //Тип рест
