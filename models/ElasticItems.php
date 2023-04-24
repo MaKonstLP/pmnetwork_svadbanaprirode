@@ -344,7 +344,7 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
         }        
 
         $record->id  = $room->id;
-        
+
         $record->restaurant_id = $restaurant->id;
         $record->restaurant_gorko_id = $restaurant->gorko_id;
         $record->restaurant_price = $restaurant->price;

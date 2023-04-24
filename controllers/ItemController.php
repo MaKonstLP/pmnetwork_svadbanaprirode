@@ -18,8 +18,8 @@ use common\models\elastic\ItemsWidgetElastic;
 class ItemController extends Controller
 {
 
-	public function actionIndex($id)
-	{
+    public function actionIndex($id)
+    {
 //	    echo '<pre>';
 //	    echo $id;
 //	    die();
@@ -30,7 +30,7 @@ class ItemController extends Controller
                 'bool' => [
                     'must' => [
                         ['match' => ['unique_id' => $id]],
-                        ['match' => ['city_id' =>\Yii::$app->params['subdomen_id']]],
+                        ['match' => ['city_id' => \Yii::$app->params['subdomen_id']]],
                     ]
                 ]
             ])
@@ -42,40 +42,57 @@ class ItemController extends Controller
 
         $item = $item['hits']['hits'][0];
 
-		$seo = new Seo('item', 1, 0, $item);
-		$seo = $seo->seo;
-		$this->setSeo($seo);
+        $seo = new Seo('item', 1, 0, $item);
+        $seo = $seo->seo;
+        $this->setSeo($seo);
 
-		$seo['h1'] = $item->name;
-		$seo['breadcrumbs'] = Breadcrumbs::get_breadcrumbs(2);
-		$seo['address'] = $item->restaurant_address;
-		$seo['desc'] = $item->restaurant_name;
+        $seo['h1'] = $item->name;
+        $seo['breadcrumbs'] = Breadcrumbs::get_breadcrumbs(2);
+        $seo['address'] = $item->restaurant_address;
+        $seo['desc'] = $item->restaurant_name;
 
-		$special_obj = new ItemSpecials($item->restaurant_special);
-		$item->restaurant_special = $special_obj->special_arr;
+        $special_obj = new ItemSpecials($item->restaurant_special);
+        $item->restaurant_special = $special_obj->special_arr;
 
-
-		$itemsWidget = new ItemsWidgetElastic;
-		$other_rooms = $itemsWidget->getOther($item->restaurant_id, $id, $elastic_model);
-		$similar_rooms = $itemsWidget->getSimilar($item, 'rooms', $elastic_model);
+        $itemsWidget = new ItemsWidgetElastic;
+        $other_rooms = $this->getOther($item->restaurant_id, $item->unique_id);
+        $similar_rooms = $itemsWidget->getSimilar($item, 'rooms', $elastic_model);
 
 //		echo '<pre>';
-//		print_r($item);
+//        echo '$item->unique_id: '.$item->unique_id;
+//        echo '<br>';
+//		print_r($other_rooms);
 //		die();
 
-		return $this->render('index.twig', array(
-			'item' => $item,
-			'queue_id' => $id,
-			'seo' => $seo,
-			'other_rooms' => $other_rooms,
-			'similar_rooms' => $similar_rooms
-		));
-	}
+        return $this->render('index.twig', array(
+            'item' => $item,
+            'queue_id' => $id,
+            'seo' => $seo,
+            'other_rooms' => $other_rooms,
+            'similar_rooms' => $similar_rooms
+        ));
+    }
 
-	private function setSeo($seo)
-	{
-		$this->view->title = $seo['title'];
-		$this->view->params['desc'] = $seo['description'];
-		$this->view->params['kw'] = $seo['keywords'];
-	}
+    private function setSeo($seo)
+    {
+        $this->view->title = $seo['title'];
+        $this->view->params['desc'] = $seo['description'];
+        $this->view->params['kw'] = $seo['keywords'];
+    }
+
+    public function getOther($restaurant_id, $room_id, $elastic_model = false)
+    {
+        $items = ElasticItems::find()->query([
+            'bool' => [
+                'must' => [
+                    ['match' => ['restaurant_id' => $restaurant_id]]
+                ],
+                'must_not' => [
+                    ['match' => ['unique_id' => $room_id]]
+                ],
+            ],
+        ])->all();
+
+        return $items;
+    }
 }
