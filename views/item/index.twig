@@ -117,16 +117,16 @@
                                 <div class="item_arenda_banket">
                                     <span class="item_arenda_banket_title">Аренда с банкетом</span>
                                     <div class="item_arenda_banket_info">
-                                        <div class="item_arenda_banket_zal">
-                                            Зал:
-                                            {% if item.rent_room_only %}
-                                                {% if item.rent_room_only == 0 %}
-                                                    <span>бесплатно</span>
-                                                {% else %}
-                                                    <span>{{ item.rent_room_only }} ₽</span>
-                                                {% endif %}
-                                            {% endif %}
-                                        </div>
+                                        {% if item.rent_room_only %}
+                                            <div class="item_arenda_banket_zal">
+                                                Зал:
+                                                    {% if item.rent_room_only == 0 %}
+                                                        <span>бесплатно</span>
+                                                    {% else %}
+                                                        <span>{{ item.rent_room_only }} ₽</span>
+                                                    {% endif %}
+                                            </div>
+                                        {% endif %}
                                         {% if item.price and item.price > 0 %}
                                             <div class="item_arenda_banket_banket">
                                                 Банкет:
