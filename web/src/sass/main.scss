@@ -257,12 +257,19 @@ h3{
 
 ._link{
     color: $clrGreen;
-    border-bottom: 1px solid $clrLinkBorder;
+    //border-bottom: 1px solid $clrLinkBorder;
+
+    text-decoration: underline $clrLinkBorder 1px;
+    text-underline-offset: 2px;
 
     &:hover{
         transition: all 0.3s ease;
         color: $clrButton;
-        border-bottom: 1px solid $clrButton;
+        //border-bottom: 1px solid $clrButton;
+
+
+        text-decoration: underline $clrButton 1px;
+        text-underline-offset: 2px;
     }
 }
 

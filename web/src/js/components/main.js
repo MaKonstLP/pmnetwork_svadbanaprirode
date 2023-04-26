@@ -1,6 +1,7 @@
 'use strict';
 import Cookies from 'js-cookie';
 import Swiper from 'swiper';
+import ItemSwiper from './item_swiper';
 
 export default class Main {
     constructor() {
@@ -178,6 +179,54 @@ export default class Main {
             $(this).find('.add_favorite').toggleClass('hidden');
             $(this).find('.in_favorite').toggleClass('hidden');
         });
+
+
+
+
+        //КЛИК ПО ВЫБОРУ ГОРОДА
+        if ($(window).width()>= 1440) {
+            $('.city_choose_select').on('click', function(e){
+                $('.all_cities').toggleClass('hidden');
+                $('.header_wrap_back').toggleClass('hidden');
+            });
+
+            $('.header_wrap_back').on('click', function(e){
+                $('.all_cities').addClass('hidden');
+                $('.header_wrap_back').addClass('hidden');
+            });
+        } else {
+            $('.city_choose_select').on('click', function(e){
+                $('.header_menu_mobile_under').toggleClass('hidden');
+                $('body').toggleClass('overflow_hidden');
+            });
+            $('.under_cities_back').on('click', function(e) {
+                $('.header_menu_mobile_under').toggleClass('hidden');
+                $('body').toggleClass('overflow_hidden');
+            });
+        }
+
+        window.addEventListener('scroll', () => {
+            $('.all_cities').addClass('hidden');
+            $('.header_wrap_back').addClass('hidden');
+        });
+
+        //КНОПКПА "ПОМОЧЬ С ВЫБОРОМ" НА ЛИСТИНГЕ
+        if ($(window).width()<= 767) {
+            window.addEventListener('scroll', () => {
+                if ($(window).scrollTop() > 100) {
+                    $('.help_with_choose').show();
+                } else {
+                    $('.help_with_choose').hide();
+                }
+            });
+
+            // $('.help_with_choose').click(function () {
+            // 	$('.popup_wrap').addClass('_active');
+            // 	ym(64598434, 'reachGoal', 'header_button');
+            // 	gtag('event', 'header_button');
+            // });
+        }
+
     }
 
     script(url) {
@@ -240,6 +289,8 @@ export default class Main {
 
             gtag('config', 'UA-175581738-1');
         });
+
+        // ItemSwiper.initSwiperListingGallery($('[data-item-swiper]'));
 
     }
 }

@@ -24,8 +24,6 @@ export default class Item {
 		const nav_panel_observer = new IntersectionObserver((entries) => {
 			entries.forEach((entry) => {
 				if (entry.isIntersecting) {
-					console.log($(entry.target).data('nav-label') + ' SHOW');
-
 					let scrollLeft = 0;
 					let animateTime = 200;
 					let attr = $(entry.target).data('nav-label');
@@ -43,7 +41,7 @@ export default class Item {
 					// $('.navigation_wrap').scrollLeft(scrollLeft);
 					$('.navigation_wrap').animate({ scrollLeft: scrollLeft }, animateTime);
 				}else {
-					console.log($(entry.target).data('nav-label') + ' HIDE');
+					// console.log($(entry.target).data('nav-label') + ' HIDE');
 				}
 			});
 		}, {
@@ -51,20 +49,16 @@ export default class Item {
 			treshold: 0.7
 		});
 
-		// let isVisibleBtns = false;
 		const bottom_btns_observer = new IntersectionObserver(entries => {
 			entries.forEach(entry => {
 				if (entry.isIntersecting) {
-					// isVisibleBtns = true;
 					$('.item_mobile_btns').addClass('hidden');
 					$('.footer_wrap').css('margin-bottom', '0px');
-					// console.log('Кнопки появились');
 				} else {
 					$('.item_mobile_btns').removeClass('hidden');
 					if (self.mobileMode) {
 						$('.footer_wrap').css('margin-bottom', '80px');
 					}
-					// console.log('Кнопки исчезли');
 				}
 			});
 		}, {
@@ -148,7 +142,6 @@ export default class Item {
 			$('html,body').animate({ scrollTop: scroll_length }, 400);
 			ym(64598434, 'reachGoal', 'scroll_form');
 			gtag('event', 'scroll_form');
-			console.log('scroll_form');
 		});
 
 		$('[data-book-open]').on('click', function () {

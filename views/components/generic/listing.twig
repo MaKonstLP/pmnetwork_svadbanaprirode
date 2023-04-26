@@ -1,6 +1,28 @@
 {% for item in items %}
     {#    href="/{{ app.params.subdomen }}catalog/{{item.unique_id}}/"#}
     <div class="item swiper-slide {{type}}" data-location="{{item.restaurant_location[0].id}}" data-rat="{{item.restaurant_rating}}">
+{#        <a href="/{{ app.params.subdomen }}catalog/{{item.unique_id}}/">#}
+{#            <div class="swiper swiper-item-container" data-item-swiper>#}
+{#                <div class="swiper-slide-navigation">#}
+{#                    {% for key, img in item.images |slice(0, 6) %}#}
+{#                        <div class="swiper-slide-nav" data-swiper-change="{{ key }}"></div>#}
+{#                    {% endfor %}#}
+{#                </div>#}
+
+{#                <div class="item_img swiper-wrapper">#}
+{#                    <div class="swiper-slide">#}
+{#                        <img src="{{item.images[0].subpath~'=w446-h302-n-l80'}}"  alt="{{img_alt | replace({"**room**" : item.name}) | replace({"**restaurant**" : item.restaurant_name}) | replace({"**room_name**" : item.name}) }}"/>#}
+{#                    </div>#}
+{#                    {% for key, img in item.images | slice(1, 5) %}#}
+{#                        <div class="swiper-slide">#}
+{#                            <img src="{{img.subpath~'=w446-h302-n-l80'}}"  loading="lazy" alt="{{img_alt | replace({"**room**" : item.name}) | replace({"**restaurant**" : item.restaurant_name}) | replace({"**room_name**" : item.name}) }}"/>#}
+{#                        </div>#}
+{#                    {% endfor %}#}
+{#                </div>#}
+{#                <div class="swiper-pagination"></div>#}
+{#            </div>#}
+{#        </a>#}
+
         <a href="/{{ app.params.subdomen }}catalog/{{item.unique_id}}/">
             <div class="item_img">
                 <img src="{{item.images[0].subpath}}=rw" loading="lazy" alt="{{img_alt | replace({"**room**" : item.name}) | replace({"**restaurant**" : item.restaurant_name}) | replace({"**room_name**" : item.name}) }}"/>

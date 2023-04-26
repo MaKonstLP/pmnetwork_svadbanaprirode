@@ -10,6 +10,7 @@ import Form from './components/form';
 import YaMap from './components/mapSingleObject';
 import Errorpage from './components/error';
 import Post from './components/post';
+import ItemSwiper from './components/item_swiper';
 
 window.$ = $;
 
@@ -31,6 +32,10 @@ window.$ = $;
 	    if ($('[data-widget-wrapper]').length > 0) {
 	    	var widget = new Widget();
 	    }
+
+		if ($('[data-item-swiper]').length > 0) {
+			var itemSwiper = new ItemSwiper();
+		}
 
 	    if ($('.map').length > 0) {
 			if($('[data-page-type="item"]').length > 0) {
@@ -56,50 +61,5 @@ window.$ = $;
 	    $('form').each(function(){
 	    	form.push(new Form($(this)))
 	    });
-
-		//КЛИК ПО ВЫБОРУ ГОРОДА
-		if ($(window).width()>= 1440) {
-			$('.city_choose_select').on('click', function(e){
-				$('.all_cities').toggleClass('hidden');
-				$('.header_wrap_back').toggleClass('hidden');
-			});
-
-			$('.header_wrap_back').on('click', function(e){
-				console.log('back');
-				$('.all_cities').addClass('hidden');
-				$('.header_wrap_back').addClass('hidden');
-			});
-		} else {
-			$('.city_choose_select').on('click', function(e){
-				$('.header_menu_mobile_under').toggleClass('hidden');
-				$('body').toggleClass('overflow_hidden');
-			});
-			$('.under_cities_back').on('click', function(e) {
-				$('.header_menu_mobile_under').toggleClass('hidden');
-				$('body').toggleClass('overflow_hidden');
-			});
-		}
-
-		window.addEventListener('scroll', () => {
-			$('.all_cities').addClass('hidden');
-			$('.header_wrap_back').addClass('hidden');
-		});
-
-		//КНОПКПА "ПОМОЧЬ С ВЫБОРОМ" НА ЛИСТИНГЕ
-		if ($(window).width()<= 767) {
-			window.addEventListener('scroll', () => {
-				if ($(window).scrollTop() > 100) {
-					$('.help_with_choose').show();
-				} else {
-					$('.help_with_choose').hide();
-				}
-			});
-
-			// $('.help_with_choose').click(function () {
-			// 	$('.popup_wrap').addClass('_active');
-			// 	ym(64598434, 'reachGoal', 'header_button');
-			// 	gtag('event', 'header_button');
-			// });
-		}
 	});
 })($);

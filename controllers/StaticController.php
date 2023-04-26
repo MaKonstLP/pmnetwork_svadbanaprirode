@@ -27,6 +27,14 @@ class StaticController extends Controller
 		]);
 	}
 
+    public function actionAdvertising() {
+	    $seo['title'] = "Реклама на сайте";
+	    $seo['description'] = "Реклама на сайте";
+	    $seo['keywords'] = "Реклама на сайте";
+        $this->setSeo($seo);
+        return $this->render('advertising.twig');
+    }
+
 	public function actionRobots()
 	{
         header('Content-type: text/plain');
@@ -41,16 +49,18 @@ Disallow: *na-kryshe=*
 Disallow: *?keyword=*
 Disallow: *?yhid=*
 Disallow: *?from=*
-Disallow: /samara/
-Disallow: /kazan/
-Disallow: /spb/
-Disallow: /chelyabinsk/
-Disallow: /ekaterinburg/
-Disallow: /krasnodar/
-Disallow: /ufa/
-Disallow: /rostov/
-Disallow: /nn/
-Sitemap:  https://svadbanaprirode.com/sitemap/		
+Disallow: */favorites/
+
+Sitemap:  https://svadbanaprirode.com/sitemap/
+Sitemap:  https://svadbanaprirode.com/samara/sitemap/
+Sitemap:  https://svadbanaprirode.com/kazan/sitemap/
+Sitemap:  https://svadbanaprirode.com/spb/sitemap/
+Sitemap:  https://svadbanaprirode.com/ekaterinburg/sitemap/
+Sitemap:  https://svadbanaprirode.com/krasnodar/sitemap/
+Sitemap:  https://svadbanaprirode.com/ufa/sitemap/
+Sitemap:  https://svadbanaprirode.com/rostov/sitemap/
+Sitemap:  https://svadbanaprirode.com/nn/sitemap/
+Sitemap:  https://svadbanaprirode.com/chelyabinsk/sitemap/
 		";
 		exit;
 	}

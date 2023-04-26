@@ -71,6 +71,41 @@
             }
         }
 
+        //.swiper {
+        //    overflow: hidden;
+        //    position: relative;
+        //
+        //    .swiper-slide-navigation {
+        //        position: absolute;
+        //        display: flex;
+        //        width: 100%;
+        //        height: 100%;
+        //
+        //        .swiper-slide-nav {
+        //            width: 50%;
+        //            height: 100%;
+        //            z-index: 10;
+        //        }
+        //    }
+        //
+        //    .swiper-pagination {
+        //        pointer-events: none;
+        //        top: calc(100% - 10px);
+        //        transform: translateY(-100%);
+        //    }
+        //
+        //    .swiper-pagination-bullet {
+        //        border: 1px solid #FFFFFF;
+        //        height: 7px;
+        //        width: 7px;
+        //    }
+        //
+        //    .swiper-pagination-bullet-active {
+        //        background: #FFFFFF;
+        //        border: 1px solid #FFFFFF;
+        //    }
+        //}
+
         .item_img{
             width: 100%;
             height: 302px;
@@ -452,6 +487,7 @@
             top: 0px;
             right: 0px;
             padding: 10px 10px 0px 0px;
+            z-index: 2;
 
             .item_flag{
                 display: flex;

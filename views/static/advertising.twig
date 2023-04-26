@@ -1,0 +1,64 @@
+<div data-page-type="advertising">
+    <div class="advertising-container">
+        <div class="advertising-info">
+            <h1 class="advertising-title">Реклама на сайте</h1>
+            <p class="advertising-text">Предлагаем приобрести приоритетное размещение для банкетных залов. Купив приоритет, вы получаете для зала позиции в ТОПе на страницах списков залов вашего города.</p>
+            <p class="advertising-text">Для купивших приоритет отдаётся статистика по просмотрам залов посетителями и по звонкам со svadbanaprirode.com. Чтобы отслеживать звонки мы поставим прокси-номер телефона на страницах этих залов.</p>
+            <p class="advertising-text">Стоимость приоритетного размещения зависит от города и посещаемости, мы не публикуем цены на сайте, но рассчитаем их для вас по запросу через форму ниже.</p>
+        </div>
+        
+        <div class="advertising-form">
+            <form action="/{{ app.params['subdomen'] }}ajax/form-advertising/">
+{#                Ваше имя и фамилия#}
+{#                Должность#}
+{#                Ваш телефон#}
+{#                Название площадки#}
+{#                Город#}
+                            <div class="form_inputs">
+                                <div class="input_wrapper _big">
+                                    <div class="input_label">Ваше имя и фамилия</div>
+                                    <input type="text" name="name" data-required/>
+                                </div>
+                                <div class="input_wrapper _big">
+                                    <div class="input_label">Должность</div>
+                                    <input type="text" name="position" data-required/>
+                                </div>
+                                <div class="input_wrapper _big">
+                                    <div class="input_label">Ваш телефон</div>
+                                    <input type="tel" name="phone" data-required autocomplete="off" inputmode="tel"/>
+                                </div>
+                                <div class="input_wrapper _big">
+                                    <div class="input_label">Название площадки</div>
+                                    <input type="text" name="name_room" data-required/>
+                                </div>
+                            </div>
+
+                            <div class="form_submit">
+                                <input type="submit" class="_button" value="Оставить заявку"/>
+                                <div class="form_policy checkbox_item _active" data-form-privacy>
+                                    <input type="checkbox" name="policy" class="personalData" checked="">
+                                    <p class="checkbox_pseudo">Я согласен с <a class="_link" href="/privacy/" target="_blank">политикой обработки персональных данных</a></p>
+                                </div>
+                            </div>
+                            <input type="hidden" name="_csrf" value="{{Declension.csrfToken()}}" />
+                        </form>
+
+                    </div>
+                    <div class="form_success" data-success>
+
+                        <div class="form_success_title">
+                            <p class="form_success_title_main">Заявка успешно отправлена</p>
+                        </div>
+
+                        <div class="form_success_text">
+                            <p class="form_success_text_main"><span data-success-name></span>, спасибо за проявленный интерес. Мы свяжемся с вами по телефону <span data-success-phone></span> в течение рабочего дня.</p>
+                        </div>
+
+                        <div class="form_success_close _link" data-success-close>Закрыть</div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

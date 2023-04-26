@@ -1,6 +1,8 @@
 'use strict';
 import Filter from './filter';
 import YaMapAll from './map';
+import Swiper from 'swiper';
+import ItemSwiper from './item_swiper';
 
 export default class Listing{
 	constructor($block){
@@ -44,6 +46,7 @@ export default class Listing{
 		$('body').on('click', '[data-pagination-wrapper] [data-listing-pagitem]', function(){
 			self.reloadListing($(this).data('page-id'));
 		});
+
 		console.log(this);
 	}
 
@@ -63,6 +66,7 @@ export default class Listing{
 				$('[data-listing-text-bottom]').html(response.text_bottom);
 				$('[data-pagination-wrapper]').html(response.pagination);
 				document.title = response.seo_title;
+				// ItemSwiper.initSwiperListingGallery($('[data-item-swiper]'));
 				self.block.removeClass('_loading');
 				$('html,body').animate({scrollTop:0}, 400);
 				history.pushState({}, '', '/'+this.filter.subdomen.data('alias')+'catalog/'+response.url);

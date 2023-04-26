@@ -12,8 +12,6 @@ export default class YaMap {
 
 		self.init();
 
-		console.log(this.filter);
-
 		// window.addEventListener('click', () => {
 		// 	if (fired === false) {
 		// 		fired = true;

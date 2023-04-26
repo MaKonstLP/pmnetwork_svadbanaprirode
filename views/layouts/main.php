@@ -25,7 +25,8 @@ frontend\modules\svadbanaprirode\assets\AppAsset::register($this);
     <?php if (isset($this->params['desc']) and !empty($this->params['desc'])) echo "<meta name='description' content='".$this->params['desc']."'>";?>
 <!--    --><?php //if (isset($this->params['canonical']) and !empty($this->params['canonical'])) echo "<link rel='canonical' href='".$this->params['canonical']."'>";?>
     <?php if (isset($this->params['kw']) and !empty($this->params['kw'])) echo "<meta name='keywords' content='".$this->params['kw']."'>";?>
-    <script src="https://www.googleoptimize.com/optimize.js?id=OPT-W4RJZ95"></script>
+    <script async src="https://www.googleoptimize.com/optimize.js?id=OPT-W4RJZ95"></script>
+
     <?= Html::csrfMetaTags() ?>
 </head>
 <body>
@@ -220,7 +221,8 @@ frontend\modules\svadbanaprirode\assets\AppAsset::register($this);
                         <div class="footer_info">
                             <p class="footer_copy">© <?php echo date("Y");?> Свадьба на природе</p>
                             <a href="/privacy/" target="_blank" class="footer_pc _link">Политика конфиденциальности</a>
-                        </div>                        
+<!--                            <a href="/advertising/" target="_blank" class="footer_pc _link">Реклама на сайте</a>-->
+                        </div>
                     </div>
                     <div class="footer_block _right">
                         <div class="footer_phone">
@@ -252,9 +254,9 @@ frontend\modules\svadbanaprirode\assets\AppAsset::register($this);
 
 <?php $this->endBody() ?>
 
-<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700&display=swap&subset=cyrillic" rel="stylesheet">
+<link async href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700&display=swap&subset=cyrillic" rel="stylesheet">
 <!-- Yandex.Metrika counter -->
-<noscript><div><img src="https://mc.yandex.ru/watch/64598434" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<noscript async><div><img src="https://mc.yandex.ru/watch/64598434" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <!-- Global site tag (gtag.js) - Google Analytics -->
