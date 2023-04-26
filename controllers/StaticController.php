@@ -61,6 +61,7 @@ Sitemap:  https://svadbanaprirode.com/ufa/sitemap/
 Sitemap:  https://svadbanaprirode.com/rostov/sitemap/
 Sitemap:  https://svadbanaprirode.com/nn/sitemap/
 Sitemap:  https://svadbanaprirode.com/chelyabinsk/sitemap/
+Sitemap:  https://svadbanaprirode.com/omsk/sitemap/
 		";
 		exit;
 	}
