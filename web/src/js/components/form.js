@@ -202,10 +202,14 @@ export default class Form {
 		//modal.show();
 		switch(formType) {
 		  case 'main':
-		    // ym(64598434,'reachGoal','form_main');
-		    ym(64598434,'reachGoal','otpravit_zabronirovat_listing')
+		    ym(64598434,'reachGoal','otpravit_zabronirovat_listing');
 		    gtag('event', 'otpravit_zabronirovat_listing');
 		    break;
+
+		  case 'main-footer':
+			 ym(64598434,'reachGoal','form_main');
+			 gtag('event', 'form_main');
+			  break;
 
 		  case 'item':
 		    ym(64598434,'reachGoal','form_room');

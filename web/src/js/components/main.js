@@ -71,8 +71,8 @@ export default class Main {
             //     $('.form_block').attr('id', 'form_mobile_item');
             // }
 
-            // ym(64598434, 'reachGoal', 'header_button');
-            // gtag('event', 'header_button');
+            ym(64598434, 'reachGoal', 'header_button');
+            gtag('event', 'header_button');
         });
 
         $('body').on('click', '[data-close-popup]', function () {
@@ -137,9 +137,9 @@ export default class Main {
             let header_height = $('header').height();
             let scroll_length = form_offset_top - header_height - 50;
             $('html,body').animate({scrollTop: scroll_length}, 400);
-            // ym(64598434, 'reachGoal', 'scroll_form');
-            // gtag('event', 'scroll_form');
-            // console.log('scroll_form');
+            ym(64598434, 'reachGoal', 'scroll_form');
+            gtag('event', 'scroll_form');
+            console.log('scroll_form');
         });
 
         //НАВИГАЦИЯ ПО СТРАНИЦЕ ЗАВЕДЕНИЯ
