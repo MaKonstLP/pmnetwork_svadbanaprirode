@@ -81,7 +81,7 @@ export default class Item {
 			if ($(this).data('commission')) {
 				ym(64598434, 'reachGoal', 'pozvonit_listing');
 				gtag('event', 'pozvonit_listing');
-				
+
 				// ==== Gorko-calltracking ====
 				let phone = $(this).closest('.object_book_hidden').find('.object_real_phone').text();
 				self.sendCalltracking(phone);
@@ -125,7 +125,7 @@ export default class Item {
 
 			slider.find('.swiper-slide').not('.swiper-slide-duplicate').each(function () {
 				let src = $(this).find('img').attr('data-img');
-				slider_popup.find('.swiper-wrapper').append('<div class="swiper-slide"><img loading="lazy" src="' + src + '"></div');
+				slider_popup.find('.swiper-wrapper').append('<div class="swiper-slide"><div class="swiper-zoom-container"><img loading="lazy" src="' + src + '"></div></div>');
 			});
 
 			slider_popup.addClass('_active');
@@ -283,6 +283,11 @@ export default class Item {
 			spaceBetween: 10,
 			grabCursor: true,
 			zoom: true,
+			zoom: {
+				maxRatio: 5,
+				minRation: 1
+			},
+			zoomedSlideClass: 'swiper-slide',
 			// speed: 0,
 			initialSlide: $start,
 			on: {
@@ -303,11 +308,6 @@ export default class Item {
 			navigation: {
 				nextEl: '.popup-img-button-next',
 				prevEl: '.popup-img-button-prev',
-			},
-			breakpoints: {
-				767: {
-					zoom: true
-				}
 			}
 		});
 	}
