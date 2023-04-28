@@ -282,6 +282,7 @@ export default class Item {
 			slidesPerView: 1,
 			spaceBetween: 10,
 			grabCursor: true,
+			zoom: true,
 			// speed: 0,
 			initialSlide: $start,
 			on: {
