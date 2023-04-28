@@ -211,6 +211,11 @@ export default class Form {
 			 gtag('event', 'form_main');
 			  break;
 
+		  case 'listing':
+		  	 ym(64598434,'reachGoal','form_main');
+		  	 gtag('event', 'form_main');
+		  	 break;
+
 		  case 'item':
 		    ym(64598434,'reachGoal','form_room');
 		    gtag('event', 'form');

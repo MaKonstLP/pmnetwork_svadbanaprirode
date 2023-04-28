@@ -252,6 +252,21 @@ frontend\modules\svadbanaprirode\assets\AppAsset::register($this);
         </div>
     </div>
 
+    <!--попап для превью изображений на странице заведения-->
+    <div class="popup_wrap" data-type="popup_img">
+        <div class="popup_layout" data-close-popup></div>
+        <div class="popup_form popup_form_gallery">
+            <div class="popup_img swiper" data-popup-swiper>
+                <div class="swiper-wrapper">
+
+                </div>
+            </div>
+            <div class="popup_img_close" data-close-popup></div>
+            <div class="popup-img-nav popup-img-button-next swiper-no-transition"></div>
+            <div class="popup-img-nav popup-img-button-prev swiper-no-transition"></div>
+        </div>
+    </div>
+
 <?php $this->endBody() ?>
 
 <link async href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700&display=swap&subset=cyrillic" rel="stylesheet">

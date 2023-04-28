@@ -1,3 +1,20 @@
+[data-page-type="index"],[data-page-type="listing"] {
+
+	.items_list_listing .items_list {
+		justify-content: center;
+
+		@include for-mobile {
+			justify-content: unset;
+		}
+	}
+
+	.items_list_listing.swiper-container {
+		@include for-mobile {
+			width: calc(100% - 20px);
+		}
+	}
+}
+
 [data-page-type="item"] {
 	.items_list_listing .item.other {
 		margin: 0px;

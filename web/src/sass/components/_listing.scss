@@ -131,6 +131,10 @@
                 height: 100%;
                 object-fit: cover;
             }
+
+            @include for-mobile {
+                height: 238px;
+            }
         }
 
         .item_info{
@@ -142,6 +146,7 @@
 
             @include for-mobile{
                 padding: 15px 10px 20px;
+                height: calc(100% - 238px);
             }
 
             .item_info_top{

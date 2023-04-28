@@ -456,6 +456,7 @@
     }
 
     .item_top_slider {
+        cursor: pointer;
         margin-bottom: 5px;
 
         .swiper-slide {
@@ -476,6 +477,16 @@
 
         @include for-mobile{
             height: 200px;
+        }
+    }
+
+    .item_thumb_slider {
+        .swiper-slide {
+            opacity: 0.4;
+        }
+
+        [data-thumb-active="1"] {
+            opacity: 1;
         }
     }
 

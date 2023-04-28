@@ -1,4 +1,28 @@
-.popup_wrap{
+.popup_img_close {
+	cursor: pointer;
+	position: absolute;
+	width: 40px;
+	height: 40px;
+	background-color: $clrBlack;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url("/img/close_gallery_popup.svg");
+	top: 0px;
+	right: -60px;
+	z-index: 10;
+
+	&:hover {
+		transition: all 0.3s ease;
+		transform: scale(1.05);
+	}
+
+	@include for-mobile {
+		right: 0px;
+		top: -60px;
+	}
+}
+
+.popup_wrap {
 	position: fixed;
 	z-index: 9999999;
 	width: 100%;
@@ -9,6 +33,99 @@
 
 	&._active{
 		display: flex;
+	}
+
+	[data-popup-swiper] {
+		overflow: hidden;
+		position: relative;
+		display: flex;
+		align-items: center;
+		width: 100%;
+		height: 100%;
+		//min-height: 100vh;
+		position: relative;
+
+		.swiper-wrapper {
+			//min-height: 100vh;
+		}
+
+		.swiper-slide {
+			text-align: center;
+			height: unset;
+			min-height: 100%;
+			display: flex;
+			align-items: center;
+
+			img {
+				width: 100%;
+				height: min-content;
+				object-fit: cover;
+				//object-fit: cover;
+				//object-position: right bottom;
+				//min-height: 80vh;
+				//transform: scale(1.5);
+
+				@include for-mobile {
+					width: 100%;
+					max-height: 60vh;
+					object-fit: contain;
+					//min-height: unset;
+					//min-width: 90vh;
+				}
+			}
+		}
+
+		&~.popup-img-nav {
+			cursor: pointer;
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			width: 40px;
+			height: 40px;
+			background-color: $clrBlack;
+			background-repeat: no-repeat;
+			background-position: center;
+			z-index: 10;
+
+			&.popup-img-button-next {
+				right: -60px;
+				background-image: url("/img/arrow_slider_white.svg");
+				transform: rotateY(180deg) translateY(-50%);
+
+				&:hover:not(.swiper-button-disabled) {
+					transition: all 0.3s ease;
+					transform: scale(1.05) rotateY(180deg) translateY(-50%);
+				}
+
+				@include for-mobile {
+					right: 8px;
+				}
+			}
+
+			&.popup-img-button-prev {
+				left: -60px;
+				background-image: url("/img/arrow_slider_white.svg");
+
+				&:hover:not(.swiper-button-disabled) {
+					transition: all 0.3s ease;
+					transform: scale(1.05) translateY(-50%);
+				}
+
+				@include for-mobile {
+					left: 8px;
+				}
+			}
+		}
+
+		&~.swiper-button-disabled {
+			opacity: 0.4;
+			pointer-events: auto;
+			cursor: default;
+		}
+
+		@include for-mobile {
+			height: unset;
+		}
 	}
 }
 
@@ -41,6 +158,20 @@
 
 	.form_close{
 		display: block;
+	}
+}
+
+.popup_form_gallery {
+	height: 80vh;
+	width: 60vw;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	@include for-mobile {
+		overflow: initial;
+		height: unset;
+		width: 90vw;
 	}
 }
 
