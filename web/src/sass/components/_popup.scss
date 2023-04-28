@@ -88,13 +88,14 @@
 			z-index: 10;
 
 			&.popup-img-button-next {
+				z-index: 10;
 				right: -60px;
-				background-image: url("/img/arrow_slider_white.svg");
-				transform: rotateY(180deg) translateY(-50%);
+				background-image: url("/img/arrow_slider_white_next.svg");
+				transform: translateY(-50%);
 
 				&:hover:not(.swiper-button-disabled) {
 					transition: all 0.3s ease;
-					transform: scale(1.05) rotateY(180deg) translateY(-50%);
+					transform: scale(1.05) translateY(-50%);
 				}
 
 				@include for-mobile {
@@ -103,6 +104,7 @@
 			}
 
 			&.popup-img-button-prev {
+				z-index: 10;
 				left: -60px;
 				background-image: url("/img/arrow_slider_white.svg");
 
