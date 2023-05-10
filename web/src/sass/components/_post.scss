@@ -4,13 +4,47 @@
   padding: 0 calc((100% - 953px) / 2);
 
   .object_gallery{
+    position: inherit;
     width: 475px;
+
+    .item_thumb_slider .swiper-slide {
+      width: 91px !important;
+    }
+
     @include for-pad {
       width: 710px;
     }
     @include for-mobile {
       width: 100%;
     }
+  }
+
+  .object_meta {
+
+    .object_meta_item {
+      flex-wrap: wrap;
+
+      .object_meta_title {
+        width: unset;
+      }
+
+      .object_meta_value {
+        display: flex;
+        align-items: flex-end;
+        column-gap: 6px;
+      }
+    }
+    @include for-pad {
+      margin-bottom: 0px;
+      justify-content: inherit;
+    }
+    @include for-mobile {
+      margin-top: 0px;
+    }
+  }
+
+  .object_book .object_book_hidden {
+    align-items: center;
   }
 
   .object_head{
@@ -92,7 +126,7 @@
     img{
       display: block;
       width: 100%;
-      height: auto;
+      //height: auto;
     }
 
     ul{
