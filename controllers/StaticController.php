@@ -28,10 +28,16 @@ class StaticController extends Controller
 	}
 
     public function actionAdvertising() {
-	    $seo['title'] = "Реклама на сайте";
-	    $seo['description'] = "Реклама на сайте";
-	    $seo['keywords'] = "Реклама на сайте";
-        $this->setSeo($seo);
+
+        $page = Pages::find()
+            ->where([
+                'type' => 'advertising',
+            ])
+            ->one();
+
+        $seo = new Seo('advertising', 1);
+        $this->setSeo($seo->seo);
+
         return $this->render('advertising.twig');
     }
 

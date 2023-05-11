@@ -242,8 +242,14 @@ export default class Form {
 		}
 		let dataObj = data;
 		console.log(dataObj);
-		this.$formWrap.find('[data-success] [data-success-name]').text(dataObj.payload.name);
-		this.$formWrap.find('[data-success] [data-success-phone]').text(dataObj.payload.phone);
+		console.log('dataObj', dataObj);
+		if (dataObj.payload) {
+			this.$formWrap.find('[data-success] [data-success-name]').text(dataObj.payload.name);
+			this.$formWrap.find('[data-success] [data-success-phone]').text(dataObj.payload.phone);
+		} else {
+			this.$formWrap.find('[data-success] [data-success-name]').text(dataObj.name);
+			this.$formWrap.find('[data-success] [data-success-phone]').text(dataObj.phone);
+		}
 		this.$formWrap.find('[data-success]').addClass('_active');
 
 		this.reset();

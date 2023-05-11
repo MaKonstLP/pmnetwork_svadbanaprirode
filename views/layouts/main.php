@@ -221,7 +221,7 @@ frontend\modules\svadbanaprirode\assets\AppAsset::register($this);
                         <div class="footer_info">
                             <p class="footer_copy">© <?php echo date("Y");?> Свадьба на природе</p>
                             <a href="/privacy/" target="_blank" class="footer_pc _link">Политика конфиденциальности</a>
-<!--                            <a href="/advertising/" target="_blank" class="footer_pc _link">Реклама на сайте</a>-->
+                            <a href="/advertising/" target="_blank" class="footer_pc _link">Реклама на сайте</a>
                         </div>
                     </div>
                     <div class="footer_block _right">

@@ -61,6 +61,7 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
             'capacity',
             'type',
             'city_id',
+            'alias',
             'rent_only',
             'rent_room_only',
             'banquet_price',
@@ -84,8 +85,8 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
     }
 
     public static function index() {
-//        return 'pmn_sp_rooms';
-        return 'pmn_dev';
+        return 'pmn_sp_rooms';
+//        return 'pmn_dev_1';
     }
     
     public static function type() {
@@ -158,6 +159,7 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
                     'outside_registration'             => ['type' => 'integer'],
                     'payment_model'                    => ['type' => 'integer'],
                     'type_name'                        => ['type' => 'text'],
+                    'alias'                         => ['type' => 'text'],
                     'name'                             => ['type' => 'text'],
                     'features'                         => ['type' => 'text'],
                     'cover_url'                        => ['type' => 'text'],
@@ -378,6 +380,7 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
         $record->restaurant_phone = $restaurant->phone;
         $record->restaurant_city_id = $restaurant->city_id;
         $record->city_id = $restaurant->city_id;
+//        $record->alias = $restaurant->alias;
         $record->restaurant_commission = $restaurant->commission;
         $restaurant->rating ? $record->restaurant_rating = $restaurant->rating : $record->restaurant_rating = 90;
 
@@ -386,6 +389,13 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
         foreach ($restaurant_special_rest as $key => $value) {
             if ($value == '41')
                 $record->outside_registration = 1;
+        }
+
+        $subdomens = Subdomen::find()->all();
+        foreach ($subdomens as $key => $subdomen) {
+            if ($subdomen['city_id'] == $restaurant->city_id) {
+                $record->alias = $subdomen->alias;
+            }
         }
 
         //Отзывы с Яндекса из общей базы
