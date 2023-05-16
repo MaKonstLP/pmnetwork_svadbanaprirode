@@ -76,15 +76,16 @@ export default class Item {
 
 		$('[data-action="show_phone"]').on('click', function () {
 			$('.object_book_hidden').addClass('_active');
-			ym(64598434, 'reachGoal', 'show_phone');
-			gtag('event', 'show_phone');
-			if ($(this).data('commission')) {
-				ym(64598434, 'reachGoal', 'pozvonit_listing');
-				gtag('event', 'pozvonit_listing');
+			if ($(this).data('commission') && !self.mobileMode) {
+				ym(64598434, 'reachGoal', 'show_phone_comm');
+				gtag('event', 'show_phone_comm');
 
 				// ==== Gorko-calltracking ====
 				let phone = $(this).closest('.object_book_hidden').find('.object_real_phone').text();
 				self.sendCalltracking(phone);
+			} else {
+				ym(64598434, 'reachGoal', 'show_phone');
+				gtag('event', 'show_phone');
 			}
 		});
 

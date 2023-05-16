@@ -50,7 +50,7 @@
 		
 
 {#		<form class="form_block" action="/ajax/form/" data-type={% if type != 'item' %}"main"{% else %}"item"{% endif %}>#}
-		<form class="form_block" action="/{{ app.params['subdomen'] }}ajax/form/" data-type={{ type }}>
+		<form class="form_block" action="/{{ app.params['subdomen'] }}ajax/{% if type == 'favorites' %}send-favorites{% else %}form{% endif %}/" data-type={{ type }}>
 
 			<div class="form_inputs">
 
