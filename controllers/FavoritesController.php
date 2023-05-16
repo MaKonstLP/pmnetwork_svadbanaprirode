@@ -29,7 +29,7 @@ class FavoritesController extends Controller
         $rooms = ElasticItems::find()->query([
             'bool' => [
                 'must' => [
-                    ['terms' => ['id' => $favorite]]
+                    ['terms' => ['unique_id' => $favorite]]
                 ],
             ],
 

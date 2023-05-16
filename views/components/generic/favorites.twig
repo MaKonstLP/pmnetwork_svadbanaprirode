@@ -11,7 +11,7 @@
             <section class="favorites-list swiper" data-swiper="favorites">
                 <div class="swiper-wrapper">
                     {% for key, item in items %}
-                        <div class="swiper-slide favorites-item" data-room-id="{{ item.id }}" data-hash="{{ key }}">
+                        <div class="swiper-slide favorites-item" data-room-id="{{ item.unique_id }}" data-hash="{{ key }}">
                             <div class="favorites-item__slider">
                                 <a class="favorites-item__link" href="/{{ app.params.subdomen }}catalog/{{item.unique_id}}/">
                                     <div class="swiper item_swiper">
@@ -41,7 +41,7 @@
                                     <span class="item_btn_text">Забронировать</span>
 {#                                    <span class="item_btn_text_mobile">Заказать</span>#}
                                 </button>
-                                <button class="favorite-delete" data-del-favorites="{{ item.id }}" data-del-all="false">
+                                <button class="favorite-delete" data-del-favorites="{{ item.unique_id }}" data-del-all="false">
                                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M4 5H16V17C16 17.5523 15.5523 18 15 18H5C4.44772 18 4 17.5523 4 17V5Z" stroke="#333333" stroke-width="2"/>
                                         <path d="M7 5H13V3C13 2.44772 12.5523 2 12 2H8C7.44772 2 7 2.44772 7 3V5Z" stroke="#333333" stroke-width="2"/>
@@ -65,7 +65,7 @@
                 <div class="group-option__items swiper" data-swiper="rating">
                     <div class="swiper-wrapper">
                         {% for key,item in items %}
-                            <div class="swiper-slide group-option__item" data-room-id="{{ item.id }}" data-hash="{{ key }}">
+                            <div class="swiper-slide group-option__item" data-room-id="{{ item.unique_id }}" data-hash="{{ key }}">
                                 {% if item.restaurant_rev_ya.id and item.restaurant_rev_ya.rate %}
                                     <div class="rate">
                                         <div class="stars">
@@ -91,7 +91,7 @@
                 <div class="group-option__items swiper" data-swiper="location">
                     <div class="swiper-wrapper">
                         {% for key, item in items %}
-                            <div class="group-option__item swiper-slide" data-room-id="{{ item.id }}" data-hash="{{ key }}">
+                            <div class="group-option__item swiper-slide" data-room-id="{{ item.unique_id }}" data-hash="{{ key }}">
                                 {% if item.restaurant_region %}
                                     <span>{{ item.restaurant_region }}</span>
                                 {% else %}
@@ -110,7 +110,7 @@
                 <div class="group-option__items swiper" data-swiper="capacity">
                     <div class="swiper-wrapper">
                         {% for key, item in items %}
-                            <div class="group-option__item swiper-slide" data-room-id="{{ item.id }}" data-hash="{{ key }}">
+                            <div class="group-option__item swiper-slide" data-room-id="{{ item.unique_id }}" data-hash="{{ key }}">
                                 {% if item.restaurant_max_capacity and item.restaurant_min_capacity %}
                                     {% if item.restaurant_max_capacity ==  item.restaurant_min_capacity %}
                                         {{ item.restaurant_min_capacity }} чел.
@@ -141,7 +141,7 @@
         {#                    2 - За аренду зала + за еду и напитки. Цена из поля  rent_room_only + цена за 1 чел из поля price (25000 руб. + 3000 руб./чел.)#}
         {#                    3 - Только аренда (без еды). Цена из поля rent_room_only#}
                             {% for key, item in items %}
-                                <div class="group-option__item swiper-slide" data-room-id="{{ item.id }}" data-hash="{{ key }}">
+                                <div class="group-option__item swiper-slide" data-room-id="{{ item.unique_id }}" data-hash="{{ key }}">
                                     {% if item.payment_model == 0 %}
                                         {% if item.price and item.price > 0 %}
                                             <p>меню от {{ item.price }} ₽/чел.</p>
@@ -182,7 +182,7 @@
                 <div class="group-option__items swiper" data-swiper="price">
                     <div class="swiper-wrapper">
                         {% for key, item in items %}
-                            <div class="group-option__item swiper-slide" data-room-id="{{ item.id }}" data-hash="{{ key }}">
+                            <div class="group-option__item swiper-slide" data-room-id="{{ item.unique_id }}" data-hash="{{ key }}">
                                 {% if item.payment_model == 3 or item.rent_only %}
                                     {% if (item.rent_room_only and item.rent_room_only > 0) %}
                                         <span>да, {{ item.rent_room_only }} ₽ за закрытие</span>
@@ -213,7 +213,7 @@
                 <div class="group-option__items swiper" data-swiper="min_price_banket">
                     <div class="swiper-wrapper">
                         {% for key, item in items %}
-                            <div class="group-option__item swiper-slide" data-room-id="{{ item.id }}" data-hash="{{ key }}">
+                            <div class="group-option__item swiper-slide" data-room-id="{{ item.unique_id }}" data-hash="{{ key }}">
                                 {% if item.banquet_price %}
                                     <span>{{ item.banquet_price }} ₽</span>
                                 {% else %}
@@ -232,7 +232,7 @@
                 <div class="group-option__items swiper" data-swiper="kitchen">
                     <div class="swiper-wrapper">
                         {% for key, item in items %}
-                            <div class="group-option__item swiper-slide" data-room-id="{{ item.id }}" data-hash="{{ key }}">
+                            <div class="group-option__item swiper-slide" data-room-id="{{ item.unique_id }}" data-hash="{{ key }}">
                                 {% if item.restaurant_cuisine %}
                                     <span>{{ item.restaurant_cuisine }}</span>
                                 {% else %}
@@ -251,7 +251,7 @@
                 <div class="group-option__items swiper" data-swiper="parking">
                     <div class="swiper-wrapper">
                         {% for key, item in items %}
-                            <div class="group-option__item swiper-slide" data-room-id="{{ item.id }}" data-hash="{{ key }}">
+                            <div class="group-option__item swiper-slide" data-room-id="{{ item.unique_id }}" data-hash="{{ key }}">
                                 {% if item.restaurant_parking %}
                                     <span>{{item.restaurant_parking}} машин</span>
                                 {% else %}
@@ -270,7 +270,7 @@
                 <div class="group-option__items swiper" data-swiper="outside_registration">
                     <div class="swiper-wrapper">
                         {% for key, item in items %}
-                            <div class="group-option__item swiper-slide" data-room-id="{{ item.id }}" data-hash="{{ key }}">
+                            <div class="group-option__item swiper-slide" data-room-id="{{ item.unique_id }}" data-hash="{{ key }}">
                                 {% if item.outside_registration %}
                                     <img src="/img/check_approove.svg" alt="">
                                 {% else %}
@@ -294,7 +294,7 @@
                 <div class="group-option__items swiper" data-swiper="alcohol">
                     <div class="swiper-wrapper">
                         {% for key, item in items %}
-                            <div class="group-option__item swiper-slide" data-room-id="{{ item.id }}" data-hash="{{ key }}">
+                            <div class="group-option__item swiper-slide" data-room-id="{{ item.unique_id }}" data-hash="{{ key }}">
                                 {% if item.restaurant_alcohol %}
                                     {% if item.restaurant_alcohol == 1 %}
                                         <span>можно свой алкоголь</span>
@@ -319,7 +319,7 @@
                 <div class="group-option__items swiper" data-swiper="fireworks">
                     <div class="swiper-wrapper">
                         {% for key, item in items %}
-                            <div class="group-option__item swiper-slide" data-room-id="{{ item.id }}" data-hash="{{ key }}">
+                            <div class="group-option__item swiper-slide" data-room-id="{{ item.unique_id }}" data-hash="{{ key }}">
                                 {% if item.restaurant_firework %}
                                     <img src="/img/check_approove.svg" alt="">
                                 {% else %}
@@ -338,7 +338,7 @@
                 <div class="group-option__items swiper" data-swiper="own_fruits">
                     <div class="swiper-wrapper">
                         {% for key, item in items %}
-                            <div class="group-option__item swiper-slide" data-room-id="{{ item.id }}" data-hash="{{ key }}">
+                            <div class="group-option__item swiper-slide" data-room-id="{{ item.unique_id }}" data-hash="{{ key }}">
                                 {% if item.own_fruits %}
                                     <span>{{ item.own_fruits }}</span>
                                 {% else %}

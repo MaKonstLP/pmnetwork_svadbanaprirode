@@ -53,10 +53,76 @@ class FormController extends Controller
             $payload['details'] .= ' Заявка отправлена с '.$_POST['url'];
 
         $payload['event_type'] = "Wedding";
-//        $payload['city_id'] = 4400;
         $payload['city_id'] = Yii::$app->params['subdomen_id'];
 
-        $this->SendTg();
+        $this->SendTg(false, $payload);
+
+        $resp = GorkoLeadApi::send_lead('v.gorko.ru', 'svadbanaprirode', $payload);
+
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        return $resp;
+    }
+
+    public function actionSendFavorites() {
+        $payload = [];
+        $favoriteCookie = Yii::$app->request->cookies->get(Yii::$app->params['subdomen_favorite_cookie_name']);
+        $itemsInCookie = $favoriteCookie->value['items'];
+
+        $namesItems = [];
+        foreach ($itemsInCookie as $item) {
+            $elastic_model = new ElasticItems;
+            $item = $elastic_model::find()
+                ->query(['bool' => ['must' => ['match' => ['unique_id' => $item]]]])
+                ->limit(1)
+                ->search();
+            $item = $item['hits']['hits'][0];
+            $namesItems[] = $item['gorko_id'];
+        }
+
+        $listCookie = '';
+        foreach ($namesItems as $number => $name) {
+            $listCookie .= "%0A".++$number.'. '.$name;
+        }
+
+        if(isset($_POST['name']))
+            $payload['name'] = $_POST['name'];
+        if(isset($_POST['phone']))
+            $payload['phone'] = $_POST['phone'];
+        if(isset($_POST['connection']))
+            $payload['connection'] = $_POST['connection'];
+        if(isset($_POST['count']))
+            $payload['guests'] = intval($_POST['count']);
+        if(isset($_POST['date']))
+            $payload['date'] = $_POST['date'];
+        if(isset($_POST['venue_id']))
+            $payload['venue_id'] = $_POST['venue_id'];
+        $payload['details'] = '';
+        if(isset($_POST['water']) || isset($_POST['tent']) || isset($_POST['country']) || isset($_POST['incity']) || isset($_POST['connection']) ){
+            $payload['details'] .= 'Клиент просит связаться с ним через: ';
+            if(isset($_POST['connection']))
+                $payload['details'] .= $_POST['connection'];
+            $payload['details'] .= 'Клиент просит подобрать зал по условиям: ';
+            if(isset($_POST['water']))
+                $payload['details'] .= ' у воды; ';
+            if(isset($_POST['tent']))
+                $payload['details'] .= ' с шатром; ';
+            if(isset($_POST['country']))
+                $payload['details'] .= ' за городом; ';
+            if(isset($_POST['incity']))
+                $payload['details'] .= ' в черте города; ';
+
+            $payload['details'] .= "%0A".'Клиент добавил в избранное залы:'.$listCookie."%0A";
+        }
+        if(isset($_POST['type']) && $_POST['type'] == 'item')
+            $payload['details'] .= ' Клиент сделал заявку на конкретный зал - '.$_POST['url'];
+        if(isset($_POST['url']))
+            $payload['details'] .= ' Заявка отправлена с '.$_POST['url'];
+
+        $payload['event_type'] = "Wedding";
+        $payload['city_id'] = Yii::$app->params['subdomen_id'];
+
+
+        $this->SendTg(true, $payload);
 
         $resp = GorkoLeadApi::send_lead('v.gorko.ru', 'svadbanaprirode', $payload);
 
@@ -72,9 +138,6 @@ class FormController extends Controller
             ->search();
 
         $item = $item['hits']['hits'][0];
-
-//        echo '<pre>';
-//        print_r($item);
 
         $to   = $_POST['book_email'];
         $from = Yii::$app->params['senderEmail'];
@@ -154,58 +217,35 @@ class FormController extends Controller
 
         $message->send();
 
-//        echo "<pre>";
-//        print_r($_POST);
-//        die();
-
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         return $resp;
     }
 
-    public function SendTg() {
+    public function SendTg($isFavorite, $payload) {
 
         $chat_id = '-975156926';
         $token = '5991590602:AAF_0pOHAL735TtwT0m0vzcmfxLv73pUCUE';
 
-        $payload = [];
+        if ($isFavorite) {
+            $favoriteCookie = Yii::$app->request->cookies->get(Yii::$app->params['subdomen_favorite_cookie_name']);
+            $itemsInCookie = $favoriteCookie->value['items'];
 
-        if(isset($_POST['name']))
-            $payload['name'] = $_POST['name'];
-        if(isset($_POST['phone'])) {
-            $phone =  preg_replace('/[^0-9]/', '', $_POST['phone']);
-            $payload['phone'] = '<a href="tel:+'.$phone.'">'.$phone.'</a>';
-        }
-        if(isset($_POST['connection']))
-            $payload['connection'] = $_POST['connection'];
-        if(isset($_POST['count']))
-            $payload['guests'] = intval($_POST['count']);
-        if(isset($_POST['date']))
-            $payload['date'] = $_POST['date'];
-        if(isset($_POST['venue_id']))
-            $payload['venue_id'] = $_POST['venue_id'];
-        $payload['details'] = '';
-        if(isset($_POST['water']) || isset($_POST['tent']) || isset($_POST['country']) || isset($_POST['incity']) || isset($_POST['connection']) ){
-            $payload['details'] .= 'Клиент просит связаться с ним через: ';
-            if(isset($_POST['connection']))
-                $payload['details'] .= $_POST['connection']."%0A";
-            $payload['details'] .= 'Клиент просит подобрать зал по условиям: ';
-            if(isset($_POST['water']))
-                $payload['details'] .= ' у воды; ';
-            if(isset($_POST['tent']))
-                $payload['details'] .= ' с шатром; ';
-            if(isset($_POST['country']))
-                $payload['details'] .= ' за городом; ';
-            if(isset($_POST['incity']))
-                $payload['details'] .= ' в черте города; ';
-        }
-        if(isset($_POST['type']) && $_POST['type'] == 'item')
-            $payload['details'] .= ' Клиент сделал заявку на конкретный зал - <a href="'.$_POST['url'].'">'.$_POST['url'].'</a>';
-        if(isset($_POST['url']))
-            $payload['details'] .= ' Заявка отправлена с <a href="'.$_POST['url'].'">'.$_POST['url'].'</a>';
+            $namesItems = [];
+            foreach ($itemsInCookie as $item) {
+                $elastic_model = new ElasticItems;
+                $item = $elastic_model::find()
+                    ->query(['bool' => ['must' => ['match' => ['unique_id' => $item]]]])
+                    ->limit(1)
+                    ->search();
+                $item = $item['hits']['hits'][0];
+                $namesItems[] = $item['gorko_id'];
+            }
 
-        $payload['event_type'] = "Wedding";
-//        $payload['city_id'] = 4400;
-        $payload['city_id'] = Yii::$app->params['subdomen_id'];
+            $listCookie = '';
+            foreach ($namesItems as $number => $name) {
+                $listCookie .= "%0A".++$number.'. '.$name;
+            }
+        }
 
         $content = '';
         foreach ($payload as $key => $item) {
@@ -213,14 +253,5 @@ class FormController extends Controller
         }
 
         $sendToTelegram = fopen("https://api.telegram.org/bot{$token}/sendMessage?chat_id={$chat_id}&parse_mode=html&text={$content}","r");
-
-//        $telegram = new Telegram\Bot\Api($token);
-//
-//        $res = $telegram->sendMessage(
-//            $chat_id,//'chat_id'
-//            $payload,//'text'
-//            true//disable_web_page_preview,
-//
-//        );
     }
 }
