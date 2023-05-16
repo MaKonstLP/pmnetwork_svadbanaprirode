@@ -34,6 +34,10 @@ class FavoritesController extends Controller
             ],
 
         ])->limit(100)->all();
+        
+//        echo "<pre>";
+//        print_r($rooms);
+//        die();
 
         $params = [
             'rating' => true,

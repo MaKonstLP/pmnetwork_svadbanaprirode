@@ -76,7 +76,7 @@ class FormController extends Controller
                 ->limit(1)
                 ->search();
             $item = $item['hits']['hits'][0];
-            $namesItems[] = $item['gorko_id'];
+            $namesItems[] = $item['restaurant_gorko_id'].' - '.$item['gorko_id'].' - '.$item['alias_rus'];
         }
 
         $listCookie = '';
@@ -100,7 +100,7 @@ class FormController extends Controller
         if(isset($_POST['water']) || isset($_POST['tent']) || isset($_POST['country']) || isset($_POST['incity']) || isset($_POST['connection']) ){
             $payload['details'] .= 'Клиент просит связаться с ним через: ';
             if(isset($_POST['connection']))
-                $payload['details'] .= $_POST['connection'];
+                $payload['details'] .= $_POST['connection']."%0A";
             $payload['details'] .= 'Клиент просит подобрать зал по условиям: ';
             if(isset($_POST['water']))
                 $payload['details'] .= ' у воды; ';
@@ -111,7 +111,7 @@ class FormController extends Controller
             if(isset($_POST['incity']))
                 $payload['details'] .= ' в черте города; ';
 
-            $payload['details'] .= "%0A".'Клиент добавил в избранное залы:'.$listCookie."%0A";
+            $payload['details'] .= "%0A".'Клиент добавил в избранное (id ресторана - id зала - город):'.$listCookie."%0A";
         }
         if(isset($_POST['type']) && $_POST['type'] == 'item')
             $payload['details'] .= ' Клиент сделал заявку на конкретный зал - '.$_POST['url'];
@@ -120,8 +120,7 @@ class FormController extends Controller
 
         $payload['event_type'] = "Wedding";
         $payload['city_id'] = Yii::$app->params['subdomen_id'];
-
-
+        
         $this->SendTg(true, $payload);
 
         $resp = GorkoLeadApi::send_lead('v.gorko.ru', 'svadbanaprirode', $payload);
@@ -238,7 +237,7 @@ class FormController extends Controller
                     ->limit(1)
                     ->search();
                 $item = $item['hits']['hits'][0];
-                $namesItems[] = $item['gorko_id'];
+                $namesItems[] = $item['restaurant_gorko_id'].' - '.$item['gorko_id'].' - '.$item['alias_rus'];
             }
 
             $listCookie = '';

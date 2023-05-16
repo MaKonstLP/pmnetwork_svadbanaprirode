@@ -62,6 +62,7 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
             'type',
             'city_id',
             'alias',
+            'alias_rus',
             'rent_only',
             'rent_room_only',
             'banquet_price',
@@ -159,7 +160,8 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
                     'outside_registration'             => ['type' => 'integer'],
                     'payment_model'                    => ['type' => 'integer'],
                     'type_name'                        => ['type' => 'text'],
-                    'alias'                         => ['type' => 'text'],
+                    'alias'                            => ['type' => 'text'],
+                    'alias_rus'                            => ['type' => 'text'],
                     'name'                             => ['type' => 'text'],
                     'features'                         => ['type' => 'text'],
                     'cover_url'                        => ['type' => 'text'],
@@ -359,7 +361,8 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
         $record->id  = $room->id;
 
         $record->restaurant_id = $restaurant->id;
-        $record->restaurant_gorko_id = $restaurant->gorko_id;
+//        $record->restaurant_gorko_id = $restaurant->gorko_id;
+        $record->restaurant_gorko_id = $room->restaurant_id;
         $record->restaurant_price = $restaurant->price;
         $record->restaurant_district = $restaurant->district;
         $record->restaurant_region = !empty($restaurants_region[$restaurant->district]['name_short']) ? $restaurants_region[$restaurant->district]['name_short'] : '';
@@ -395,6 +398,7 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
         foreach ($subdomens as $key => $subdomen) {
             if ($subdomen['city_id'] == $restaurant->city_id) {
                 $record->alias = $subdomen->alias;
+                $record->alias_rus = $subdomen->name;
             }
         }
 
