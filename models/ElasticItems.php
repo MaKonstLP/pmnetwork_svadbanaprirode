@@ -522,7 +522,7 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
         $record->bright_room = $room->bright_room;
         $record->separate_entrance = $room->separate_entrance;
         $record->type_name = $room->type_name;
-        $record->name = $room->name;
+        $record->name = self::normalizeRegName($room->name);
         $record->features = $room->features;
         $record->cover_url = $room->cover_url;
 
@@ -608,6 +608,25 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
         }
         
         return $result;
+    }
+
+    /**
+     * Приводит строку к виду Xxx xxx «Xxx xxx» xxx
+     * т.е. первая буква в выражении и первая в кавычках - заглавные, а остальные прописные
+     * @param  $string String Входная строка
+     * @return String
+     */
+    public static function normalizeRegName($string) {
+        $string = mb_strtolower($string);
+        $arr = preg_split('/(«|"|»)/', $string);
+
+        foreach( $arr as $key=>$val )
+            $arr[$key] = trim(mb_strtoupper(mb_substr($val, 0, 1), 'UTF-8').mb_substr($val, 1, strlen($val)));
+
+        if (!empty($arr[1]))
+            $arr[1] = '«'.$arr[1].'»';
+
+        return implode(' ', $arr);
     }
 
     public static function updateDocument($data, $id, $options = [])

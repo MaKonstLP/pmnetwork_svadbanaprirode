@@ -17,6 +17,12 @@ export default class Form {
 	    im_phone.mask($(this.$form).find('[name="phone"]'));
 
 		this.bind();
+
+		this.is_commision;
+		if ($('.object_book_hidden_button'))
+			this.is_commision = $('.object_book_hidden_button').data('commission') == 2 ? true : false;
+
+		// console.log('this.is_commision', this.is_commision);
 	}
 
 	bind() {
@@ -200,6 +206,10 @@ export default class Form {
 	success(data, formType) {
 		//modal.append(data);
 		//modal.show();
+
+		if (this.is_commision && formType == 'help')
+			formType = 'help-comm';
+
 		switch(formType) {
 		  case 'main':
 		    ym(64598434,'reachGoal','otpravit_zabronirovat_listing');
@@ -220,11 +230,21 @@ export default class Form {
 		    ym(64598434,'reachGoal','form_room');
 		    gtag('event', 'form');
 		    break;
+
+		  case 'item-comm':
+		  	ym(64598434,'reachGoal','form_room_com');
+		  	gtag('event', 'form_room_com');
+		  	break;
 		    
 		  case 'help':
 		    ym(64598434,'reachGoal','otpravka_pomoch_float');
 		    gtag('event', 'otpravka_pomoch_float');
 		    break;
+
+		  case 'help-comm':
+		  	ym(64598434,'reachGoal','shapka_podval_kr');
+		  	gtag('event', 'shapka_podval_kr');
+		  	break;
 
 		  case 'book':
 		  	ym(64598434,'reachGoal','zayaka_pochta');

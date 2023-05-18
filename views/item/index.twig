@@ -35,7 +35,7 @@
                         {% for key,image in item.images %}
                             <div class="swiper-slide" data-index="{{ key }}">
 {#                                <a href="{{image.waterpath}}=s0" data-img-link>#}
-                                    <img src="{{image.waterpath}}=w710-h472-n-l95-rw" data-img="{{image.waterpath}}=s0" alt="Фото №{{loop.index}} зала {{item.name}}" data-gallery-view data-img-link/>
+                                    <img src="{{image.waterpath ? image.waterpath : image.realpath}}=w710-h472-n-l95-rw" data-img="{{image.waterpath ? image.waterpath : image.realpath}}=s0" alt="Фото №{{loop.index}} зала {{item.name}}" data-gallery-view data-img-link/>
 {#                                </a>#}
                             </div>
                         {% endfor %}
@@ -47,7 +47,7 @@
                     <div class="swiper-wrapper">
                         {% for key, image in item.images %}
                             <div class="swiper-slide object_thumb" data-thumb-active="0" data-thumb-number="{{ key }}">
-                                <img src="{{image.subpath}}=w138-h92-n-l95-rw" alt="Фото №{{loop.index}} зала {{item.name}}"/>
+                                <img src="{{image.subpath ? image.subpath : image.realpath }}=w138-h92-n-l95-rw" alt="Фото №{{loop.index}} зала {{item.name}}"/>
                             </div>
                         {% endfor %}
                     </div>
@@ -385,7 +385,7 @@
             {% endif %}
 
             <div class="item-book-form">
-                {{ this.render('//components/generic/form.twig', {'type' : 'item', 'venue_id': item.restaurant_gorko_id, 'room_name':item.name}) | raw }}
+                {{ this.render('//components/generic/form.twig', {'type' : (item.restaurant_commission==2) ? 'item-comm' : 'item', 'venue_id': item.restaurant_gorko_id, 'room_name': item.name}) | raw }}
             </div>
         </div>
     </main>

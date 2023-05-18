@@ -2,7 +2,7 @@
 
 	<span id="form_item" class="form_item_anchor"></span>
 
-	{% if type == 'item' or type == 'favorites' %}
+	{% if type == 'item' or type == 'item-comm' or type == 'favorites' %}
 		<img class="flower_corner top_left" src="/img/flower_corner.svg" alt="">
 		<img class="flower_corner top_right" src="/img/flower_corner.svg" alt="">
 		<img class="flower_corner bottom_right"src="/img/flower_corner.svg" alt="">
@@ -14,7 +14,7 @@
 	</div>
 
 	<div class="form_main">
-		{% if type != 'item' %}
+		{% if type != 'item' and type != 'item-comm' %}
 			{% if type == 'favorites' %}
 				<div class="form_title">
 					<p class="form_title_main">Узнать наличие зала из <span>избранного</span> на дату и стоимость свадьбы</p>
@@ -42,7 +42,7 @@
 				{% endif %}
 			{% endif %}
 
-		{% elseif type == 'item' %}
+		{% elseif type == 'item' or type == 'item-comm' %}
 			<div class="form_title">
 				<p class="form_title_main">Хотите свадьбу в этом зале?</p>
 			</div>
@@ -71,7 +71,7 @@
 					<input type="text" name="count" inputmode="numeric"/>
 				</div>
 
-				{% if type != 'item' and type != 'main' %}
+				{% if type != 'item' and type != 'item-comm' and type != 'main' %}
 
 				<div class="form_checkboxes">
 					<div class="checkbox_title">Зал должен быть:</div>

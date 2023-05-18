@@ -5,5 +5,9 @@
 </div>
 <div class="title">
 	<h1>{{seo.h1}}</h1>
-	<div class="title_count">{{count}} зал{{Declension.end_rooms(count)}}</div>
+	{% if (isShater) %}
+		<div class="title_count">{{count}} {{Declension.get(count, 'шат')}}</div>
+	{% else %}
+		<div class="title_count">{{count}} зал{{Declension.end_rooms(count)}}</div>
+	{% endif %}
 </div>
