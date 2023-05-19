@@ -43,6 +43,10 @@ class ItemController extends Controller
         if (empty($item) or !isset($item['hits']['hits'][0])) {
             //КОСТЫЛЬ ДЛЯ РЕДИРЕКТОВ НА СТАРЫЕ ID, ЕСЛИ ОН СБИЛСЯ
             $old_id = RoomsUniqueIdOld::find('id')->where(['unique_id' => $id])->one();
+
+            if (empty($old_id))
+                throw new \yii\web\NotFoundHttpException();
+
             $unique_id_temp = RoomsUniqueId::find('unique_id')->where(['id' => $old_id['id']])->one();
 
             if (empty($unique_id_temp['unique_id']))
