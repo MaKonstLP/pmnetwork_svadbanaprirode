@@ -40,14 +40,19 @@ class ItemController extends Controller
             ->limit(1)
             ->search();
 
+//        die;
         if (empty($item) or !isset($item['hits']['hits'][0])) {
             //КОСТЫЛЬ ДЛЯ РЕДИРЕКТОВ НА СТАРЫЕ ID, ЕСЛИ ОН СБИЛСЯ
             $old_id = RoomsUniqueIdOld::find('id')->where(['unique_id' => $id])->one();
-            $unique_id_temp = RoomsUniqueId::find('unique_id')->where(['id' => $old_id])->one();
+            $unique_id_temp = RoomsUniqueId::find('unique_id')->where(['id' => $old_id['id']])->one();
+
+            if (empty($unique_id_temp['unique_id']))
+                throw new \yii\web\NotFoundHttpException();
+
             $unique_id_temp = $unique_id_temp['unique_id'];
 
-            if ($unique_id_temp) {
-                $redirect_url = Yii::$app->params['subdomen'].'catalog/'.$unique_id_temp;
+            if (empty($unique_id_temp)) {
+                $redirect_url = Yii::$app->params['subdomen'].'catalog/'.$unique_id_temp.'/';
                 return $this->redirect([$redirect_url], 302, false);
             } else {
                 throw new \yii\web\NotFoundHttpException();
