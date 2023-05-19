@@ -4,6 +4,7 @@ namespace app\modules\svadbanaprirode\controllers;
 
 use Yii;
 use yii\base\InvalidParamException;
+use yii\web\Response;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -37,8 +38,22 @@ class ItemController extends Controller
             ->limit(1)
             ->search();
 
-        if (empty($item) or !isset($item['hits']['hits'][0]))
-            throw new \yii\web\NotFoundHttpException();
+        if (empty($item) or !isset($item['hits']['hits'][0])) {
+            //КОСТЫЛЬ ДЛЯ РЕДИРЕКТОВ НА СТАРЫЕ ID, ЕСЛИ ОН СБИЛСЯ
+            $old_id = Yii::$app->db_old->createCommand('SELECT id FROM rooms_unique_id WHERE unique_id='.$id)->queryScalar();
+            $unique_id_temp = Yii::$app->db->createCommand('SELECT unique_id FROM rooms_unique_id WHERE id='.$old_id)->queryScalar();
+
+            //echo "<pre>";
+            //print_r($unique_id_temp);
+            //die();
+
+            if ($unique_id_temp) {
+                $redirect_url = Yii::$app->params['subdomen'].'catalog/'.$unique_id_temp;
+                return $this->redirect([$redirect_url], 302, false);
+            } else {
+                throw new \yii\web\NotFoundHttpException();
+            }
+        }
 
         $item = $item['hits']['hits'][0];
 
