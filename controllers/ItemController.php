@@ -11,8 +11,10 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\Rooms;
 use common\models\Seo;
+use common\models\RoomsUniqueId;
 use app\modules\svadbanaprirode\models\ItemSpecials;
 use frontend\modules\svadbanaprirode\models\ElasticItems;
+use frontend\modules\svadbanaprirode\models\RoomsUniqueIdOld;
 use frontend\components\Breadcrumbs;
 use common\models\elastic\ItemsWidgetElastic;
 
@@ -40,12 +42,9 @@ class ItemController extends Controller
 
         if (empty($item) or !isset($item['hits']['hits'][0])) {
             //КОСТЫЛЬ ДЛЯ РЕДИРЕКТОВ НА СТАРЫЕ ID, ЕСЛИ ОН СБИЛСЯ
-            $old_id = Yii::$app->db_old->createCommand('SELECT id FROM rooms_unique_id WHERE unique_id='.$id)->queryScalar();
-            $unique_id_temp = Yii::$app->db->createCommand('SELECT unique_id FROM rooms_unique_id WHERE id='.$old_id)->queryScalar();
-
-            //echo "<pre>";
-            //print_r($unique_id_temp);
-            //die();
+            $old_id = RoomsUniqueIdOld::find('id')->where(['unique_id' => $id])->one();
+            $unique_id_temp = RoomsUniqueId::find('unique_id')->where(['id' => $old_id])->one();
+            $unique_id_temp = $unique_id_temp['unique_id'];
 
             if ($unique_id_temp) {
                 $redirect_url = Yii::$app->params['subdomen'].'catalog/'.$unique_id_temp;
