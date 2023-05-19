@@ -36,7 +36,7 @@ class FormController extends Controller
         if(isset($_POST['water']) || isset($_POST['tent']) || isset($_POST['country']) || isset($_POST['incity']) || isset($_POST['connection']) ){
             $payload['details'] .= 'Клиент просит связаться с ним через: ';
             if(isset($_POST['connection']))
-                $payload['details'] .= $_POST['connection'];
+                $payload['details'] .= $_POST['connection']."%0A";
             $payload['details'] .= 'Клиент просит подобрать зал по условиям: ';
             if(isset($_POST['water']))
                 $payload['details'] .= ' у воды; ';
