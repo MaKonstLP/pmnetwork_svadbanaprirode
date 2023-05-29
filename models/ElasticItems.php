@@ -59,6 +59,7 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
             'price',
             'capacity_reception',
             'capacity',
+            'capacity_min',
             'type',
             'city_id',
             'alias',
@@ -148,6 +149,7 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
                     'price'                            => ['type' => 'integer'],
                     'capacity_reception'               => ['type' => 'integer'],
                     'capacity'                         => ['type' => 'integer'],
+                    'capacity_min'                     => ['type' => 'integer'],
                     'type'                             => ['type' => 'integer'],
                     'rent_only'                        => ['type' => 'integer'],
                     'rent_room_only'                   => ['type' => 'integer'],
@@ -513,6 +515,7 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
         $record->restaurant_min_capacity = $room->capacity_min;
         $record->restaurant_max_capacity = $room->capacity;
         $record->capacity = $room->capacity;
+        $record->capacity_min = $room->capacity_min;
         $record->type = $room->type;
         $record->rent_only = $room->rent_only;
         $record->rent_room_only = $room->rent_room_only;

@@ -144,7 +144,7 @@ class FormController extends Controller
 
         $msg  = $this->renderPartial('//emails/roominfo.twig', array(
 //            'url' => Yii::$app->params['subdomen_alias'] ? 'https://'.Yii::$app->params['subdomen_alias'].'.svadbanaprirode_dev.com/catalog/'.$_POST['room_id'].'/'  : 'http://svadbanaprirode_dev.com/catalog/'.$_POST['room_id'].'/',
-            'url' => 'http://svadbanaprirode_dev.com/'.$item['unique_id'].'/',
+            'url' => 'https://svadbanaprirode.com/'.$_POST['city_link'].'catalog/'.$item['unique_id'].'/',
             'item' => $item,
 //            'link' => Yii::$app->params['subdomen_alias'] ? 'https://'.Yii::$app->params['subdomen_alias'].'.svadbanaprirode_dev.com' : 'http://svadbanaprirode_dev.com'
         ));

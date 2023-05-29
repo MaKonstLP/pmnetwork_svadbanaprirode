@@ -89,7 +89,8 @@ class ItemController extends Controller
             'queue_id' => $id,
             'seo' => $seo,
             'other_rooms' => $other_rooms,
-            'similar_rooms' => $similar_rooms
+            'similar_rooms' => $similar_rooms,
+            'city_link' => Yii::$app->params['subdomen']
         ));
     }
 
