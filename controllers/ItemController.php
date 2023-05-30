@@ -69,7 +69,7 @@ class ItemController extends Controller
             if (!empty($unique_id_temp) and $id != $unique_id_temp and !empty($item_tmp['hits']['hits'])) {
                 $redirect_url = Yii::$app->params['subdomen'].'catalog/'.$unique_id_temp.'/';
 
-                header('Location: https://svadbanaprirode.com/'.$redirect_url);
+                header('Location: https://svadbanaprirode.com/'.$redirect_url, true,301);
                 exit;
 //                return $this->redirect([$redirect_url], 302);
             } else {
