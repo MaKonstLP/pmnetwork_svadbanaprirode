@@ -54,9 +54,24 @@ class ItemController extends Controller
 
             $unique_id_temp = $unique_id_temp['unique_id'];
 
-            if (!empty($unique_id_temp) && $id != $unique_id_temp) {
+            $item_tmp = $elastic_model::find()
+                ->query([
+                    'bool' => [
+                        'must' => [
+                            ['match' => ['unique_id' => $unique_id_temp]],
+                            ['match' => ['city_id' => \Yii::$app->params['subdomen_id']]],
+                        ]
+                    ]
+                ])
+                ->limit(1)
+                ->search();
+
+            if (!empty($unique_id_temp) and $id != $unique_id_temp and !empty($item_tmp['hits']['hits'])) {
                 $redirect_url = Yii::$app->params['subdomen'].'catalog/'.$unique_id_temp.'/';
-                return $this->redirect([$redirect_url], 302, false);
+
+                header('Location: https://svadbanaprirode.com/'.$redirect_url);
+                exit;
+//                return $this->redirect([$redirect_url], 302);
             } else {
                 throw new \yii\web\NotFoundHttpException();
             }
