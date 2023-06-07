@@ -35,10 +35,6 @@ class SiteController extends Controller
        //    $room_uid->save();
        //}
 
-//        echo '<pre>';
-//        print_r($properties);
-//        die();
-
         $elastic_model = new ElasticItems;
 
         $filter_model = Filter::find()->with('items')->all();
@@ -56,6 +52,12 @@ class SiteController extends Controller
             'filter_active' => [],
             'filter_model' => $filter_model
         ]);
+
+        foreach ($apiMain['widgets'] as $key => $items) {
+//            $items_widget = [];
+            $items_widget = $this->sortBeaty($items['items']);
+            $apiMain['widgets'][$key]['items'] = $items_widget;
+        }
 
         return $this->render('index.twig', [
             'filter' => $filter,
@@ -127,5 +129,28 @@ class SiteController extends Controller
         $this->view->title = $seo['title'];
         $this->view->params['desc'] = $seo['description'];
         $this->view->params['kw'] = $seo['keywords'];
+    }
+
+    private function sortBeaty($items) {
+        if (empty($items))
+            return [];
+
+        $beaty_commission = array_filter($items, function ($item){
+            return ($item->sort_type == 1 and $item->restaurant_commission == 2);
+        });
+
+        $beaty_uncommission = array_filter($items, function ($item){
+            return ($item->sort_type == 1 and $item->restaurant_commission != 2);
+        });
+
+        $unbeaty_commission = array_filter($items, function ($item){
+            return ($item->sort_type == 0 and $item->restaurant_commission == 2);
+        });
+
+        $unbeaty_uncommission = array_filter($items, function ($item){
+            return ($item->sort_type == 0 and $item->restaurant_commission != 2);
+        });
+
+        return $beaty_commission + $unbeaty_commission + $beaty_uncommission + $unbeaty_uncommission;
     }
 }

@@ -16,6 +16,7 @@ use frontend\components\QueryFromSlice;
 use frontend\components\Breadcrumbs;
 use common\models\ItemsFilter;
 use common\models\elastic\ItemsFilterElastic;
+//use frontend\modules\svadbanaprirode\models\ItemsFilterElastic;
 use frontend\modules\svadbanaprirode\models\ElasticItems;
 use backend\models\Filter;
 use backend\models\Slices;
@@ -113,6 +114,9 @@ class ListingController extends Controller
         $elastic_model = new ElasticItems;
         $items = new ItemsFilterElastic($params_filter, $per_page, $page, false, 'rooms', $elastic_model, false, false, false, false, false, true);
 
+//        $items_beatiful = $this->getBeatifulRooms();
+//        $items = $this->mergeArrays($items, $items_beatiful, $page, $per_page);
+
         if ($page > 1) {
             $seo['text_top'] = '';
             $seo['text_bottom'] = '';
@@ -148,6 +152,7 @@ class ListingController extends Controller
 
         if ($isShater) {
             $items = $this->getShaters();
+            $items = $this->sortBeaty($items);
             $total = count($items);
             $items = array_slice($items, ($page-1)*$per_page, $per_page);
             $pages = ceil($total / $per_page);
@@ -161,23 +166,13 @@ class ListingController extends Controller
         if (!empty($get['slice']) && $get['slice'] == 'na-verande') {
             $elastic_model = new ElasticItems;
             $items_craft =  $this->getVerandsAndTerras();
+
             $elastic_model = new ElasticItems;
             $items_tmp = new ItemsFilterElastic($params_filter, 9999, 0, false, 'rooms', $elastic_model, false, false, false, false, false, true);
             $items_tmp = $items_tmp->items;
 
-            //обьединяем массивы без дублей
-            //$items_craft залы у которых в названии есть "веранда" или "терраса"
-            //$items_tmp залы найденные в результате фильтрации
-            $items = [];
-            foreach ($items_craft as $item) {
-                $items[$item['unique_id']] = $item;
-            }
-            foreach ($items_tmp as $item) {
-                if (!isset($items[$item['unique_id']])) {
-                    $items[$item['unique_id']] = $item;
-                }
-            }
-
+            $items = $this->mergeArrays($items_craft, $items_tmp);
+            $items = $this->sortBeaty($items);
             $items = array_values($items);
             $total = count($items);
             $items = array_slice($items, ($page-1)*$per_page, $per_page);
@@ -199,6 +194,9 @@ class ListingController extends Controller
             $seo['text_bottom'] = '';
         }
 
+//        $items_beatiful = $this->getBeatifulRooms();
+//        $items = $this->mergeArrays($items, $items_beatiful, $page, $per_page);
+        $items = $this->sortBeaty($items);
 
 //        echo '<pre>';
 //        print_r($items);
@@ -241,6 +239,7 @@ class ListingController extends Controller
         
         if ($isShater) {
             $items = $this->getShaters();
+            $items = $this->sortBeaty($items);
             $total = count($items);
             $items = array_slice($items, ($params['page']-1)*$this->per_page, $this->per_page);
             $pages = ceil($total / $this->per_page);
@@ -257,18 +256,8 @@ class ListingController extends Controller
             $items_tmp = new ItemsFilterElastic($params['params_filter'], 9999, 0, false, 'rooms', $elastic_model, false, false, false, false, false, true);
             $items_tmp = $items_tmp->items;
 
-            //обьединяем массивы без дублей
-            //$items_craft залы у которых в названии есть "веранда" или "терраса"
-            //$items_tmp залы найденные в результате фильтрации
-            $items = [];
-            foreach ($items_craft as $item) {
-                $items[$item['unique_id']] = $item;
-            }
-            foreach ($items_tmp as $item) {
-                if (!isset($items[$item['unique_id']])) {
-                    $items[$item['unique_id']] = $item;
-                }
-            }
+            $items = $this->mergeArrays($items_craft, $items_tmp);
+            $items = $this->sortBeaty($items);
             $items = array_values($items);
             $total = count($items);
             $items = array_slice($items, ($params['page']-1)*$this->per_page, $this->per_page);
@@ -320,6 +309,8 @@ class ListingController extends Controller
         }
 
         $badge_type['y-vody'] = !empty($params['params_filter']['y-vody']) ? true : false;
+
+        $items = $this->sortBeaty($items);
 
         return json_encode([
             'listing' => $this->renderPartial('//components/generic/listing.twig', array(
@@ -444,6 +435,22 @@ class ListingController extends Controller
         return $items;
     }
 
+    private function getBeatifulRooms() {
+        $elastic_model = new ElasticItems;
+        $items = ElasticItems::find()->query([
+            'bool' => [
+                'must' => [
+                    [
+                        ['match' => ['city_id' => \Yii::$app->params['subdomen_id']]],
+                        ['match' => ['sort_type' => 1]],
+                    ],
+                ]
+            ]
+        ])->limit(9999)->all();
+
+        return $items;
+    }
+
     private function getSeo($type, $page, $count = 0)
     {
         $seo = new Seo($type, $page, $count);
@@ -459,6 +466,46 @@ class ListingController extends Controller
 //			$this->view->params['canonical'] = $canonical;
         }
         $this->view->params['kw'] = $seo['keywords'];
+    }
+
+    private function sortBeaty($items) {
+        if (empty($items))
+            return [];
+
+        $beaty_commission = array_filter($items, function ($item){
+            return ($item->sort_type == 1 and $item->restaurant_commission == 2);
+        });
+
+        $beaty_uncommission = array_filter($items, function ($item){
+            return ($item->sort_type == 1 and $item->restaurant_commission != 2);
+        });
+
+        $unbeaty_commission = array_filter($items, function ($item){
+            return ($item->sort_type == 0 and $item->restaurant_commission == 2);
+        });
+
+        $unbeaty_uncommission = array_filter($items, function ($item){
+            return ($item->sort_type == 0 and $item->restaurant_commission != 2);
+        });
+
+        return $beaty_commission + $unbeaty_commission + $beaty_uncommission + $unbeaty_uncommission;
+    }
+
+    private function mergeArrays($items, $items_beatiful, $page = '', $per_page = '') {
+        $items_res = [];
+        foreach ($items_beatiful as $item) {
+            $items_res[$item['unique_id']] = $item;
+        }
+        foreach ($items as $item) {
+            if (!isset($items_res[$item['unique_id']])) {
+                $items_res[$item['unique_id']] = $item;
+            }
+        }
+
+        if (!empty($page) and !empty($per_page))
+            $items_res = array_slice($items_res, ($page-1)*$per_page, $per_page);
+
+        return $items_res;
     }
 
 }

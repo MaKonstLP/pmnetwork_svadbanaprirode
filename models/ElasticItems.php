@@ -14,6 +14,7 @@ use common\models\RestaurantsLocation;
 use common\models\ImagesModule;
 use common\models\DistrictGlobal;
 use common\components\AsyncRenewImages;
+use frontend\modules\svadbanaprirode\models\RoomsLocal;
 
 class ElasticItems extends \yii\elasticsearch\ActiveRecord
 {
@@ -83,6 +84,7 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
             'payment_model',
             'own_fruits',
             'own_ba_drinks',
+            'sort_type'
         ];
     }
 
@@ -161,6 +163,7 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
                     'separate_entrance'                => ['type' => 'integer'],
                     'outside_registration'             => ['type' => 'integer'],
                     'payment_model'                    => ['type' => 'integer'],
+                    'sort_type'                        => ['type' => 'integer'],
                     'type_name'                        => ['type' => 'text'],
                     'alias'                            => ['type' => 'text'],
                     'alias_rus'                            => ['type' => 'text'],
@@ -528,7 +531,6 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
         $record->name = self::normalizeRegName($room->name);
         $record->features = $room->features;
         $record->cover_url = $room->cover_url;
-
         $record->payment_model = $room->payment_model;
 
         //Уникальные св-ва для залов в модуле
@@ -543,6 +545,14 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
             $rooms_unique_id_upd->save();
             $record->unique_id = $new_id;
         }
+
+        $rooms_local = RoomsLocal::find()
+            ->select('sort_type')
+            ->where(['unique_id' => $record->unique_id])
+            ->scalar();
+
+        $record->sort_type = $rooms_local;
+
         //Картинки залов
         $images = [];
         $group = array();
@@ -636,6 +646,7 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
     {
         $db = static::getDb();
         $command = $db->createCommand();
+
         if ($command->exists(static::index(), static::type(), $id)) {
             $options['retry_on_conflict'] = 3;
             $command->update(static::index(), static::type(), $id, $data, $options);
