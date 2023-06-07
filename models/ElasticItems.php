@@ -89,8 +89,8 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
     }
 
     public static function index() {
-        return 'pmn_sp_rooms';
-//        return 'pmn_dev_1';
+//        return 'pmn_sp_rooms';
+        return 'pmn_dev_1';
     }
     
     public static function type() {
@@ -409,10 +409,13 @@ class ElasticItems extends \yii\elasticsearch\ActiveRecord
 
         //Отзывы с Яндекса из общей базы
         $reviews = [];
+        $reviews['id'] = 0;
+        $reviews['rate'] = 0;
+        $reviews['count'] = 0;
         if (isset($restaurant->yandexReview)) {
-            $reviews['id'] = $restaurant->yandexReview['rev_ya_id'];
-            $reviews['rate'] = $restaurant->yandexReview['rev_ya_rate'];
-            $reviews['count'] = $restaurant->yandexReview['rev_ya_count'];
+            $reviews['id'] = !empty($restaurant->yandexReview['rev_ya_id']) ? $restaurant->yandexReview['rev_ya_id'] : 0;
+            $reviews['rate'] = !empty($restaurant->yandexReview['rev_ya_rate']) ? $restaurant->yandexReview['rev_ya_rate'] : 0;
+            $reviews['count'] = !empty($restaurant->yandexReview['rev_ya_count']) ? $restaurant->yandexReview['rev_ya_count'] : 0;
         }
         $record->restaurant_rev_ya = $reviews;
 

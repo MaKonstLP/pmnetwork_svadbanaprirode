@@ -129,7 +129,9 @@ class FavoritesController extends Controller
     public function diffParams($params, $rooms)
     {
         $first_room = $rooms[0];
+
         foreach ($rooms as $room){
+
             if ($first_room['restaurant_rev_ya']['rate'] !== $room['restaurant_rev_ya']['rate'])
                 $params['rating'] = true;
 
