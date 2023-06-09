@@ -1,5 +1,6 @@
 'use strict';
 import Filter from './filter';
+import Img from './img';
 import YaMapAll from './map';
 import Swiper from 'swiper';
 import ItemSwiper from './item_swiper';
@@ -65,6 +66,7 @@ export default class Listing{
 				$('[data-listing-text-top]').html(response.text_top);
 				$('[data-listing-text-bottom]').html(response.text_bottom);
 				$('[data-pagination-wrapper]').html(response.pagination);
+				Img.imgInit();
 				document.title = response.seo_title;
 				// ItemSwiper.initSwiperListingGallery($('[data-item-swiper]'));
 				self.block.removeClass('_loading');

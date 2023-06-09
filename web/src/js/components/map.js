@@ -10,41 +10,41 @@ export default class YaMap {
 		this.myBalloonLayout = false;
 		this.myBalloonContentLayout = false;
 
-		self.init();
+		// self.init();
 
-		// window.addEventListener('click', () => {
-		// 	if (fired === false) {
-		// 		fired = true;
-		// 		load_other();
-		// 	}
-		// }, {passive: true});
-		//
-		// window.addEventListener('scroll', () => {
-		// 	if (fired === false) {
-		// 		fired = true;
-		// 		load_other();
-		// 	}
-		// }, {passive: true});
-		//
-		// window.addEventListener('mousemove', () => {
-		// 	if (fired === false) {
-		// 		fired = true;
-		// 		load_other();
-		// 	}
-		// }, {passive: true});
-		//
-		// window.addEventListener('touchmove', () => {
-		// 	if (fired === false) {
-		// 		fired = true;
-		// 		load_other();
-		// 	}
-		// }, {passive: true});
-		//
-		// function load_other() {
-		// 	setTimeout(function() {
-		// 		self.init();
-		// 	}, 100);
-		// }
+		window.addEventListener('click', () => {
+			if (fired === false) {
+				fired = true;
+				load_other();
+			}
+		}, {passive: true});
+
+		window.addEventListener('scroll', () => {
+			if (fired === false) {
+				fired = true;
+				load_other();
+			}
+		}, {passive: true});
+
+		window.addEventListener('mousemove', () => {
+			if (fired === false) {
+				fired = true;
+				load_other();
+			}
+		}, {passive: true});
+
+		window.addEventListener('touchmove', () => {
+			if (fired === false) {
+				fired = true;
+				load_other();
+			}
+		}, {passive: true});
+
+		function load_other() {
+			setTimeout(function() {
+				self.init();
+			}, 100);
+		}
 	}
 
 	script(url) {

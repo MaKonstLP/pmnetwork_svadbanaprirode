@@ -2,11 +2,13 @@
 import Cookies from 'js-cookie';
 import Swiper from 'swiper';
 import ItemSwiper from './item_swiper';
+import Img from './img';
 
 export default class Main {
     constructor() {
         let self = this;
         this.subdomen = $('[data-city-block]');
+        let imgLoader = new Img();
 
         $('.bottom_call').click(function(e) {
             e.preventDefault();

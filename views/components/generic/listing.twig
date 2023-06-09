@@ -1,4 +1,6 @@
+{% set lazyCounter = 0 %}
 {% for item in items %}
+    {% set lazyCounter = lazyCounter + 1 %}
     {#    href="/{{ app.params.subdomen }}catalog/{{item.unique_id}}/"#}
     <div class="item swiper-slide {{type}}" data-location="{{item.restaurant_location[0].id}}" data-rat="{{item.restaurant_rating}}">
 {#        <a href="/{{ app.params.subdomen }}catalog/{{item.unique_id}}/">#}
@@ -25,9 +27,14 @@
 
         <a href="/{{ app.params.subdomen }}catalog/{{item.unique_id}}/">
             <div class="item_img">
-                <img src="{{item.images[0].subpath ? item.images[0].subpath : item.images[0].realpath }}=rw" loading="lazy" alt="{{img_alt | replace({"**room**" : item.name}) | replace({"**restaurant**" : item.restaurant_name}) | replace({"**room_name**" : item.name}) }}"/>
+                {% if type == 'other' or lazyCounter > 4 %}
+                    <img class="_lazy" data-src="{{item.images[0].subpath ? item.images[0].subpath : item.images[0].realpath }}=rw" data-alt="{{img_alt | replace({"**room**" : item.name}) | replace({"**restaurant**" : item.restaurant_name}) | replace({"**room_name**" : item.name}) }}"/>
+                {% else %}
+                    <img src="{{item.images[0].subpath ? item.images[0].subpath : item.images[0].realpath }}=rw" alt="{{img_alt | replace({"**room**" : item.name}) | replace({"**restaurant**" : item.restaurant_name}) | replace({"**room_name**" : item.name}) }}"/>
+                {% endif %}
+
                 {% if item.images[1] %}
-                    <img class="item_img_subimg" loading="lazy" src="{{item.images[0].subpath ? item.images[0].subpath : item.images[0].realpath}}=rw" alt="{{img_alt | replace({"**room**" : item.name}) | replace({"**restaurant**" : item.restaurant_name}) | replace({"**room_name**" : item.name}) }} 2"/>
+                    <img class="item_img_subimg _lazy" data-src="{{item.images[1].subpath ? item.images[1].subpath : item.images[1].realpath}}=rw" data-alt="{{img_alt | replace({"**room**" : item.name}) | replace({"**restaurant**" : item.restaurant_name}) | replace({"**room_name**" : item.name}) }} 2"/>
                 {% endif %}
             </div>
         </a>

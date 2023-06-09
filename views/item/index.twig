@@ -32,10 +32,28 @@
 
                 <div class="swiper-container item_top_slider" data-gallery-main>
                     <div class="swiper-wrapper">
-                        {% for key,image in item.images %}
-                            <div class="swiper-slide" data-index="{{ key }}">
+                        <div class="swiper-slide" data-index="0">
+                            <img
+                                class="_lazy"
+                                src="{{item.images[0].waterpath ? item.images[0].waterpath : item.images[0].realpath}}=w710-h472-n-l80-rw"
+                                data-img="{{item.images[0].waterpath ? item.images[0].waterpath : item.images[0].realpath}}=s0"
+                                alt="Фото №{{loop.index}} зала {{item.images[0].name}}"
+                                data-gallery-view
+                                data-img-link
+                            />
+                        </div>
+                        {% for key,image in item.images|slice(1) %}
+                            <div class="swiper-slide" data-index="{{ key + 1 }}">
+                                <img
+                                    class="_lazy"
+                                    data-src="{{image.waterpath ? image.waterpath : image.realpath}}=w710-h472-n-l80-rw"
+                                    data-img="{{iimage.waterpath ? image.waterpath : image.realpath}}=s0"
+                                    data-alt="Фото №{{loop.index}} зала {{image.name}}"
+                                    data-gallery-view
+                                    data-img-link
+                                />
 {#                                <a href="{{image.waterpath}}=s0" data-img-link>#}
-                                    <img src="{{image.waterpath ? image.waterpath : image.realpath}}=w710-h472-n-l95-rw" data-img="{{image.waterpath ? image.waterpath : image.realpath}}=s0" alt="Фото №{{loop.index}} зала {{item.name}}" data-gallery-view data-img-link/>
+{#                                    <img src="{{image.waterpath ? image.waterpath : image.realpath}}=w710-h472-n-l80-rw" data-img="{{image.waterpath ? image.waterpath : image.realpath}}=s0" alt="Фото №{{loop.index}} зала {{item.name}}" data-gallery-view data-img-link/>#}
 {#                                </a>#}
                             </div>
                         {% endfor %}
@@ -45,9 +63,19 @@
                 </div>
                 <div class="swiper-container item_thumb_slider">
                     <div class="swiper-wrapper">
-                        {% for key, image in item.images %}
-                            <div class="swiper-slide object_thumb" data-thumb-active="0" data-thumb-number="{{ key }}">
-                                <img src="{{image.subpath ? image.subpath : image.realpath }}=w138-h92-n-l95-rw" alt="Фото №{{loop.index}} зала {{item.name}}"/>
+                        <div class="swiper-slide object_thumb" data-thumb-active="0" data-thumb-number="0">
+                            <img
+                                class="_lazy"
+                                data-src="{{item.images[0].subpath ? item.images[0].subpath : item.images[0].realpath }}=w138-h92-n-l40-rw"
+                                data-alt="Фото №{{loop.index}} зала {{item.name}}"
+                            />
+                        </div>
+                        {% for key, image in item.images|slice(1) %}
+                            <div class="swiper-slide object_thumb" data-thumb-active="0" data-thumb-number="{{ key + 1}}">
+                                <img
+                                    class="_lazy"
+                                    data-src="{{image.subpath ? image.subpath : image.realpath }}=w138-h92-n-l40-rw"
+                                    data-alt="Фото №{{loop.index}} зала {{item.name}}"/>
                             </div>
                         {% endfor %}
                     </div>
@@ -175,46 +203,6 @@
                                         {% endif %}
                                     </div>
                                 </div>
-                            {% elseif item.payment_model == 2 %}
-{#                                <div class="item_arenda_banket">#}
-{#                                    <span class="item_arenda_banket_title">Аренда с банкетом</span>#}
-{#                                    <div class="item_arenda_banket_info">#}
-{#                                        <div class="item_arenda_banket_zal">#}
-{#                                            Зал:#}
-{#                                            {% if item.rent_room_only %}#}
-{#                                                {% if item.rent_room_only == 0 %}#}
-{#                                                    <span>бесплатно</span>#}
-{#                                                {% else %}#}
-{#                                                    <span>{{ item.rent_room_only }} ₽</span>#}
-{#                                                {% endif %}#}
-{#                                            {% endif %}#}
-{#                                        </div>#}
-{#                                        {% if item.price and item.price > 0 %}#}
-{#                                            <div class="item_arenda_banket_banket">#}
-{#                                                Банкет:#}
-{#                                                <span>от {{ item.price }} ₽/чел.</span>#}
-{#                                            </div>#}
-{#                                        {% endif %}#}
-{#                                    </div>#}
-{#                                </div>#}
-                            {% elseif item.payment_model == 3 %}
-                                {#                            <div class="item_arenda_banket">#}
-                                {#                                <span class="item_arenda_banket_title">Аренда с банкетом3</span>#}
-                                {#                                <div class="item_arenda_banket_info">#}
-                                {#                                    <div class="item_arenda_banket_zal">#}
-                                {#                                        Зал:#}
-                                {#                                        {% if item.rent_only == true %}#}
-                                {#                                            <span>бесплатно</span>#}
-                                {#                                        {% else %}#}
-                                {#                                            {% if item.rent_room_only and item.rent_room_only == 0 %}#}
-                                {#                                                <span>бесплатно</span>#}
-                                {#                                            {% else %}#}
-                                {#                                                <span>{{ item.rent_room_only }} ₽</span>#}
-                                {#                                            {% endif %}#}
-                                {#                                        {% endif %}#}
-                                {#                                    </div>#}
-                                {#                                </div>#}
-                                {#                            </div>#}
                             {% endif %}
 
                             {% if (item.rent_only and item.rent_room_only > 0) %}
@@ -403,7 +391,7 @@
                 <p class="item__review-title">Отзывы о {{item.restaurant_name}}</p>
                 <span class="nav-label" data-nav-label="feedbacks"></span>
                 <div class="review_iframe_wrap">
-                    <iframe style="width:100%;height:100%;border:1px solid #e6e6e6;border-radius:8px;box-sizing:border-box" src="https://yandex.ru/maps-reviews-widget/{{item.restaurant_rev_ya.id}}?comments"></iframe>
+                    <iframe style="width:100%;height:100%;border:1px solid #e6e6e6;border-radius:8px;box-sizing:border-box" src="https://yandex.ru/maps-reviews-widget/{{item.restaurant_rev_ya.id}}?comments" async></iframe>
                     <a href="https://yandex.ru/maps/org/pansionat_sm_pension/{{item.restaurant_rev_ya.id}}" target="_blank" style="box-sizing:border-box;text-decoration:none;color:#b3b3b3;font-size:10px;font-family:YS Text,sans-serif;padding:0 20px;position:absolute;bottom:8px;width:100%;text-align:center;left:0;overflow:hidden;text-overflow:ellipsis;display:block;max-height:14px;white-space:nowrap;padding:0 16px;box-sizing:border-box">{{item.restaurant_name}} — Яндекс Карты</a>
                 </div>
             </div>
@@ -449,4 +437,4 @@
 
 </div>
 
-<script defer src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+{#<script async src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>#}
