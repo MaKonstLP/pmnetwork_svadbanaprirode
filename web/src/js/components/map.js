@@ -40,6 +40,13 @@ export default class YaMap {
 			}
 		}, {passive: true});
 
+		window.addEventListener('touchstart', () => {
+			if (fired === false) {
+				fired = true;
+				load_other();
+			}
+		}, {passive: true});
+
 		function load_other() {
 			setTimeout(function() {
 				self.init();

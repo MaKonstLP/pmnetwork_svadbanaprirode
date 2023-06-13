@@ -207,6 +207,7 @@
         .map{
             margin: unset;
             height: 577px;
+            background-color: $clrUltraLightGrey;
 
             @include for-laptop {
                 height: 285px;

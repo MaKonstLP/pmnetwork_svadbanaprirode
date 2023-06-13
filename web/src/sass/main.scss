@@ -46,6 +46,10 @@ body._overflow .main_wrap{
     filter: blur(5px);
 }
 
+img {
+    background-color: $clrUltraLightGrey;
+}
+
 .main_wrap._blur header{
     top: -10px;
     padding-top: 10px;
