@@ -33,6 +33,13 @@ export default class Img {
             }
         }, {passive: true});
 
+        window.addEventListener('touchstart', () => {
+            if (fired === false) {
+                fired = true;
+                load_other();
+            }
+        }, {passive: true});
+
         function load_other() {
             self.constructor.imgInit();
         }
