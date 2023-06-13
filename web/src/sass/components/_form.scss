@@ -24,12 +24,12 @@
 	.top_left {
 		top: -15px;
 		left: -15px;
-		transform: rotate(180deg);
+		transform: scale(-1, -1);
 	}
 	.top_right {
 		top: -15px;
 		right: -15px;
-		transform: rotate(180deg) scale(-1, 1);
+		transform: scale(1, -1);
 	}
 	.bottom_right {
 		bottom: -15px;
