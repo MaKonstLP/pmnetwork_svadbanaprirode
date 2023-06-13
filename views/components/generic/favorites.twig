@@ -18,7 +18,7 @@
                                         <div class="swiper-wrapper">
                                             {% for image in item.images %}
                                                 <div class="swiper-slide">
-                                                    <img src="{{image.subpath}}=rw" loading="lazy" alt="{{img_alt | replace({"**room**" : item.name}) | replace({"**restaurant**" : item.restaurant_name}) | replace({"**room_name**" : item.name}) }}"/>
+                                                    <img src="{{image.subpath ? image.subpath : image.realpath }}=rw" loading="lazy" alt="{{img_alt | replace({"**room**" : item.name}) | replace({"**restaurant**" : item.restaurant_name}) | replace({"**room_name**" : item.name}) }}"/>
                                                 </div>
                                             {% endfor %}
                                         </div>
