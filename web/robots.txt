@@ -24,3 +24,4 @@ Sitemap:  https://svadbanaprirode.com/nn/sitemap/
 Sitemap:  https://svadbanaprirode.com/chelyabinsk/sitemap/
 Sitemap:  https://svadbanaprirode.com/omsk/sitemap/
 Sitemap:  https://svadbanaprirode.com/voronezh/sitemap/
+Sitemap:  https://svadbanaprirode.com/volgograd/sitemap/
