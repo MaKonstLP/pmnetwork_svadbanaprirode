@@ -202,6 +202,8 @@ class FormController extends Controller
             $msg.='Должность: '.$_POST['position'].'<br>';
         if(isset($_POST['phone']))
             $msg.='Номер: '.$_POST['phone'].'<br>';
+        if(isset($_POST['email']))
+            $msg.='Email: '.$_POST['email'].'<br>';
         if(isset($_POST['name_room']))
             $msg.='Название площадки: '.$_POST['name_room'].'<br>';
         if(isset($_POST['city']))
