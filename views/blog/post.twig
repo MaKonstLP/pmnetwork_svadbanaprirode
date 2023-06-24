@@ -13,4 +13,32 @@
 		{{ post.getHtml([1])|raw }} 
 	</div>
 </div>
+<div data-widget-wrapper class="error_widget">
+	<div class="items_list_listing swiper-container" data-listing-wrapper>
+		<div class="items_list swiper-wrapper" data-listing-list>
+			{% for widget in widgets %}
+				{% if subdomen == ''%}
+					{% if widget.slice.alias != 'za-gorodom' %}
+						<a href="/{{subdomen}}catalog/{{widget.slice.alias}}/" class="item listing_widget_link swiper-slide">
+							<div class="listing_widget_link_img"></div>
+							<div class="listing_widget_link_text">{{widget.link_text}}</div>
+							<div class="listing_widget_link_arrow"></div>
+						</a>
+					{% endif %}
+				{% else %}
+					<a href="/{{subdomen}}catalog/{{widget.slice.alias}}/" class="item listing_widget_link swiper-slide">
+						<div class="listing_widget_link_img"></div>
+						<div class="listing_widget_link_text">{{widget.link_text}}</div>
+						<div class="listing_widget_link_arrow"></div>
+					</a>
+				{% endif %}
+			{% endfor %}
+		</div>
+		<div class="listing_widget_controll">
+			<div class="listing_widget_arrow _prev"></div>
+			<div class="listing_widget_pagination"></div>
+			<div class="listing_widget_arrow _next"></div>
+		</div>
+	</div>
+</div>
 

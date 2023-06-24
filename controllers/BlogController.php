@@ -4,7 +4,11 @@ namespace app\modules\svadbanaprirode\controllers;
 use common\models\blog\BlogPost;
 use common\models\blog\BlogTag;
 use common\models\Seo;
+use common\models\Filter;
+use common\models\Slices;
+use frontend\modules\svadbanaprirode\models\ElasticItems;
 use frontend\components\Breadcrumbs;
+use frontend\modules\svadbanaprirode\models\ItemsWidgetElastic;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
@@ -54,13 +58,22 @@ class BlogController extends Controller
 
   	public function actionPost($alias)
 	{
+        $elastic_model = new ElasticItems;
+        $filter_model = Filter::find()->with('items')->all();
+        $slices_model = Slices::find()->all();
+        $itemsWidget = new ItemsWidgetElastic;
+        $apiMain = $itemsWidget->getMain($filter_model, $slices_model, 'rooms', $elastic_model);
+
 		$post = BlogPost::findWithMedia()->with('blogPostTags')->where(['published' => true, 'alias' => $alias])->one();
 		if(empty($post)) {
 			return new NotFoundHttpException();
 		}
 		$seo = ArrayHelper::toArray($post->seoObject);
 		$this->setSeo($seo);
-		return $this->render('post.twig', compact('post'));
+		return $this->render('post.twig', [
+            'post' => $post,
+            'widgets' => $apiMain['widgets']
+        ]);
 	}
 
 	public function actionPreview($id)
