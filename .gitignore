@@ -1,3 +1,5 @@
 web/node_modules/*
+web/upload/
+web/upload/*
 web/dist/*
 runtime/*
