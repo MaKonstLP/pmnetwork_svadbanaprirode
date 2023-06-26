@@ -39,12 +39,8 @@
 			</div>
 			<div class="items_list_listing swiper-container" data-listing-wrapper>
 				<div class="items_list swiper-wrapper" data-listing-list>
-					{{ this.render('//components/generic/listing.twig', {'items':widget.items, 'img_alt': widget.img_alt, 'rests_properties': rests_properties}) | raw }}
-					<a href="/{{ app.params.subdomen }}catalog/{{widget.slice.alias}}/" class="item listing_widget_link swiper-slide">
-						<div class="listing_widget_link_img"></div>
-						<div class="listing_widget_link_text">{{widget.link_text | replace({"**city_dec**" : city_dec}) | replace({"**city_rod**" : city_rod}) | replace({"**city_name**" : city}) }}</div>
-						<div class="listing_widget_link_arrow"></div>
-					</a>
+					{{ this.render('//components/generic/listing_index.twig', {'items':widget.items, 'widget': widget, 'img_alt': widget.img_alt, 'rests_properties': rests_properties}) | raw }}
+
 				</div>
 				<div class="listing_widget_controll">
 					<div class="listing_widget_arrow _prev"></div>

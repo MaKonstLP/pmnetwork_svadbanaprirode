@@ -8,7 +8,8 @@ use yii\web\Controller;
 use frontend\modules\svadbanaprirode\models\ElasticItems;
 use frontend\components\ParamsFromQuery;
 use common\widgets\FilterWidget;
-use common\models\elastic\ItemsWidgetElastic;
+use frontend\modules\svadbanaprirode\models\ItemsWidgetElastic;
+//use common\models\elastic\ItemsWidgetElastic;
 use common\models\elastic\ItemsFilterElastic;
 use common\models\Seo;
 use common\models\Filter;
@@ -56,8 +57,23 @@ class SiteController extends Controller
         foreach ($apiMain['widgets'] as $key => $items) {
 //            $items_widget = [];
             $items_widget = $this->sortBeaty($items['items']);
-            $apiMain['widgets'][$key]['items'] = $items_widget;
+
+            //КРАФТОВЫЙ ВЫВОД
+            if ($items->slice->alias=="na-verande") {
+                $apiMain['widgets'][$key]['items'] = array_slice($this->getVerandsAndTerras(), 0, 8);
+            } elseif ($items->slice->alias=="v-sharte") {
+                $apiMain['widgets'][$key]['items'] = array_slice($this->getShaters(), 0, 8);
+            } else {
+                $apiMain['widgets'][$key]['items'] = $items_widget;
+            }
         }
+
+//        $x = $this->getShaters();
+//
+//        echo '<pre>';
+//        print_r($apiMain['widgets']);
+//        die();
+
 
         return $this->render('index.twig', [
             'filter' => $filter,
@@ -130,6 +146,74 @@ class SiteController extends Controller
         $this->view->params['desc'] = $seo['description'];
         $this->view->params['kw'] = $seo['keywords'];
     }
+
+    private function getShaters() {
+        $elastic_model = new ElasticItems;
+        $items = ElasticItems::find()->query([
+            'bool' => [
+                'must' => [
+                    [
+                        ['match' => ['city_id' => \Yii::$app->params['subdomen_id']]],
+                    ],
+                    [
+                        'bool' => [
+                            'should' => [
+                                [
+                                    'wildcard' => [
+                                        'name' => '*шатер*'
+                                    ]
+                                ],
+                                [
+                                    'wildcard' => [
+                                        'name' => '*шатёр*'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ])->limit(9999)->all();
+
+        return $items;
+    }
+
+    private function getVerandsAndTerras() {
+        $elastic_model = new ElasticItems;
+        $items = ElasticItems::find()->query([
+            'bool' => [
+                'must' => [
+                    [
+                        ['match' => ['city_id' => \Yii::$app->params['subdomen_id']]],
+                    ],
+                    [
+                        'bool' => [
+                            'should' => [
+                                [
+                                    'wildcard' => [
+                                        'name' => '*веранд*'
+                                    ]
+                                ],
+                                [
+                                    'wildcard' => [
+                                        'name' => '*террас*'
+                                    ]
+                                ],
+                                [
+                                    'wildcard' => [
+                                        'name' => '*terrace*'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ])->limit(9999)->all();
+
+        return $items;
+    }
+
 
     private function sortBeaty($items) {
         if (empty($items))

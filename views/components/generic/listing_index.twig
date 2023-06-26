@@ -1,0 +1,27 @@
+{% set lazyCounter = 0 %}
+
+{% set items = (items|length > 4 and items|length < 8) ? items | slice(0, 3) : items  %}
+{% set items = (items|length > 7) ? items | slice(0, 7) : items  %}
+
+{% for item in items %}
+    {% set lazyCounter = lazyCounter + 1 %}
+    {#    href="/{{ app.params.subdomen }}catalog/{{item.unique_id}}/"#}
+    {{ this.render('//components/generic/item.twig', {
+        'item': item,
+        'lazyCounter': lazyCounter,
+        'type': type,
+        'badge_type': badge_type,
+        'rests_properties': rests_properties,
+        'img_alt': img_alt
+    }) | raw }}
+
+{% endfor %}
+
+{% set count_widgets = widget.items|length %}
+{% if count_widgets > 4 %}
+    <a href="/{{ app.params.subdomen }}catalog/{{widget.slice.alias}}/" class="item listing_widget_link swiper-slide">
+        <div class="listing_widget_link_img"></div>
+        <div class="listing_widget_link_text">{{widget.link_text | replace({"**city_dec**" : city_dec}) | replace({"**city_rod**" : city_rod}) | replace({"**city_name**" : city}) }}</div>
+        <div class="listing_widget_link_arrow"></div>
+    </a>
+{% endif %}
