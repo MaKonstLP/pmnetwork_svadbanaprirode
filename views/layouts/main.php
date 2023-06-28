@@ -224,6 +224,10 @@ frontend\modules\svadbanaprirode\assets\AppAsset::register($this);
                             <a href="/advertising/" target="_blank" class="footer_pc _link">Реклама на сайте</a>
                         </div>
                     </div>
+                    <div class="footer_block _center">
+                        <a href="/blog/" target="_blank" class="footer_pc _link">Блог</a>
+                        <a href="/favorites/" target="_blank" class="footer_pc _link">Избранное</a>
+                    </div>
                     <div class="footer_block _right">
                         <div class="footer_phone">
                             <a href="tel:<?=Yii::$app->params['subdomen_phone']?>"><p><?=Yii::$app->params['subdomen_phone_pretty']?></p></a>
