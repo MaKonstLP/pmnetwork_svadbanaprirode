@@ -10,11 +10,21 @@
         <div class="items_list_listing swiper-container" data-listing-wrapper>
             <div class="items_list swiper-wrapper" data-listing-list>
                 {% for widget in widgets %}
-                    <a href="/{{subdomen}}catalog/{{widget.slice.alias}}/" class="item listing_widget_link swiper-slide">
-                        <div class="listing_widget_link_img"></div>
-                        <div class="listing_widget_link_text">{{widget.link_text}}</div>
-                        <div class="listing_widget_link_arrow"></div>
-                    </a>
+                    {% if subdomen == ''%}
+                        {% if widget.slice.alias != 'za-gorodom' %}
+                            <a href="/{{subdomen}}catalog/{{widget.slice.alias}}/" class="item listing_widget_link swiper-slide">
+                                <div class="listing_widget_link_img"></div>
+                                <div class="listing_widget_link_text">{{widget.link_text}}</div>
+                                <div class="listing_widget_link_arrow"></div>
+                            </a>
+                        {% endif %}
+                    {% else %}
+                        <a href="/{{subdomen}}catalog/{{widget.slice.alias}}/" class="item listing_widget_link swiper-slide">
+                            <div class="listing_widget_link_img"></div>
+                            <div class="listing_widget_link_text">{{widget.link_text}}</div>
+                            <div class="listing_widget_link_arrow"></div>
+                        </a>
+                    {% endif %}
                 {% endfor %}
             </div>
             <div class="listing_widget_controll">
