@@ -60,9 +60,9 @@ class SiteController extends Controller
 
             //КРАФТОВЫЙ ВЫВОД
             if ($items->slice->alias=="na-verande") {
-                $apiMain['widgets'][$key]['items'] = array_slice($this->getVerandsAndTerras(), 0, 8);
+                $apiMain['widgets'][$key]['items'] = array_slice($this->sortBeaty($this->getVerandsAndTerras()), 0, 8);
             } elseif ($items->slice->alias=="v-sharte") {
-                $apiMain['widgets'][$key]['items'] = array_slice($this->getShaters(), 0, 8);
+                $apiMain['widgets'][$key]['items'] = array_slice($this->sortBeaty($this->getShaters()), 0, 8);
             } else {
                 $apiMain['widgets'][$key]['items'] = $items_widget;
             }
