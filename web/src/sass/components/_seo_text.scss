@@ -1,3 +1,30 @@
+[data-page-type="listing"] {
+    .seo_text {
+        table {
+            border-collapse: collapse;
+
+            thead th {
+                background-color: rgba($clrGreen, .3);
+                font-weight: bold;
+                padding: 8px;
+            }
+
+            td, th {
+                border: 1px solid $clrButton;
+                padding: 4px 8px;
+
+                @include for-smallphone {
+                    padding: 2px;
+                    max-width: 96px;
+                    width: 10%;
+                    word-wrap: break-word;
+                }
+            }
+        }
+    }
+}
+
+
 .seo_text{
     font-weight: 500;
     font-size: 16px;
